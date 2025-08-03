@@ -1,5 +1,11 @@
 {
   "id": "root",
   "name": "Root",
-  "children": []
+  "children": [
+    {
+      "id": "child1",
+      "name": "Child 1",
+      "children": []
+    }
+  ]
 }

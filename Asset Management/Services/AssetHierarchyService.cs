@@ -5,7 +5,7 @@ namespace Asset_Management.Services
 {
     public class AssetHierarchyService
     {
-        private readonly string _dataFile = "assets.json";
+        private readonly string _dataFile = "D:\\Asset Management\\Asset Management\\assets.json";
         private Asset _root;
 
         public AssetHierarchyService()
