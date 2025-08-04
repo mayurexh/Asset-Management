@@ -18,8 +18,8 @@ builder.Services.AddSingleton<Asset_Management.Services.AssetHierarchyService>()
 //builder.Services.AddSingleton<IAssetStorageService, XmlAssetStorageService>();
 
 
-var useXml = true;
-if (useXml)
+string FileType = builder.Configuration["StorageFlag"].ToLower();
+if (FileType == "xml")
 {
     builder.Services.AddSingleton<IAssetStorageService, XmlAssetStorageService>();
 }
