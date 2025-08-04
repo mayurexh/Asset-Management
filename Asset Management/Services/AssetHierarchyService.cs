@@ -5,11 +5,12 @@ namespace Asset_Management.Services
 {
     public class AssetHierarchyService
     {
-        private readonly string _dataFile = "D:\\Asset Management\\Asset Management\\assets.json";
+        private readonly string _dataFile;
         private Asset _root;
 
-        public AssetHierarchyService()
+        public AssetHierarchyService(IWebHostEnvironment env)
         {
+            _dataFile = Path.Combine(env.ContentRootPath, "assets.json");
             LoadTree();
         }
 
@@ -87,7 +88,7 @@ namespace Asset_Management.Services
             if (File.Exists(_dataFile))
             {
                 string json = File.ReadAllText(_dataFile);
-                _root = JsonSerializer.Deserialize<Asset>(json) ?? new Asset { Id = "root", Name = "Root" };
+                _root = JsonSerializer.Deserialize<Asset>(json,options) ?? new Asset { Id = "root", Name = "Root" };
                 
             }
             else
