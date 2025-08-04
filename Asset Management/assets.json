@@ -1,11 +1,5 @@
 {
   "Id": "root",
   "Name": "Root",
-  "Children": [
-    {
-      "Id": "branch1",
-      "Name": "Branch 1",
-      "Children": []
-    }
-  ]
+  "Children": []
 }

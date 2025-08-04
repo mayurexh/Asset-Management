@@ -15,7 +15,6 @@ namespace Asset_Management.Controllers
             _service = service;
         }
 
-        // ✅ GET /api/AssetHierarchy
         [HttpGet]
         public IActionResult GetHierarchy()
         {
@@ -23,7 +22,6 @@ namespace Asset_Management.Controllers
             return Ok(tree);
         }
 
-        // ✅ POST /api/AssetHierarchy
         [HttpPost]
         public IActionResult AddNode([FromBody] AssetAddRequest request)
         {
@@ -41,7 +39,6 @@ namespace Asset_Management.Controllers
             return Ok("Node added successfully.");
         }
 
-        // ✅ DELETE /api/AssetHierarchy/{id}
         [HttpDelete("{id}")]
         public IActionResult DeleteNode(string id)
         {
@@ -53,7 +50,6 @@ namespace Asset_Management.Controllers
         }
     }
 
-    // DTO for POST request
     public class AssetAddRequest
     {
         public string Id { get; set; } = string.Empty;

@@ -25,7 +25,6 @@ namespace Asset_Management.Services
             if (parent == null)
                 return false;
 
-            // Prevent duplicate ID
             if (FindNodeById(_root, newNode.Id) != null)
                 return false;
 
@@ -36,7 +35,6 @@ namespace Asset_Management.Services
 
         public bool RemoveNode(string nodeId)
         {
-            // Disallow deleting root
             if (_root.Id == nodeId)
                 return false;
 
