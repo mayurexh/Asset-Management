@@ -7,4 +7,4 @@
 
         public List<Asset> Children { get; set; } = new List<Asset>();
     }
-}
+}   
