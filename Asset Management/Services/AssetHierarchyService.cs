@@ -1,17 +1,18 @@
-﻿using Asset_Management.Models;
+﻿using Asset_Management.Interfaces;
+using Asset_Management.Models;
 using System.Text.Json;
 
 namespace Asset_Management.Services
 {
     public class AssetHierarchyService
     {
-        private readonly string _dataFile;
+        private readonly IAssetStorageService _storage;
         private Asset _root;
 
-        public AssetHierarchyService(IWebHostEnvironment env)
+        public AssetHierarchyService(IAssetStorageService storage)
         {
-            _dataFile = Path.Combine(env.ContentRootPath, "assets.json");
-            LoadTree();
+            _storage = storage;
+            _root = _storage.LoadTree();
         }
 
 
@@ -31,7 +32,7 @@ namespace Asset_Management.Services
                 return false;
 
             parent.Children.Add(newNode);
-            SaveTree();
+            _storage.SaveTree(_root);
             return true;
         }
 
@@ -43,7 +44,7 @@ namespace Asset_Management.Services
 
             bool removed = RemoveNodeRecursive(_root, nodeId);
             if (removed)
-                SaveTree();
+                _storage.SaveTree(_root);
 
             return removed;
         }
@@ -79,33 +80,6 @@ namespace Asset_Management.Services
             return null;
         }
 
-        private void LoadTree()
 
-        {
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-            if (File.Exists(_dataFile))
-            {
-                string json = File.ReadAllText(_dataFile);
-                _root = JsonSerializer.Deserialize<Asset>(json,options) ?? new Asset { Id = "root", Name = "Root" };
-                
-            }
-            else
-            {
-                _root = new Asset { Id = "root", Name = "Root" };
-                SaveTree();
-            }
-            Console.WriteLine($"Root ID: {_root?.Id}, Name: {_root?.Name}");
-
-        }
-
-        private void SaveTree()
-        {
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string json = JsonSerializer.Serialize(_root, options);
-            File.WriteAllText(_dataFile, json);
-        }
     }
 }
