@@ -15,15 +15,14 @@ namespace Asset_Management.Controllers
             _service = service;
         }
 
-        // ✅ GET /api/AssetHierarchy
         [HttpGet]
+        [Produces("application/json", "application/xml")]
         public IActionResult GetHierarchy()
         {
             var tree = _service.GetHierarchy();
             return Ok(tree);
         }
 
-        // ✅ POST /api/AssetHierarchy
         [HttpPost]
         public IActionResult AddNode([FromBody] AssetAddRequest request)
         {
@@ -41,7 +40,6 @@ namespace Asset_Management.Controllers
             return Ok("Node added successfully.");
         }
 
-        // ✅ DELETE /api/AssetHierarchy/{id}
         [HttpDelete("{id}")]
         public IActionResult DeleteNode(string id)
         {
