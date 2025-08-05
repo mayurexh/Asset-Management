@@ -6,7 +6,13 @@
     <Asset>
       <Id>branch2</Id>
       <Name>Branc 2</Name>
-      <Children />
+      <Children>
+        <Asset>
+          <Id>branch4</Id>
+          <Name>Branch 4</Name>
+          <Children />
+        </Asset>
+      </Children>
     </Asset>
     <Asset>
       <Id>branch1</Id>

@@ -1,5 +1,6 @@
 using Asset_Management.Interfaces;
 using Asset_Management.Services;
+using Asset_Management.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<Asset_Management.Services.AssetHierarchyService>();
 
+// Register Json and XML storage service using Extensions
+builder.Services.AddStorageServices(builder.Configuration);
+
 //JsonSerializerService 
 //builder.Services.AddSingleton<IAssetStorageService, JsonAssetStorageService>();
 
@@ -18,15 +22,15 @@ builder.Services.AddSingleton<Asset_Management.Services.AssetHierarchyService>()
 //builder.Services.AddSingleton<IAssetStorageService, XmlAssetStorageService>();
 
 
-string FileType = builder.Configuration["StorageFlag"].ToLower();
-if (FileType == "xml")
-{
-    builder.Services.AddSingleton<IAssetStorageService, XmlAssetStorageService>();
-}
-else
-{
-    builder.Services.AddSingleton<IAssetStorageService, JsonAssetStorageService>();
-}
+//string FileType = builder.Configuration["StorageFlag"].ToLower();
+//if (FileType == "xml")
+//{
+//    builder.Services.AddSingleton<IAssetStorageService, XmlAssetStorageService>();
+//}
+//else
+//{
+//    builder.Services.AddSingleton<IAssetStorageService, JsonAssetStorageService>();
+//}
 
 var app = builder.Build();
 
