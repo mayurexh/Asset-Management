@@ -31,5 +31,10 @@
         </Asset>
       </Children>
     </Asset>
+    <Asset>
+      <Id>branch7</Id>
+      <Name>Branch 7</Name>
+      <Children />
+    </Asset>
   </Children>
 </Asset>
