@@ -17,6 +17,7 @@ namespace Asset_Management.Controllers
         }
 
         [HttpGet]
+        [Produces("application/json", "application/xml")]
         public IActionResult GetHierarchy()
         {
             var tree = _service.GetHierarchy();
@@ -40,7 +41,6 @@ namespace Asset_Management.Controllers
             return Ok("Node added successfully.");
         }
 
-        
         [HttpDelete("{id}")]
         public IActionResult DeleteNode(string id)
         {
