@@ -4,36 +4,19 @@
   <Name>Root</Name>
   <Children>
     <Asset>
-      <Id>branch2</Id>
-      <Name>Branc 2</Name>
+      <Id>machine-1</Id>
+      <Name>Machine 1</Name>
       <Children>
         <Asset>
-          <Id>branch4</Id>
-          <Name>Branch 4</Name>
+          <Id>component-1</Id>
+          <Name>Component A</Name>
           <Children />
         </Asset>
       </Children>
     </Asset>
     <Asset>
-      <Id>branch1</Id>
-      <Name>Branch 1</Name>
-      <Children>
-        <Asset>
-          <Id>branch3</Id>
-          <Name>Branch 3</Name>
-          <Children>
-            <Asset>
-              <Id>branch6</Id>
-              <Name>Branch 6</Name>
-              <Children />
-            </Asset>
-          </Children>
-        </Asset>
-      </Children>
-    </Asset>
-    <Asset>
-      <Id>branch7</Id>
-      <Name>Branch 7</Name>
+      <Id>machine-2</Id>
+      <Name>Machine 2</Name>
       <Children />
     </Asset>
   </Children>
