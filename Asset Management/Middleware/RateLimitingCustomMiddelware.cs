@@ -5,7 +5,7 @@ namespace Asset_Management.Middleware
     public class RateLimitingCustomMiddelware
     {
         private readonly RequestDelegate _next;
-        //stores UserKey(IP) -> Time when user made a request
+        //stores UserKey(IP) -> Time when user made a request in _lastcall 
         private static readonly ConcurrentDictionary<string, DateTime> _lastcall = new ConcurrentDictionary<string, DateTime>();
         public RateLimitingCustomMiddelware(RequestDelegate next)
         {
@@ -14,6 +14,7 @@ namespace Asset_Management.Middleware
         }
         public async Task InvokeAsync(HttpContext context)
         {
+            
             if ((context.Request.Method == "POST" && context.Request.Path.StartsWithSegments("/api/AssetHierarchy")))
             {
                 string UserKey = context.Connection.RemoteIpAddress.ToString(); //store IP
