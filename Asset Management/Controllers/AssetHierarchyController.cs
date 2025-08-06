@@ -3,6 +3,8 @@ using Asset_Management.Models;
 using Asset_Management.Services;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Text.Json;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace Asset_Management.Controllers
 {
@@ -11,10 +13,12 @@ namespace Asset_Management.Controllers
     public class AssetHierarchyController : ControllerBase
     {
         private readonly AssetHierarchyService _service;
+        private readonly IWebHostEnvironment _env;
 
-        public AssetHierarchyController(AssetHierarchyService service)
+        public AssetHierarchyController(AssetHierarchyService service, IWebHostEnvironment env)
         {
             _service = service;
+            _env = env;
         }
 
         [HttpGet]
@@ -53,7 +57,7 @@ namespace Asset_Management.Controllers
         }
 
 
-        [HttpPost("upload")]
+        [HttpPost("Upload")]
         public async Task<IActionResult> UploadHierarchy(IFormFile file)
         {
 
@@ -64,10 +68,14 @@ namespace Asset_Management.Controllers
             }
             try
             {
-                // file is acquired from a HTTP req thats why we use IFormFIle and allow to read the file by OpenReadStream()
+                // file is acquired from a HTTP req thats why we use IFormFile and allow to read the file by OpenReadStream()
                 using var sr = new StreamReader(file.OpenReadStream());
+                
 
                 var content = await sr.ReadToEndAsync();
+
+                //var FileExtension = System.IO.Path.GetExtension(file.FileName);
+
 
                 var options = new JsonSerializerOptions
                 {
@@ -95,6 +103,27 @@ namespace Asset_Management.Controllers
             {
                 return StatusCode(500, $"Error processing file. {ex.Message}");
             }
+
+        }
+
+        [HttpGet("DownloadFile")]
+        public IActionResult DownloadFile()
+        {
+            string FilePath = Path.Combine(_env.ContentRootPath, "assets.json");
+
+            if(!System.IO.File.Exists(FilePath))
+            {
+                return NotFound("File does not exists");
+            }
+
+            //save all the bytes of "Root/assets.json" in FileByets array
+            byte[] FileBytes = System.IO.File.ReadAllBytes(FilePath);
+
+            //specify content type of the file 
+            string ContentType = "application/json";
+
+
+            return File(FileBytes, ContentType, "Assets");
 
         }
     }

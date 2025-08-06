@@ -8,7 +8,7 @@ public class JsonAssetStorageService : IAssetStorageService
 
     public JsonAssetStorageService(IWebHostEnvironment env)
     {
-        _dataFile = Path.Combine(env.ContentRootPath, "assets.json");
+        _dataFile = Path.Combine(env.ContentRootPath, "assets.json"); //Asset Management/assets.json
     }
 
     public Asset LoadTree()
