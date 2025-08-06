@@ -65,6 +65,7 @@ namespace Asset_Management.Services
             return false;
         }
 
+
         private Asset? FindNodeById(Asset node, string id)
         {
             if (node.Id == id)
@@ -79,6 +80,13 @@ namespace Asset_Management.Services
 
             return null;
         }
+
+        public void ReplaceTree(Asset NewRoot)
+        {
+            _root = NewRoot;
+            _storage.SaveTree(_root);
+        }
+
 
 
     }

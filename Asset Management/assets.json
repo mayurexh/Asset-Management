@@ -3,8 +3,19 @@
   "Name": "Root",
   "Children": [
     {
-      "Id": "branch1",
-      "Name": "Branch 1",
+      "Id": "machine-1",
+      "Name": "Machine 1",
+      "Children": [
+        {
+          "Id": "component-1",
+          "Name": "Component A",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Id": "machine-2",
+      "Name": "Machine 2",
       "Children": []
     }
   ]
