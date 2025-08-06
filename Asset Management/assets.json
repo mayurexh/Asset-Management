@@ -1,22 +1,28 @@
 {
   "Id": "root",
-  "Name": "Root",
+  "Name": "Main Factory",
   "Children": [
     {
-      "Id": "machine-1",
-      "Name": "Machine 1",
+      "Id": "lathe-01",
+      "Name": "Lathe Machine",
       "Children": [
         {
-          "Id": "component-1",
-          "Name": "Component A",
+          "Id": "comp-spindle",
+          "Name": "Spindle Assembly",
           "Children": []
         }
       ]
     },
     {
-      "Id": "machine-2",
-      "Name": "Machine 2",
-      "Children": []
+      "Id": "mill-01",
+      "Name": "Milling Machine",
+      "Children": [
+        {
+          "Id": "comp-motor",
+          "Name": "Drive Motor",
+          "Children": []
+        }
+      ]
     }
   ]
 }

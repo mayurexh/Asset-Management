@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Asset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Id>root</Id>
-  <Name>Root</Name>
+  <Name>Main Factory</Name>
   <Children>
     <Asset>
-      <Id>machine-1</Id>
-      <Name>Machine 1</Name>
+      <Id>lathe-01</Id>
+      <Name>Lathe Machine</Name>
       <Children>
         <Asset>
-          <Id>component-1</Id>
-          <Name>Component A</Name>
+          <Id>comp-spindle</Id>
+          <Name>Spindle Assembly</Name>
           <Children />
         </Asset>
       </Children>
     </Asset>
     <Asset>
-      <Id>machine-2</Id>
-      <Name>Machine 2</Name>
-      <Children />
+      <Id>mill-01</Id>
+      <Name>Milling Machine</Name>
+      <Children>
+        <Asset>
+          <Id>comp-motor</Id>
+          <Name>Drive Motor</Name>
+          <Children />
+        </Asset>
+      </Children>
     </Asset>
   </Children>
 </Asset>
