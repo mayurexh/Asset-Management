@@ -4,6 +4,9 @@ using Asset_Management.Extensions;
 using Microsoft.AspNetCore.RateLimiting;
 using Asset_Management.Middleware;
 
+
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,6 +15,18 @@ builder.Services.AddControllers().AddXmlSerializerFormatters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+//add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:3000",
+                              "http://10.10.10.7:3000").AllowAnyHeader().AllowAnyMethod();
+                      });
+});
 
 
 //Adding (built-in) Middleware for RateLimiter 
@@ -27,7 +42,7 @@ builder.Services.AddSwaggerGen();
 //});
 
 //Hierarchy Management Service
-builder.Services.AddSingleton<Asset_Management.Services.AssetHierarchyService>();
+builder.Services.AddTransient<Asset_Management.Services.AssetHierarchyService>();
 
 // Register Json and XML storage service using Extensions
 builder.Services.AddStorageServices(builder.Configuration);
@@ -65,9 +80,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors(MyAllowSpecificOrigins);
 //app.UseAuthorization();
 
-app.UseMiddleware<RateLimitingCustomMiddelware>();
+//app.UseMiddleware<RateLimitingCustomMiddelware>();
 
 
 app.MapControllers();
