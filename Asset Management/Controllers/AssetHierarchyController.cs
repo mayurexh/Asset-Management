@@ -16,11 +16,13 @@ namespace Asset_Management.Controllers
     {
         private readonly AssetHierarchyService _service;
         private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _configuration;
 
-        public AssetHierarchyController(AssetHierarchyService service, IWebHostEnvironment env)
+        public AssetHierarchyController(AssetHierarchyService service, IWebHostEnvironment env, IConfiguration configuration)
         {
             _service = service;
             _env = env;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -70,16 +72,19 @@ namespace Asset_Management.Controllers
             }
             try
             {
-                // file is acquired from a HTTP req thats why we use IFormFile and allow to read the file by OpenReadStream()
-                using var sr = new StreamReader(file.OpenReadStream());
                 
-
-
                 var FileExtension = System.IO.Path.GetExtension(file.FileName);
+
 
                 //if file is of json format
                 if (FileExtension == ".json")
                 {
+                    //set config StorageFlag to json if user is going to upload file in json
+                    _configuration["StorageFlag"] = "json";
+
+                    // file is acquired from a HTTP req thats why we use IFormFile and allow to read the file by OpenReadStream()
+                    using var sr = new StreamReader(file.OpenReadStream());
+
                     var content = await sr.ReadToEndAsync();
 
                     var options = new JsonSerializerOptions
@@ -105,10 +110,15 @@ namespace Asset_Management.Controllers
                 //if file is of xml format
                 else if(FileExtension == ".xml")
                 {
+                    //set config StorageFlag to xml if user is going to upload file in xml
+
+                    _configuration["StorageFlag"] = "xml";
+
+                    using var stream = new StreamReader(file.OpenReadStream());
                     XmlSerializer serializer = new XmlSerializer(typeof(Asset));
 
 
-                    var NewTree = (Asset)serializer.Deserialize(sr);
+                    var NewTree = (Asset)serializer.Deserialize(stream);
                     if (NewTree == null)
                     {
                         return BadRequest("Invalid XML format");

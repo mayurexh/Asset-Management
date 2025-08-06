@@ -13,11 +13,11 @@ namespace Asset_Management.Extensions
             string FileType = configuration["StorageFlag"].ToLower();
             if (FileType == "xml")
             {
-                service.AddSingleton<IAssetStorageService, XmlAssetStorageService>();
+                service.AddTransient<IAssetStorageService, XmlAssetStorageService>();
             }
             else
             {
-                service.AddSingleton<IAssetStorageService, JsonAssetStorageService>();
+                service.AddTransient<IAssetStorageService, JsonAssetStorageService>();
             }
             return service;
 
