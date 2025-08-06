@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Asset_Management.Models;
+﻿using Asset_Management.Models;
 using Asset_Management.Services;
-using Microsoft.AspNetCore.RateLimiting;
-using System.Text.Json;
-using System.Security.Cryptography;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.ObjectPool;
+using System.Security.Cryptography;
+using System.Text.Json;
+using System.Xml.Serialization;
 
 namespace Asset_Management.Controllers
 {
@@ -72,29 +74,59 @@ namespace Asset_Management.Controllers
                 using var sr = new StreamReader(file.OpenReadStream());
                 
 
-                var content = await sr.ReadToEndAsync();
 
-                //var FileExtension = System.IO.Path.GetExtension(file.FileName);
+                var FileExtension = System.IO.Path.GetExtension(file.FileName);
 
-
-                var options = new JsonSerializerOptions
+                //if file is of json format
+                if (FileExtension == ".json")
                 {
-                    PropertyNameCaseInsensitive = true
-                };
+                    var content = await sr.ReadToEndAsync();
 
-                var NewTree = JsonSerializer.Deserialize<Asset>(content, options);
-                if(NewTree == null)
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    var NewTree = JsonSerializer.Deserialize<Asset>(content, options);
+                    if (NewTree == null)
+                    {
+                        return BadRequest("Invalid JSON format");
+                    }
+
+                    //check if root Node is null
+                    if (NewTree.Id == null)
+                    {
+                        return BadRequest("Root node cannot be null");
+                    }
+                    _service.ReplaceTree(NewTree);
+
+
+                }
+                //if file is of xml format
+                else if(FileExtension == ".xml")
                 {
-                    return BadRequest("Invalid JSON format");
+                    XmlSerializer serializer = new XmlSerializer(typeof(Asset));
+
+
+                    var NewTree = (Asset)serializer.Deserialize(sr);
+                    if (NewTree == null)
+                    {
+                        return BadRequest("Invalid XML format");
+                    }
+
+                    //check if root Node is null
+                    if (NewTree.Id == null)
+                    {
+                        return BadRequest("Root node cannot be null");
+                    }
+                    _service.ReplaceTree(NewTree);
                 }
 
-                //check if root Node is null
-                if(NewTree.Id == null)
-                {
-                    return BadRequest("Root node cannot be null");
-                }
 
-                _service.ReplaceTree(NewTree);
+
+
+
+
                 return Ok($"{file.Name} has been successfully uploaded");
 
                 
@@ -106,10 +138,18 @@ namespace Asset_Management.Controllers
 
         }
 
-        [HttpGet("DownloadFile")]
-        public IActionResult DownloadFile()
+        [HttpGet("DownloadFile/{format}")]
+        public IActionResult DownloadFile(string format)
         {
-            string FilePath = Path.Combine(_env.ContentRootPath, "assets.json");
+
+            string[] formats = { "json", "xml" }; // string format should only be json or xml
+            Console.WriteLine(format);
+            if(!formats.Contains(format))
+            {
+                return BadRequest("Only files with json and xml format could be downloaded");
+            }
+            string FilePath = Path.Combine(_env.ContentRootPath, $"assets.{format}"); //dynamically assign extension of file using format 
+
 
             if(!System.IO.File.Exists(FilePath))
             {
@@ -120,10 +160,19 @@ namespace Asset_Management.Controllers
             byte[] FileBytes = System.IO.File.ReadAllBytes(FilePath);
 
             //specify content type of the file 
-            string ContentType = "application/json";
+            string ContentType;
+            if (format == "json")
+            {
+                ContentType = "application/json";
+
+            }
+            else
+            {
+                ContentType = "application/xml";
+            }
 
 
-            return File(FileBytes, ContentType, "Assets");
+                return File(FileBytes, ContentType, "Assets");
 
         }
     }
