@@ -15,6 +15,7 @@ namespace Asset_Management.Services
             _root = _storage.LoadTree();
         }
 
+
         public Asset GetHierarchy()
         {
             return _root;
