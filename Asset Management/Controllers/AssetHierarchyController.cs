@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.ObjectPool;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace Asset_Management.Controllers
@@ -37,6 +38,23 @@ namespace Asset_Management.Controllers
         [HttpPost]
         public IActionResult AddNode([FromBody] AssetAddRequest request)
         {
+            // validate Id, Name and Children
+            // Regex patterns
+            string idPattern = @"^[a-zA-Z0-9_-]{1,20}$";
+            string namePattern = @"^[a-zA-Z0-9 ]{1,30}$";
+
+            // Validate Id
+            if (string.IsNullOrWhiteSpace(request.Id) || !Regex.IsMatch(request.Id, idPattern))
+                return BadRequest("Invalid ID. Must be alphanumeric and can contain _ or -, max 20 characters.");
+
+            // Validate ParentId
+            if (string.IsNullOrWhiteSpace(request.ParentId) || !Regex.IsMatch(request.ParentId, idPattern))
+                return BadRequest("Invalid Parent ID. Must be alphanumeric and can contain _ or -, max 20 characters.");
+
+            // Validate Name
+            if (string.IsNullOrWhiteSpace(request.Name) || !Regex.IsMatch(request.Name, namePattern))
+                return BadRequest("Invalid Name. Only letters, numbers, and spaces are allowed, max 30 characters.");
+
             var newAsset = new Asset
             {
                 Id = request.Id,

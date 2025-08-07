@@ -71,33 +71,6 @@
           ]
         }
       ]
-    },
-    {
-      "Id": "machine-4",
-      "Name": "3D Printer",
-      "Children": [
-        {
-          "Id": "comp-10",
-          "Name": "Print Head",
-          "Children": []
-        },
-        {
-          "Id": "comp-11",
-          "Name": "Filament Feed",
-          "Children": []
-        },
-        {
-          "Id": "comp-12",
-          "Name": "Bed Heater",
-          "Children": [
-            {
-              "Id": "building-c",
-              "Name": "BuildingC",
-              "Children": []
-            }
-          ]
-        }
-      ]
     }
   ]
 }
