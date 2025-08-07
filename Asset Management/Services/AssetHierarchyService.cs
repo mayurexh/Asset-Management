@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace Asset_Management.Services
 {
-    public class AssetHierarchyService
+    public class AssetHierarchyService : IAssetHierarchyService
     {
         private readonly IAssetStorageService _storage;
         private Asset _root;
