@@ -42,7 +42,7 @@ builder.Services.AddCors(options =>
 //});
 
 //Hierarchy Management Service
-builder.Services.AddTransient<Asset_Management.Services.AssetHierarchyService>();
+builder.Services.AddTransient<IAssetHierarchyService,AssetHierarchyService>();
 
 // Register Json and XML storage service using Extensions
 builder.Services.AddStorageServices(builder.Configuration);

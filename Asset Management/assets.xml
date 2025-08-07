@@ -98,5 +98,16 @@
         </Asset>
       </Children>
     </Asset>
+    <Asset>
+      <Id>mayuresh</Id>
+      <Name>Mayuresh</Name>
+      <Children>
+        <Asset>
+          <Id>siddhesh</Id>
+          <Name>Siddhesh</Name>
+          <Children />
+        </Asset>
+      </Children>
+    </Asset>
   </Children>
 </Asset>

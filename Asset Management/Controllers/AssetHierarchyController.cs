@@ -1,4 +1,5 @@
-﻿using Asset_Management.Models;
+﻿using Asset_Management.Interfaces;
+using Asset_Management.Models;
 using Asset_Management.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
@@ -14,11 +15,11 @@ namespace Asset_Management.Controllers
     [Route("api/[controller]")]
     public class AssetHierarchyController : ControllerBase
     {
-        private readonly AssetHierarchyService _service;
+        private readonly IAssetHierarchyService _service;
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _configuration;
 
-        public AssetHierarchyController(AssetHierarchyService service, IWebHostEnvironment env, IConfiguration configuration)
+        public AssetHierarchyController(IAssetHierarchyService service, IWebHostEnvironment env, IConfiguration configuration)
         {
             _service = service;
             _env = env;
