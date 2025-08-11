@@ -8,6 +8,7 @@ using Microsoft.Extensions.ObjectPool;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace Asset_Management.Controllers
