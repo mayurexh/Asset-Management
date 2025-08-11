@@ -134,6 +134,11 @@
           ]
         }
       ]
+    },
+    {
+      "Id": "child-root",
+      "Name": "Crazy Machine",
+      "Children": []
     }
   ]
 }
