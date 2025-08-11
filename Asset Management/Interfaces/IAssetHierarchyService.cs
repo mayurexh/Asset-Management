@@ -8,5 +8,7 @@
         bool AddNode(string parentId, Asset newNode);
         bool RemoveNode(string nodeId);
         void ReplaceTree(Asset newRoot);
+        int MergeTree(Asset AddtionalNode);
+        int TreeLength(Asset Node);
     }
 }

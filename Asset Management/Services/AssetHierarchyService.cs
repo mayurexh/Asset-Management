@@ -7,6 +7,7 @@ namespace Asset_Management.Services
     public class AssetHierarchyService : IAssetHierarchyService
     {
         private readonly IAssetStorageService _storage;
+        public static List<Asset> assetsAdded = new List<Asset>();
         private Asset _root;
 
         public AssetHierarchyService(IAssetStorageService storage)
@@ -30,6 +31,11 @@ namespace Asset_Management.Services
             // Prevent duplicate ID
             if (FindNodeById(_root, newNode.Id) != null)
                 return false;
+
+            // Prevent duplicated Asset Name
+            if (FindNodeByName(_root, newNode.Name) != null)
+                return false;
+            
 
             parent.Children.Add(newNode);
             _storage.SaveTree(_root);
@@ -65,7 +71,25 @@ namespace Asset_Management.Services
             return false;
         }
 
+        private Asset FindNodeByName(Asset node, string name)
+        {
 
+            if (node.Name == name){
+                return node;
+
+            }
+            foreach (var child in node.Children)
+            { 
+
+                var result = FindNodeByName(child, name);
+                if(result != null)
+                {
+                    return result;
+                }
+            }
+            return null;
+
+        }
         private Asset? FindNodeById(Asset node, string id)
         {
             if (node.Id == id)
@@ -85,6 +109,73 @@ namespace Asset_Management.Services
         {
             _root = NewRoot;
             _storage.SaveTree(_root);
+        }
+
+        public int TreeLength(Asset node)
+        {
+            if (node == null)
+                return 0;
+            int totalNodes = 1;
+
+
+            foreach (var child in node.Children)
+            {
+                totalNodes += TreeLength(child);
+            }
+            return totalNodes;
+        }
+
+
+        public int MergeTree(Asset NewAdditonTree)
+        { 
+            bool allGood = true;
+            int totalAdded = 0;
+
+            var IdExists = FindNodeById(_root, NewAdditonTree.Id);
+            var NameExists = FindNodeByName(_root, NewAdditonTree.Name);
+              
+            if (IdExists == null && NameExists == null)
+            {
+                 _root.Children.Add(NewAdditonTree);
+                 assetsAdded.Add(NewAdditonTree);
+                totalAdded += TreeLength(NewAdditonTree);
+
+
+            }
+            else
+            {
+                foreach (var child in NewAdditonTree.Children)
+                {
+
+                    var nameExists = FindNodeByName(_root, child.Name);
+                    var idExists = FindNodeById(_root, child.Id);
+                    if (nameExists != null && idExists != null)
+                    {
+                        allGood = false;
+                    }
+                    else
+                    {
+                        _root.Children.Add(child);
+                        assetsAdded.Add(child);
+                        totalAdded+=TreeLength(child);
+
+
+                    }
+
+                }
+
+
+            }
+
+
+
+
+            if (totalAdded > 0)
+            {
+                _storage.SaveTree(_root);
+                return totalAdded;
+            }
+            return 0;
         }
 
 
