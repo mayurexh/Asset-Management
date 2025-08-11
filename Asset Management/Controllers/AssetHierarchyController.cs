@@ -42,7 +42,16 @@ namespace Asset_Management.Controllers
         [HttpPost]
         public IActionResult AddNode([FromBody] AssetAddRequest request)
         {
-            
+            if (!ModelState.IsValid)
+            {
+                // Extract all validation errors
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(new { Errors = errors });
+            }
 
             var newAsset = new Asset
             {
