@@ -44,6 +44,9 @@ builder.Services.AddCors(options =>
 //Hierarchy Management Service
 builder.Services.AddTransient<IAssetHierarchyService,AssetHierarchyService>();
 
+//Import Log service
+builder.Services.AddSingleton<IUploadLogService, UploadLogService>();
+
 // Register Json and XML storage service using Extensions
 builder.Services.AddStorageServices(builder.Configuration);
 
@@ -84,7 +87,7 @@ app.UseCors(MyAllowSpecificOrigins);
 //app.UseAuthorization();
 
 //app.UseMiddleware<RateLimitingCustomMiddelware>();
-
+app.UseMiddleware<NewAssetsLoggerMiddleware>();
 
 app.MapControllers();
 
