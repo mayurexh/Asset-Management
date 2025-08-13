@@ -63,7 +63,7 @@ namespace Asset_Management.Controllers
 
             bool success = _service.AddNode(request.ParentId, newAsset);
             if (!success)
-                return BadRequest("Parent not found or ID already exists or Name already exists.");
+                return BadRequest("Unknown error occured please try again later");
 
             return Ok("Node added successfully.");
         }
@@ -119,6 +119,7 @@ namespace Asset_Management.Controllers
                 int result = _service.MergeTree(NewAdditonTree);
                 _uploadlog.UpdateLog(file.FileName, "merged");
                 HttpContext.Items["assetsAdded"] = AssetHierarchyService.assetsAdded;
+
                 return Ok(result);
 
                 

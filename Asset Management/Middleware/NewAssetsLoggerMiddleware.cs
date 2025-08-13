@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Asset_Management.Services;
+using System.Text.Json;
 
 namespace Asset_Management.Middleware
 {
@@ -26,6 +27,9 @@ namespace Asset_Management.Middleware
 
                     Console.WriteLine("=== Added Assets ===");
                     Console.WriteLine(json);
+
+                    //clear the assets Added list so that middleware includes only newly added assets
+                    AssetHierarchyService.assetsAdded.Clear();
                 }
             }
             else

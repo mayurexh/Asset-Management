@@ -1,134 +1,118 @@
 {
-  "Id": "root-axz-1975",
-  "Name": "HQ_Quantum-Zebra-Hub",
+  "Id": "root",
+  "Name": "Central Factory",
   "Children": [
     {
-      "Id": "mach-neo-5501",
-      "Name": "Unit_Cosmic-Penguin_Alpha",
+      "Id": "machine-1",
+      "Name": "Hydraulic Press",
       "Children": [
         {
-          "Id": "part-x9-888",
-          "Name": "Gear_Aurora-Spiral_Mk1",
+          "Id": "comp-1",
+          "Name": "Pump Unit",
           "Children": []
         },
         {
-          "Id": "part-x9-889",
-          "Name": "Rotor_Velvet-Thunder_Beta",
+          "Id": "comp-2",
+          "Name": "Control Panel",
           "Children": []
-        }
-      ]
-    },
-    {
-      "Id": "mach-neo-5502",
-      "Name": "Unit_Lunar-Ferret_Prime",
-      "Children": []
-    },
-    {
-      "Id": "mach-neo-5503",
-      "Name": "Unit_Titanium-Moose_Sigma",
-      "Children": [
+        },
         {
-          "Id": "part-y7-321",
-          "Name": "Sensor_Obsidian-Whisper_Gamma",
+          "Id": "comp-3",
+          "Name": "Safety Valve",
           "Children": []
         }
       ]
     },
     {
-      "Id": "root",
-      "Name": "Central Factory",
+      "Id": "machine-2",
+      "Name": "Injection Molding Machine",
       "Children": [
         {
-          "Id": "machine-1",
-          "Name": "Hydraulic Press",
+          "Id": "comp-4",
+          "Name": "Heater",
+          "Children": []
+        },
+        {
+          "Id": "comp-5",
+          "Name": "Mold Assembly",
+          "Children": []
+        },
+        {
+          "Id": "comp-6",
+          "Name": "Hydraulic Motor",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Id": "machine-3",
+      "Name": "CNC Lathe",
+      "Children": [
+        {
+          "Id": "comp-7",
+          "Name": "Spindle",
           "Children": [
             {
-              "Id": "comp-1",
-              "Name": "Pump Unit",
+              "Id": "comp-7-1",
+              "Name": "Bearing",
               "Children": []
             },
             {
-              "Id": "comp-2",
-              "Name": "Control Panel",
-              "Children": []
-            },
-            {
-              "Id": "comp-3",
-              "Name": "Safety Valve",
+              "Id": "comp-7-2",
+              "Name": "Shaft",
               "Children": []
             }
           ]
         },
         {
-          "Id": "machine-2",
-          "Name": "Injection Molding Machine",
-          "Children": [
-            {
-              "Id": "comp-4",
-              "Name": "Heater",
-              "Children": []
-            },
-            {
-              "Id": "comp-5",
-              "Name": "Mold Assembly",
-              "Children": []
-            },
-            {
-              "Id": "comp-6",
-              "Name": "Hydraulic Motor",
-              "Children": []
-            }
-          ]
+          "Id": "comp-8",
+          "Name": "Turret",
+          "Children": []
         },
         {
-          "Id": "machine-3",
-          "Name": "CNC Lathe",
-          "Children": [
-            {
-              "Id": "comp-7",
-              "Name": "Spindle",
-              "Children": [
-                {
-                  "Id": "comp-7-1",
-                  "Name": "Bearing",
-                  "Children": []
-                },
-                {
-                  "Id": "comp-7-2",
-                  "Name": "Shaft",
-                  "Children": []
-                }
-              ]
-            },
-            {
-              "Id": "comp-8",
-              "Name": "Turret",
-              "Children": []
-            },
-            {
-              "Id": "comp-9",
-              "Name": "Coolant System",
-              "Children": []
-            }
-          ]
+          "Id": "comp-9",
+          "Name": "Coolant System",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Id": "machine-4",
+      "Name": "3D Printer",
+      "Children": [
+        {
+          "Id": "comp-10",
+          "Name": "Print Head",
+          "Children": []
         },
         {
-          "Id": "machine-4",
-          "Name": "3D Printer",
+          "Id": "comp-11",
+          "Name": "Filament Feed",
+          "Children": []
+        },
+        {
+          "Id": "comp-12",
+          "Name": "Bed Heater",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Id": "root-axz-1975",
+      "Name": "HQ_Quantum-Zebra-Hub",
+      "Children": [
+        {
+          "Id": "mach-neo-5501",
+          "Name": "Unit_Cosmic-Penguin_Alpha",
           "Children": [
             {
-              "Id": "comp-10",
-              "Name": "Print Head",
+              "Id": "part-x9-888",
+              "Name": "Gear_Aurora-Spiral_Mk1",
               "Children": []
             },
             {
-              "Id": "comp-11",
-              "Name": "Filament Feed",
-              "Children": []
-            },
-            {
-              "Id": "comp-12",
-              "Name": "Bed Heater",
+              "Id": "part-x9-889",
+              "Name": "Rotor_Velvet-Thunder_Beta",
               "Children": []
             }
           ]
@@ -152,29 +136,24 @@
       ]
     },
     {
-      "Id": "machine-4",
-      "Name": "3D Printer",
+      "Id": "B1",
+      "Name": "IT",
       "Children": [
         {
-          "Id": "comp-10",
-          "Name": "Print Head",
+          "Id": "B1-1",
+          "Name": "Infrastructure",
           "Children": []
-        },
+        }
+      ]
+    },
+    {
+      "Id": "C1",
+      "Name": "HR",
+      "Children": [
         {
-          "Id": "comp-11",
-          "Name": "Filament Feed",
+          "Id": "C1-1",
+          "Name": "Recruitment",
           "Children": []
-        },
-        {
-          "Id": "comp-12",
-          "Name": "Bed Heater",
-          "Children": [
-            {
-              "Id": "building-c",
-              "Name": "BuildingC",
-              "Children": []
-            }
-          ]
         }
       ]
     }
