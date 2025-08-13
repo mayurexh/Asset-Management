@@ -63,6 +63,8 @@ namespace Asset_Management.Controllers
 
             bool success = _service.AddNode(request.ParentId, newAsset);
             if (!success)
+
+
             {
                 // Return same structured error as ModelState
                 var fieldErrors = new Dictionary<string, string[]>
@@ -71,6 +73,7 @@ namespace Asset_Management.Controllers
         };
                 return BadRequest(new { errors = fieldErrors });
             }
+
 
             return Ok("Node added successfully.");
         }
@@ -126,6 +129,7 @@ namespace Asset_Management.Controllers
                 int result = _service.MergeTree(NewAdditonTree);
                 _uploadlog.UpdateLog(file.FileName, "merged");
                 HttpContext.Items["assetsAdded"] = AssetHierarchyService.assetsAdded;
+
                 return Ok(result);
 
                 
