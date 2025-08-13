@@ -129,14 +129,22 @@ namespace Asset_Management.Services
         public int MergeTree(Asset NewAdditonTree)
         { 
             bool allGood = true;
+
+            //track total valid added nodes
             int totalAdded = 0;
 
-            var IdExists = FindNodeById(_root, NewAdditonTree.Id);
+            // recursively validated Id and Name
+            var IdExists = FindNodeById(_root, NewAdditonTree.Id); 
             var NameExists = FindNodeByName(_root, NewAdditonTree.Name);
               
+
+            // root node of new tree
             if (IdExists == null && NameExists == null)
             {
+                //null == No duplicate found
                  _root.Children.Add(NewAdditonTree);
+
+                // add the newly added node in assetAdded List for middleware logs
                  assetsAdded.Add(NewAdditonTree);
                 totalAdded += TreeLength(NewAdditonTree);
 
@@ -144,6 +152,7 @@ namespace Asset_Management.Services
             }
             else
             {
+                // child nodes (remaning tree)
                 foreach (var child in NewAdditonTree.Children)
                 {
 
@@ -168,11 +177,11 @@ namespace Asset_Management.Services
             }
 
 
-
+           
 
             if (totalAdded > 0)
             {
-                _storage.SaveTree(_root);
+                _storage.SaveTree(_root); //save the tree
                 return totalAdded;
             }
             return 0;

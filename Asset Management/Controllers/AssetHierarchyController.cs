@@ -63,7 +63,17 @@ namespace Asset_Management.Controllers
 
             bool success = _service.AddNode(request.ParentId, newAsset);
             if (!success)
-                return BadRequest("Unknown error occured please try again later");
+
+
+            {
+                // Return same structured error as ModelState
+                var fieldErrors = new Dictionary<string, string[]>
+        {
+            { "parentId", new[] { "Parent not found or ID already exists or Name already exists." } }
+        };
+                return BadRequest(new { errors = fieldErrors });
+            }
+
 
             return Ok("Node added successfully.");
         }
