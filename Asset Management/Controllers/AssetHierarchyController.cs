@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.ObjectPool;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text.Json;
@@ -102,8 +103,11 @@ namespace Asset_Management.Controllers
                 {
                     PropertyNameCaseInsensitive = true
                 };
-
-                var NewAdditonTree = JsonSerializer.Deserialize<Asset>(content, options);
+                var NewAdditonTree = JsonConvert.DeserializeObject<Asset>(content, new JsonSerializerSettings
+                {
+                    //handle invalid json file with invalid keys
+                    MissingMemberHandling = MissingMemberHandling.Error
+                });
 
                 if (NewAdditonTree == null)
                 {
@@ -129,6 +133,7 @@ namespace Asset_Management.Controllers
                 return StatusCode(500, $"Error processing file. {ex.Message}");
 
             }
+            
         }
 
         [HttpPost("Upload")]
@@ -140,86 +145,39 @@ namespace Asset_Management.Controllers
                 return BadRequest("File Invalid");
 
             }
-            try
+
+            var FileExtension = System.IO.Path.GetExtension(file.FileName);
+
+            // check if file uploaded by user is of type _configuration["StorageFlag"] as based on the StorageFlag storage service is injected
+            // at start of the program
+            var storageExtension = "."+_configuration["StorageFlag"]; // "." is added because GetExtension method return extension with a . (eg. .json/.xml)
+            Type type = storageExtension.GetType();
+            Console.WriteLine(type);
+            if (FileExtension != storageExtension)
             {
-                
-                var FileExtension = System.IO.Path.GetExtension(file.FileName);
+                return BadRequest($"Invalid File format, please upload a {_configuration["StorageFlag"]} file");
+            }
 
+            else
+            {
+                using var sr = new StreamReader(file.OpenReadStream());
 
-
-                //if file is of json format
-                if (FileExtension == ".json")
+                var content = await sr.ReadToEndAsync();
+                try
                 {
-                    //set config StorageFlag to json if user is going to upload file in json
-                    _configuration["StorageFlag"] = "json";
-
-                    // file is acquired from a HTTP req thats why we use IFormFile and allow to read the file by OpenReadStream()
-                    using var sr = new StreamReader(file.OpenReadStream());
-
-                    var content = await sr.ReadToEndAsync();
-
-                    var options = new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    };
-
-                    var NewTree = JsonSerializer.Deserialize<Asset>(content, options);
-                    if (NewTree == null)
-                    {
-                        return BadRequest("Invalid JSON format");
-                    }
-
-                    //check if root Node is null
-                    if (NewTree.Id == null)
-                    {
-                        return BadRequest("Root node cannot be null");
-                    }
-                    _service.ReplaceTree(NewTree);
-                    _uploadlog.UpdateLog(file.FileName, "uploaded");
-
-
+                    //check the validation and format of the tree
+                    var newRoot = _storage.ParseTree(content);
+                    _service.ReplaceTree(newRoot);
+                    _uploadlog.UpdateLog(file.FileName, "uploaded"); //updateLogService
+                    return Ok("File uploaded successfully");
                 }
-                //if file is of xml format
-                else if(FileExtension == ".xml")
+                catch (InvalidFileFormatException ex)
                 {
-                    //set config StorageFlag to xml if user is going to upload file in xml
-
-                    _configuration["StorageFlag"] = "xml";
-
-                    using var stream = new StreamReader(file.OpenReadStream());
-                    XmlSerializer serializer = new XmlSerializer(typeof(Asset));
-
-
-                    var NewTree = (Asset)serializer.Deserialize(stream);
-                    if (NewTree == null)
-                    {
-                        return BadRequest("Invalid XML format");
-                    }
-
-                    //check if root Node is null
-                    if (NewTree.Id == null)
-                    {
-                        return BadRequest("Root node cannot be null");
-                    }
-                    _service.ReplaceTree(NewTree);
-                    _uploadlog.UpdateLog(file.FileName, "uploaded");
-
+                    return BadRequest($"Invalid Asset nodes found");
                 }
 
 
-
-
-
-
-                return Ok($"{file.Name} has been successfully uploaded");
-
-                
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error processing file. {ex.Message}");
-            }
-
         }
 
         [HttpGet("DownloadFile/{format}")]

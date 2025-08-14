@@ -9,6 +9,43 @@ namespace Asset_Management.Services
     {
         private readonly string _datafile;
 
+
+        public Asset ParseTree(string content)
+        {
+            try
+            {
+                using var reader = new StringReader(content);
+                XmlSerializer xml = new XmlSerializer(typeof(Asset));
+
+                bool hasUnexpected = false;
+
+                xml.UnknownAttribute += (sender, e) =>
+                {
+                    hasUnexpected = true;
+                };
+
+                xml.UnknownElement += (sender, e) =>
+                {
+                    hasUnexpected = true;
+                };
+
+                var newRoot = (Asset)xml.Deserialize(reader);
+
+
+                if (hasUnexpected)
+                {
+                    throw new InvalidOperationException("Invalid Xml format");
+                }
+                return newRoot;
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidFileFormatException("Invalid XML file format", ex);
+            }
+            
+
+
+        }
         public XmlAssetStorageService(IWebHostEnvironment env)
         {
             _datafile = Path.Combine(env.ContentRootPath, "assets.xml");
