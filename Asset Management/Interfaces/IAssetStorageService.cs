@@ -6,5 +6,6 @@ namespace Asset_Management.Interfaces
     {
         Asset LoadTree();
         void SaveTree(Asset root);
+        void DeleteTreeFile();
     }
 }
