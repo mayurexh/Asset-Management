@@ -1,0 +1,33 @@
+{
+  "id": "root",
+  "name": "Root",
+  "children": [
+    {
+      "id": "asset1",
+      "name": "Boiler System",
+      "children": [
+        {
+          "id": "asset1-1",
+          "name": "Pump A",
+          "children": []
+        },
+        {
+          "id": "asset1-2",
+          "name": "Valve A",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "asset2",
+      "name": "Cooling System",
+      "children": [
+        {
+          "id": "asset2-1",
+          "name": "Fan A",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

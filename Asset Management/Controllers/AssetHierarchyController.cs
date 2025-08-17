@@ -37,6 +37,10 @@ namespace Asset_Management.Controllers
         public IActionResult GetHierarchy()
         {
             var tree = _service.GetHierarchy();
+            if (tree == null)
+            {
+                return BadRequest("No Asset Hierarchy Present. Please upload to start.");
+            }
             return Ok(tree);
         }
 
@@ -64,8 +68,6 @@ namespace Asset_Management.Controllers
 
             bool success = _service.AddNode(request.ParentId, newAsset);
             if (!success)
-
-
             {
                 // Return same structured error as ModelState
                 var fieldErrors = new Dictionary<string, string[]>
@@ -75,7 +77,6 @@ namespace Asset_Management.Controllers
                 return BadRequest(new { errors = fieldErrors });
             }
 
-
             return Ok("Node added successfully.");
         }
 
@@ -84,17 +85,17 @@ namespace Asset_Management.Controllers
         {
             bool success = _service.RemoveNode(id);
             if (!success)
-                return BadRequest("Node not found or cannot delete root node.");
+                return BadRequest("Node not found.");
 
             return Ok("Node deleted successfully.");
         }
 
-        [HttpGet("GetCount")]
-        public IActionResult GetCount()
-        {
-            int count = _service.TreeLength(_storage.LoadTree());
-            return Ok($"{count}");
-        }
+        //[HttpGet("GetCount")]
+        //public IActionResult GetCount()
+        //{
+        //    int count = _service.TreeLength(_storage.LoadTree());
+        //    return Ok($"{count}");
+        //}
 
         [HttpPost("UploadExistingTree")]
         public IActionResult UploadInExisitng(IFormFile file)

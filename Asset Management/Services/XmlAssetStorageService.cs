@@ -72,6 +72,12 @@ namespace Asset_Management.Services
             serializer.Serialize(writer, root);
 
         }
-
+        public void DeleteTreeFile()
+        {
+            if (File.Exists(_datafile))
+            {
+                File.Delete(_datafile);
+            }
+        }
     }
 }

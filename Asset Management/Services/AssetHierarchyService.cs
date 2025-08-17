@@ -48,7 +48,11 @@ namespace Asset_Management.Services
         {
             // Disallow deleting root
             if (_root.Id == nodeId)
-                return false;
+            {
+                _root = null;
+                _storage.DeleteTreeFile();
+                return true;
+            }
 
             bool removed = RemoveNodeRecursive(_root, nodeId);
             if (removed)
@@ -131,56 +135,47 @@ namespace Asset_Management.Services
         }
 
 
-        public int MergeTree(Asset newTree)
+public int MergeTree(Asset newTree)
+{
+    int totalAdded = 0;
+
+    foreach (var child in newTree.Children)
+    {
+        totalAdded += MergeNode(_root, child);
+    }
+
+    if (totalAdded > 0)
+    {
+        _storage.SaveTree(_root);
+    }
+
+    return totalAdded;
+}
+
+private int MergeNode(Asset currentParent, Asset newNode)
+{
+    // Try to find matching node under currentParent
+    var existingNode = currentParent.Children
+        .FirstOrDefault(c => c.Id == newNode.Id || c.Name == newNode.Name);
+
+    if (existingNode != null)
+    {
+        int addedCount = 0;
+        // Merge children recursively
+        foreach (var child in newNode.Children)
         {
-            int totalAdded = 0;
-
-            var IdExists = FindNodeById(_root, NewAdditonTree.Id);
-            var NameExists = FindNodeByName(_root, NewAdditonTree.Name);
-              
-            if (IdExists == null && NameExists == null)
-            {
-                 _root.Children.Add(NewAdditonTree);
-                 assetsAdded.Add(NewAdditonTree);
-                totalAdded += TreeLength(NewAdditonTree);
-
-
-            }
-            else
-            {
-                foreach (var child in NewAdditonTree.Children)
-                {
-
-                    var nameExists = FindNodeByName(_root, child.Name);
-                    var idExists = FindNodeById(_root, child.Id);
-                    if (nameExists != null && idExists != null)
-                    {
-                        allGood = false;
-                    }
-                    else
-                    {
-                        _root.Children.Add(child);
-                        assetsAdded.Add(child);
-                        totalAdded+=TreeLength(child);
-
-
-                    }
-
-                }
-
-
-            }
-
-
-
-
-            if (totalAdded > 0)
-            {
-                _storage.SaveTree(_root);
-                return totalAdded;
-            }
-            return 0;
+            addedCount += MergeNode(existingNode, child);
         }
+        return addedCount;
+    }
+    else
+    {
+        // No match found → Add as new child
+        currentParent.Children.Add(newNode);
+        assetsAdded.Add(newNode);
+        return TreeLength(newNode);
+    }
+}
 
 
 

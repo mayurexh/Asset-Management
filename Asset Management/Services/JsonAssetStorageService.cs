@@ -48,25 +48,38 @@ public class JsonAssetStorageService : IAssetStorageService
     }
 
     public Asset LoadTree()
+
     {
         var settings = new JsonSerializerSettings
         {
             MissingMemberHandling = MissingMemberHandling.Ignore
         };
 
-        if (File.Exists(_dataFile))
+        if (!File.Exists(_dataFile))
+        {
+            return null; // File doesn't exist
+        }
+
+        string json = File.ReadAllText(_dataFile);
+
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            return null; // File empty
+        }
+
+        try
         {
             string json = File.ReadAllText(_dataFile);
             return JsonConvert.DeserializeObject<Asset>(json, settings)
                    ?? new Asset { Id = "root", Name = "Root" };
+
         }
-        else
+        catch (JsonException)
         {
-            var root = new Asset { Id = "root", Name = "Root" };
-            SaveTree(root);
-            return root;
+            return null; // Invalid JSON
         }
     }
+
 
     public void SaveTree(Asset root)
     {
@@ -77,4 +90,5 @@ public class JsonAssetStorageService : IAssetStorageService
         string json = JsonConvert.SerializeObject(root, settings);
         File.WriteAllText(_dataFile, json);
     }
+
 }
