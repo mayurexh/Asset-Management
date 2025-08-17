@@ -6,6 +6,9 @@ namespace Asset_Management.Interfaces
     {
         Asset LoadTree();
         void SaveTree(Asset root);
-        void DeleteTreeFile();
+
+
+        Asset ParseTree(string content); //content here is the new json file that user is uploading converted to a string.
+
     }
 }
