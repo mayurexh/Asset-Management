@@ -13,12 +13,12 @@ public class InvalidFileFormatException : Exception
 }
 public class JsonAssetStorageService : IAssetStorageService
 {
-    private readonly string _dataFile;
+    private readonly string _dataDirectory;
 
     
     public JsonAssetStorageService(IWebHostEnvironment env)
     {
-        _dataFile = Path.Combine(env.ContentRootPath, "assets.json"); //Asset Management/assets.json
+        _dataDirectory = Path.Combine(env.ContentRootPath, "Data"); //Asset Management/assets.json
     }
 
     public Asset ParseTree(string content)
@@ -45,6 +45,13 @@ public class JsonAssetStorageService : IAssetStorageService
         {
             throw new InvalidFileFormatException("Invalid File", ex);
         }
+        
+    }
+
+    public string GetVersionedFileName()
+    {
+        string latest_name = DateTime.UtcNow.ToString("yyyyMMdd_HHmmssfff");
+        return Path.Combine(_dataDirectory, $"asset_json{latest_name}.json");
     }
 
     public Asset LoadTree()
@@ -55,21 +62,11 @@ public class JsonAssetStorageService : IAssetStorageService
             MissingMemberHandling = MissingMemberHandling.Ignore
         };
 
-        if (!File.Exists(_dataFile))
-        {
-            return null; // File doesn't exist
-        }
-
-        string json = File.ReadAllText(_dataFile);
-
-        if (string.IsNullOrWhiteSpace(json))
-        {
-            return null; // File empty
-        }
 
         try
         {
-            string json = File.ReadAllText(_dataFile);
+            string latestfile = Path.Combine(_dataDirectory, "assets_latest.json");
+            string json = File.ReadAllText(latestfile);
             return JsonConvert.DeserializeObject<Asset>(json, settings)
                    ?? new Asset { Id = "root", Name = "Root" };
 
@@ -87,8 +84,14 @@ public class JsonAssetStorageService : IAssetStorageService
         {
             Formatting = Formatting.Indented
         };
+
+        string filePath = GetVersionedFileName();
+
         string json = JsonConvert.SerializeObject(root, settings);
-        File.WriteAllText(_dataFile, json);
+
+        File.WriteAllText(filePath, json); //write to latest version of a file
+
+        File.WriteAllText(Path.Combine(_dataDirectory, "assets_latest.json"), json);
     }
 
 }

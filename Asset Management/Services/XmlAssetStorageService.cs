@@ -9,7 +9,10 @@ namespace Asset_Management.Services
     {
         private readonly string _datafile;
 
-
+        public XmlAssetStorageService(IWebHostEnvironment env)
+        {
+            _datafile = Path.Combine(env.ContentRootPath, "assets.xml");
+        }
         public Asset ParseTree(string content)
         {
             try
@@ -46,10 +49,12 @@ namespace Asset_Management.Services
 
 
         }
-        public XmlAssetStorageService(IWebHostEnvironment env)
+        
+        public string GetVersionedFileName()
         {
-            _datafile = Path.Combine(env.ContentRootPath, "assets.xml");
+            return "hello";
         }
+
         public Asset LoadTree()
         {
             if (!File.Exists(_datafile))

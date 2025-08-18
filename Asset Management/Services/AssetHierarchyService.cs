@@ -49,9 +49,9 @@ namespace Asset_Management.Services
             // Disallow deleting root
             if (_root.Id == nodeId)
             {
-                _root = null;
-                _storage.DeleteTreeFile();
-                return true;
+                //_root = null;
+                //_storage.DeleteTreeFile();
+                return false;
             }
 
             bool removed = RemoveNodeRecursive(_root, nodeId);

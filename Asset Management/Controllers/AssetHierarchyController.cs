@@ -85,7 +85,7 @@ namespace Asset_Management.Controllers
         {
             bool success = _service.RemoveNode(id);
             if (!success)
-                return BadRequest("Node not found.");
+                return BadRequest("Node not found or root node cannot be deleted.");
 
             return Ok("Node deleted successfully.");
         }
@@ -110,20 +110,8 @@ namespace Asset_Management.Controllers
                 using var sr = new StreamReader(file.OpenReadStream());
 
                 var content = sr.ReadToEnd();
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-                var NewAdditonTree = JsonConvert.DeserializeObject<Asset>(content, new JsonSerializerSettings
-                {
-                    //handle invalid json file with invalid keys
-                    MissingMemberHandling = MissingMemberHandling.Error
-                });
+                var NewAdditonTree = _storage.ParseTree(content);
 
-                if (NewAdditonTree == null)
-                {
-                    return BadRequest("Invalid JSON format");
-                }
 
                 //check if root Node is null
                 if (NewAdditonTree.Id == null)
@@ -139,12 +127,12 @@ namespace Asset_Management.Controllers
 
                 
             }
-            catch(Exception ex)
+            catch(InvalidFileFormatException ex)
             {
-                return StatusCode(500, $"Error processing file. {ex.Message}");
+                return BadRequest($"Invalid File format, please upload a {_configuration["StorageFlag"]} file");
 
             }
-            
+
         }
 
         [HttpPost("Upload")]
