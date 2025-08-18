@@ -113,9 +113,15 @@ namespace Asset_Management.Services
 
         public void ReplaceTree(Asset NewRoot)
         {
-            //Deserialize the json data using NewtonsoftJson
-            _root = NewRoot;
+            //new logic
+            //wrap uploaded tree within a root node
+            Asset root = new Asset { Id = "root", Name = "Root", Children = new List<Asset> { NewRoot} };
+            _root = root;
             _storage.SaveTree(_root);
+
+            //old logic new json file's root becomes the root
+            //_root = NewRoot;
+            //_storage.SaveTree(_root);
 
             
         }
@@ -134,48 +140,68 @@ namespace Asset_Management.Services
             return totalNodes;
         }
 
-
-public int MergeTree(Asset newTree)
-{
-    int totalAdded = 0;
-
-    foreach (var child in newTree.Children)
-    {
-        totalAdded += MergeNode(_root, child);
-    }
-
-    if (totalAdded > 0)
-    {
-        _storage.SaveTree(_root);
-    }
-
-    return totalAdded;
-}
-
-private int MergeNode(Asset currentParent, Asset newNode)
-{
-    // Try to find matching node under currentParent
-    var existingNode = currentParent.Children
-        .FirstOrDefault(c => c.Id == newNode.Id || c.Name == newNode.Name);
-
-    if (existingNode != null)
-    {
-        int addedCount = 0;
-        // Merge children recursively
-        foreach (var child in newNode.Children)
+        public int MergeTree(Asset newTree)
         {
-            addedCount += MergeNode(existingNode, child);
+            int totalAdded = 0;
+
+            // If uploaded tree itself is a root wrapper, skip it
+            var nodesToMerge = newTree.Id == "root"
+                ? newTree.Children
+                : newTree.Children;
+
+            foreach (var child in nodesToMerge)
+            {
+                totalAdded += MergeNode(_root, child);
+            }
+
+            if (totalAdded > 0)
+            {
+                _storage.SaveTree(_root);
+            }
+
+            return totalAdded;
         }
-        return addedCount;
-    }
-    else
-    {
-        // No match found → Add as new child
-        currentParent.Children.Add(newNode);
-        assetsAdded.Add(newNode);
-        return TreeLength(newNode);
-    }
-}
+
+        private int MergeNode(Asset currentParent, Asset newNode)
+        {
+            // Step 1: Check if there is already a child with the same Id or Name under currentParent
+            var existingNode = currentParent.Children
+                .FirstOrDefault(c => c.Id == newNode.Id || c.Name == newNode.Name);
+
+            if (existingNode != null)
+            {
+                int addedCount = 0;
+                // Merge children recursively into this existing node
+                foreach (var child in newNode.Children)
+                {
+                    addedCount += MergeNode(existingNode, child);
+                }
+                return addedCount;
+            }
+
+            // Step 2: Check if node already exists anywhere in the tree (duplicate Id or Name globally)
+            var duplicateById = FindNodeById(_root, newNode.Id);
+            var duplicateByName = FindNodeByName(_root, newNode.Name);
+
+            if (duplicateById != null || duplicateByName != null)
+            {
+                // Found a global duplicate — merge children into that existing node
+                var targetNode = duplicateById ?? duplicateByName;
+                int addedCount = 0;
+                foreach (var child in newNode.Children)
+                {
+                    addedCount += MergeNode(targetNode, child);
+                }
+                return addedCount;
+            }
+
+            // Step 3: No duplicates → add as a brand-new child
+            currentParent.Children.Add(newNode);
+            return TreeLength(newNode);
+        }
+    
+
+
 
 
 

@@ -19,11 +19,6 @@
               "Id": "asset1-2",
               "Name": "Valve A",
               "Children": []
-            },
-            {
-              "Id": "asset1-3",
-              "Name": "Pump B",
-              "Children": []
             }
           ]
         },
@@ -35,13 +30,30 @@
               "Id": "asset2-1",
               "Name": "Fan A",
               "Children": []
-            },
-            {
-              "Id": "asset2-2",
-              "Name": "Fan B",
-              "Children": []
             }
           ]
+        }
+      ]
+    },
+    {
+      "Id": "asset1",
+      "Name": "Boiler System",
+      "Children": [
+        {
+          "Id": "asset1-3",
+          "Name": "Pump B",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Id": "asset2",
+      "Name": "Cooling System",
+      "Children": [
+        {
+          "Id": "asset2-2",
+          "Name": "Fan B",
+          "Children": []
         }
       ]
     },
@@ -52,38 +64,6 @@
         {
           "Id": "asset3-1",
           "Name": "Heater A",
-          "Children": []
-        }
-      ]
-    },
-    {
-      "Id": "mach-neo-5501",
-      "Name": "Unit_Cosmic-Penguin_Alpha",
-      "Children": [
-        {
-          "Id": "part-x9-888",
-          "Name": "Gear_Aurora-Spiral_Mk1",
-          "Children": []
-        },
-        {
-          "Id": "part-x9-889",
-          "Name": "Rotor_Velvet-Thunder_Beta",
-          "Children": []
-        }
-      ]
-    },
-    {
-      "Id": "mach-neo-5502",
-      "Name": "Unit_Lunar-Ferret_Prime",
-      "Children": []
-    },
-    {
-      "Id": "mach-neo-5503",
-      "Name": "Unit_Titanium-Moose_Sigma",
-      "Children": [
-        {
-          "Id": "part-y7-321",
-          "Name": "Sensor_Obsidian-Whisper_Gamma",
           "Children": []
         }
       ]

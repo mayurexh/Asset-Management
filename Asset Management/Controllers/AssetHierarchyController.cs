@@ -189,7 +189,7 @@ namespace Asset_Management.Controllers
             {
                 return BadRequest("Only files with json and xml format could be downloaded");
             }
-            string FilePath = Path.Combine(_env.ContentRootPath, $"assets.{format}"); //dynamically assign extension of file using format 
+            string FilePath = Path.Combine(_env.ContentRootPath,"Data", $"assets_latest.{format}"); //dynamically assign extension of file using format 
 
 
             if(!System.IO.File.Exists(FilePath))

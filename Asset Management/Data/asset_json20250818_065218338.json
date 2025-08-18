@@ -1,0 +1,134 @@
+{
+  "Id": "root",
+  "Name": "Root",
+  "Children": [
+    {
+      "Id": "central",
+      "Name": "Central System",
+      "Children": [
+        {
+          "Id": "asset1",
+          "Name": "Boiler System",
+          "Children": [
+            {
+              "Id": "asset1-1",
+              "Name": "Pump A",
+              "Children": []
+            },
+            {
+              "Id": "asset1-2",
+              "Name": "Valve A",
+              "Children": []
+            }
+          ]
+        },
+        {
+          "Id": "asset2",
+          "Name": "Cooling System",
+          "Children": [
+            {
+              "Id": "asset2-1",
+              "Name": "Fan A",
+              "Children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "machine-1",
+      "Name": "Hydraulic Press",
+      "Children": [
+        {
+          "Id": "comp-1",
+          "Name": "Pump Unit",
+          "Children": []
+        },
+        {
+          "Id": "comp-2",
+          "Name": "Control Panel",
+          "Children": []
+        },
+        {
+          "Id": "comp-3",
+          "Name": "Safety Valve",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Id": "machine-2",
+      "Name": "Injection Molding Machine",
+      "Children": [
+        {
+          "Id": "comp-4",
+          "Name": "Heater",
+          "Children": []
+        },
+        {
+          "Id": "comp-5",
+          "Name": "Mold Assembly",
+          "Children": []
+        },
+        {
+          "Id": "comp-6",
+          "Name": "Hydraulic Motor",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Id": "machine-3",
+      "Name": "CNC Lathe",
+      "Children": [
+        {
+          "Id": "comp-7",
+          "Name": "Spindle",
+          "Children": [
+            {
+              "Id": "comp-7-1",
+              "Name": "Bearing",
+              "Children": []
+            },
+            {
+              "Id": "comp-7-2",
+              "Name": "Shaft",
+              "Children": []
+            }
+          ]
+        },
+        {
+          "Id": "comp-8",
+          "Name": "Turret",
+          "Children": []
+        },
+        {
+          "Id": "comp-9",
+          "Name": "Coolant System",
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Id": "machine-4",
+      "Name": "3D Printer",
+      "Children": [
+        {
+          "Id": "comp-10",
+          "Name": "Print Head",
+          "Children": []
+        },
+        {
+          "Id": "comp-11",
+          "Name": "Filament Feed",
+          "Children": []
+        },
+        {
+          "Id": "comp-12",
+          "Name": "Bed Heater",
+          "Children": []
+        }
+      ]
+    }
+  ]
+}
