@@ -19,6 +19,11 @@
               "Id": "asset1-2",
               "Name": "Valve A",
               "Children": []
+            },
+            {
+              "Id": "asset1-3",
+              "Name": "Pump B",
+              "Children": []
             }
           ]
         },
@@ -32,13 +37,8 @@
               "Children": []
             },
             {
-              "Id": "assetfanB",
+              "Id": "asset2-2",
               "Name": "Fan B",
-              "Children": []
-            },
-            {
-              "Id": "fskfs",
-              "Name": "Fan C",
               "Children": []
             }
           ]
@@ -68,7 +68,13 @@
         {
           "Id": "part-x9-889",
           "Name": "Rotor_Velvet-Thunder_Beta",
-          "Children": []
+          "Children": [
+            {
+              "Id": "hdh",
+              "Name": "Wtf is thi branch",
+              "Children": []
+            }
+          ]
         }
       ]
     },

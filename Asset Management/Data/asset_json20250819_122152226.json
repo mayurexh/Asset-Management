@@ -35,11 +35,6 @@
               "Id": "assetfanB",
               "Name": "Fan B",
               "Children": []
-            },
-            {
-              "Id": "fskfs",
-              "Name": "Fan C",
-              "Children": []
             }
           ]
         }

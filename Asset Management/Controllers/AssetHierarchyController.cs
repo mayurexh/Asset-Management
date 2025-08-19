@@ -44,6 +44,19 @@ namespace Asset_Management.Controllers
             return Ok(tree);
         }
 
+        //Get toatal Assets in the Hierarchy Tree
+        [HttpGet("TotalAssets")]
+        public IActionResult GetTotalAssets()
+        {
+            var tree = _service.GetHierarchy();
+            if (tree == null)
+            {
+                return BadRequest("No tree present");
+            }
+            int totalAssets = _service.TotalAsset(tree);
+            totalAssets -= 1; //Exclude the root node
+            return Ok($"{totalAssets}");
+        }
 
         [HttpPost]
         public IActionResult AddNode([FromBody] AssetAddRequest request)

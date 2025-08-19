@@ -19,6 +19,11 @@
               "Id": "asset1-2",
               "Name": "Valve A",
               "Children": []
+            },
+            {
+              "Id": "asset1-3",
+              "Name": "Pump B",
+              "Children": []
             }
           ]
         },
@@ -32,13 +37,8 @@
               "Children": []
             },
             {
-              "Id": "assetfanB",
+              "Id": "asset2-2",
               "Name": "Fan B",
-              "Children": []
-            },
-            {
-              "Id": "fskfs",
-              "Name": "Fan C",
               "Children": []
             }
           ]

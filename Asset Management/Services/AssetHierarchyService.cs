@@ -111,6 +111,17 @@ namespace Asset_Management.Services
             return null;
         }
 
+
+        //Find total Asset 
+        public int TotalAsset(Asset node)
+        {
+            int totalNode = 1;
+            foreach(var child in node.Children)
+            {
+                totalNode += TotalAsset(child);
+            }
+            return totalNode;
+        }
         public void ReplaceTree(Asset NewRoot)
         {
             //new logic

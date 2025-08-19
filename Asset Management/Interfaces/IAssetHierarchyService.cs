@@ -7,6 +7,8 @@
         Asset GetHierarchy();
         bool AddNode(string parentId, Asset newNode);
         bool RemoveNode(string nodeId);
+
+        int TotalAsset(Asset Node);
         void ReplaceTree(Asset newRoot);
         int MergeTree(Asset AddtionalNode);
         int TreeLength(Asset Node);
