@@ -286,6 +286,7 @@ namespace Asset_Management.Services
 
             // Step 3: No duplicates → add as a brand-new child
             currentParent.Children.Add(newNode);
+            assetsAdded.Add(newNode);
             return TreeLength(newNode);
         }
     

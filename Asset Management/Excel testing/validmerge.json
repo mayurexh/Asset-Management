@@ -1,0 +1,45 @@
+{
+  "id": "root2",
+  "name": "Root 2",
+  "children": [
+    {
+      "id": "center",
+      "name": "Center System",
+      "children": [
+        {
+          "id": "asset3",
+          "name": "Heating System",
+          "children": [
+            {
+              "id": "asset3-1",
+              "name": "Heater A",
+              "children": []
+            },
+            {
+              "id": "asset3-2",
+              "name": "Heater B",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aux",
+      "name": "Auxiliary System",
+      "children": [
+        {
+          "id": "asset4",
+          "name": "Generator System",
+          "children": [
+            {
+              "id": "asset4-1",
+              "name": "Generator A",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

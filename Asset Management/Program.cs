@@ -1,13 +1,26 @@
-using Asset_Management.Interfaces;
-using Asset_Management.Services;
 using Asset_Management.Extensions;
-using Microsoft.AspNetCore.RateLimiting;
+using Asset_Management.Interfaces;
 using Asset_Management.Middleware;
+using Asset_Management.Services;
+using Microsoft.AspNetCore.RateLimiting;
+using Serilog;
+using Serilog.Formatting.Compact;
 
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Serilog config
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("Logs/newly_merged_assets-.log", rollingInterval: RollingInterval.Day,
+    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+    buffered: false)
+    .CreateLogger();
+
+
+builder.Host.UseSerilog();
+
 
 // Add services to the container.
 
@@ -27,6 +40,7 @@ builder.Services.AddCors(options =>
                               "http://10.10.10.7:3000").AllowAnyHeader().AllowAnyMethod();
                       });
 });
+
 
 
 //Adding (built-in) Middleware for RateLimiter 

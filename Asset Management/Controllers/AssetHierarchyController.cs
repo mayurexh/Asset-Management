@@ -135,6 +135,7 @@ namespace Asset_Management.Controllers
                 int result = _service.MergeTree(NewAdditonTree);
                 _uploadlog.UpdateLog(file.FileName, "merged");
                 HttpContext.Items["assetsAdded"] = AssetHierarchyService.assetsAdded;
+                Console.WriteLine(AssetHierarchyService.assetsAdded.Count);
 
                 return Ok(result);
 
