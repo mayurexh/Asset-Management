@@ -7,7 +7,7 @@ namespace Asset_Management.Extensions
 {
     public static class StorageServiceExtension
     {
-
+        // for extension class to work adding additional method on a class we need to pass refrence of that class thats why we use "this IserviceCollection"
         public static IServiceCollection AddStorageServices(this IServiceCollection service, IConfiguration configuration)
         {
             string FileType = configuration["StorageFlag"].ToLower();

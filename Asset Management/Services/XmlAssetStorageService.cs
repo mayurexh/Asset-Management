@@ -5,6 +5,54 @@ using System.Xml.Serialization;
 
 namespace Asset_Management.Services
 {
+    //custom xml reader theat overrides how names are read (to include case insensitivity)
+    public class CaseInsensitiveXmlReader : XmlTextReader
+    {
+        private readonly HashSet<string> _targetElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "Asset", "asset" // Add the elements we want to normalize
+        };
+
+        public CaseInsensitiveXmlReader(TextReader reader) : base(reader)
+        {
+        }
+
+        public override string LocalName
+        {
+            get
+            {
+                string localName = base.LocalName;
+                // Only normalize specific elements
+                if (_targetElements.Contains(localName))
+                {
+                    return "asset"; // Always return lowercase for Asset elements
+                }
+                return localName;
+            }
+        }
+
+        public override string Name
+        {
+            get
+            {
+                string name = base.Name;
+                // Only normalize specific elements  
+                if (_targetElements.Contains(name))
+                {
+                    return "asset"; // Always return lowercase for Asset elements
+                }
+                return name;
+            }
+        }
+
+        public override string GetAttribute(string name)
+        {
+            // Try both original and lowercase versions
+            return base.GetAttribute(name) ?? base.GetAttribute(name.ToLowerInvariant());
+        }
+    }
+
+
     public class XmlAssetStorageService : IAssetStorageService
     {
         private readonly string _datafile;
@@ -18,6 +66,7 @@ namespace Asset_Management.Services
             try
             {
                 using var reader = new StringReader(content);
+                using var xmlReader = new CaseInsensitiveXmlReader(reader);
                 XmlSerializer xml = new XmlSerializer(typeof(Asset));
 
                 bool hasUnexpected = false;
@@ -32,7 +81,7 @@ namespace Asset_Management.Services
                     hasUnexpected = true;
                 };
 
-                var newRoot = (Asset)xml.Deserialize(reader);
+                var newRoot = (Asset)xml.Deserialize(xmlReader);
 
 
                 if (hasUnexpected)
@@ -64,9 +113,12 @@ namespace Asset_Management.Services
                 return _root;
             }
 
+            using var reader = new StreamReader(_datafile); //reader the contents
+
+            using var xmlReader = new CaseInsensitiveXmlReader(reader); //pass the reader to custom CaseInsensitiveXmlReader
+
             XmlSerializer serializer = new XmlSerializer(typeof(Asset));
-            using var reader = new StreamReader(_datafile);
-            return (Asset)serializer.Deserialize(reader);
+            return (Asset)serializer.Deserialize(xmlReader);
 
         }
 

@@ -185,7 +185,10 @@ namespace Asset_Management.Controllers
                 }
                 catch (InvalidFileFormatException ex)
                 {
-                    return BadRequest($"Invalid Asset nodes found");
+                    return BadRequest($"{ex.Message}");
+                }catch(Exception ex)
+                {
+                    return BadRequest($"{ex.Message}"); 
                 }
 
 

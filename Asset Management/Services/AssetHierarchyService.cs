@@ -1,6 +1,7 @@
 ﻿using Asset_Management.Interfaces;
 using Asset_Management.Models;
 using Newtonsoft.Json;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -122,17 +123,94 @@ namespace Asset_Management.Services
             }
             return totalNode;
         }
+
+        //check for duplicate ids or Names
+        public bool CheckDuplicated(Asset node)
+        {
+            HashSet<string> seenIds = new HashSet<string>();
+            HashSet<string> seenNames = new HashSet<string>();
+
+            return CheckDuplicatedRecursive(node, seenIds, seenNames);
+        }
+
+        private bool CheckDuplicatedRecursive(Asset node, HashSet<string> seenIds, HashSet<string> seenNames)
+        {
+            if (node == null) return false;
+
+            // Convert to lowercase for case-insensitive comparison
+            string idLower = node.Id?.ToLowerInvariant();
+            string nameLower = node.Name?.ToLowerInvariant();
+
+            // Check duplicate IDs
+            if (!string.IsNullOrEmpty(idLower))
+            {
+                if (seenIds.Contains(idLower))
+                    return true; // duplicate found
+                seenIds.Add(idLower);
+            }
+
+            // Check duplicate Names
+            if (!string.IsNullOrEmpty(nameLower))
+            {
+                if (seenNames.Contains(nameLower))
+                    return true; // duplicate found
+                seenNames.Add(nameLower);
+            }
+
+            // Special rule for root: id and name must both be "root"
+            if ((idLower == "root" && nameLower != "root") ||
+                (idLower != "root" && nameLower == "root"))
+            {
+                return true; // invalid root
+            }
+
+            // Recurse on children
+            foreach (var child in node.Children)
+            {
+                if (CheckDuplicatedRecursive(child, seenIds, seenNames))
+                    return true; // bubble up duplicate found
+            }
+
+            return false;
+        }
+
+
+
         public void ReplaceTree(Asset NewRoot)
         {
-            //new logic
-            //wrap uploaded tree within a root node
-            Asset root = new Asset { Id = "root", Name = "Root", Children = new List<Asset> { NewRoot} };
-            _root = root;
-            _storage.SaveTree(_root);
+            //check root node is present in the tree anywhere
+            var rootIdPresent = FindNodeById(NewRoot, "root");
+            var rootNamePresent = FindNodeByName(NewRoot, "Root");
 
-            //old logic new json file's root becomes the root
-            //_root = NewRoot;
-            //_storage.SaveTree(_root);
+
+            bool checkDuplicate = CheckDuplicated(NewRoot);
+            if (checkDuplicate)
+            {
+                throw new Exception("Duplicate nodes present");
+            }
+
+            // if root node is not present in the tree
+            if(rootIdPresent == null && rootNamePresent == null)
+            {
+                //wrap uploaded tree within a root node
+                Asset root = new Asset { Id = "root", Name = "Root", Children = new List<Asset> { NewRoot } };
+                _root = root;
+                _storage.SaveTree(_root);
+            }
+
+            // first node is the root node
+            else if(NewRoot.Id == "root" && NewRoot.Name == "Root") 
+            {
+                _root = NewRoot;
+                _storage.SaveTree(_root);
+            }
+            else
+            {
+                //root present in the middle of the hierarchy tree
+                throw new Exception("Root Id present in the middle of the hierarchy");
+
+            }
+
 
             
         }

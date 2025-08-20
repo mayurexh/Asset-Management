@@ -1,0 +1,32 @@
+{
+  "Id": "root",
+  "Name": "Root",
+  "Children": [
+    {
+      "Id": "asset1",
+      "Name": "Boiler System",
+      "Children": []
+    },
+    {
+      "Id": "asset1",
+      "Name": "Boiler System",
+      "Children": []
+    },
+    {
+      "Id": "asset2",
+      "Name": "Cooling System",
+      "Children": [
+        {
+          "Id": "asset2-1",
+          "Name": "Fan A",
+          "Children": []
+        },
+        {
+          "Id": "asset2-1",
+          "Name": "Fan A",
+          "Children": []
+        }
+      ]
+    }
+  ]
+}

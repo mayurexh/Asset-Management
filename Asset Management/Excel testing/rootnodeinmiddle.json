@@ -1,0 +1,17 @@
+{
+  "Id": "left",
+  "Name": "Left System",
+  "Children": [
+    {
+      "Id": "root",
+      "Name": "Root",
+      "Children": [
+        {
+          "Id": "asset1",
+          "Name": "Boiler System",
+          "Children": []
+        }
+      ]
+    }
+  ]
+}

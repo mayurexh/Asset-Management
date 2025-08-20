@@ -1,0 +1,5 @@
+﻿<Asset id="root" name="Root">
+	<asset id="left" name="Left System">
+		<asset id="asset1" name="Boiler System" />
+	</asset>
+</Asset>
