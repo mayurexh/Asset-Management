@@ -1,0 +1,25 @@
+{
+  "id": "root",
+  "name": "Root",
+  "children": [
+    {
+      "id": "left",
+      "name": "Left System",
+      "extraField": "should not be here", 
+      "children": [
+        {
+          "id": "asset1",
+          "name": "Boiler System",
+          "children": [
+            {
+              "id": "asset1-1",
+              "name": "Pump A",
+              "unknownProperty": 123, 
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

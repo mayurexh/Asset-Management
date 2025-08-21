@@ -1,0 +1,34 @@
+{
+  "id": "root",
+  "name": "Root",
+  "children": [
+    {
+      "id": "new-system",
+      "name": "New System",
+      "children": [
+        {
+          "id": "asset3",
+          "name": "Heating System",
+          "children": [
+            {
+              "id": "asset3-1",
+              "name": "Heater A",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "asset4",
+          "name": "Ventilation System",
+          "children": [
+            {
+              "id": "asset4-1",
+              "name": "Vent A",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

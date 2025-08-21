@@ -1,0 +1,79 @@
+{
+  "Id": "root",
+  "Name": "Root",
+  "Children": [
+    {
+      "Id": "new-system",
+      "Name": "New System",
+      "Children": [
+        {
+          "Id": "asset3",
+          "Name": "Heating System",
+          "Children": [
+            {
+              "Id": "asset3-1",
+              "Name": "Heater A",
+              "Children": []
+            }
+          ]
+        },
+        {
+          "Id": "asset4",
+          "Name": "Ventilation System",
+          "Children": [
+            {
+              "Id": "asset4-1",
+              "Name": "Vent A",
+              "Children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "root2",
+      "Name": "Root 2",
+      "Children": [
+        {
+          "Id": "center",
+          "Name": "Center System",
+          "Children": [
+            {
+              "Id": "asset3",
+              "Name": "Heating System",
+              "Children": [
+                {
+                  "Id": "asset3-1",
+                  "Name": "Heater A",
+                  "Children": []
+                },
+                {
+                  "Id": "asset3-2",
+                  "Name": "Heater B",
+                  "Children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Id": "aux",
+          "Name": "Auxiliary System",
+          "Children": [
+            {
+              "Id": "asset4",
+              "Name": "Generator System",
+              "Children": [
+                {
+                  "Id": "asset4-1",
+                  "Name": "Generator A",
+                  "Children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

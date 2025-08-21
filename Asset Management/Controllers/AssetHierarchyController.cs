@@ -113,6 +113,12 @@ namespace Asset_Management.Controllers
         [HttpPost("UploadExistingTree")]
         public IActionResult UploadInExisitng(IFormFile file)
         {
+            var FileExtension = System.IO.Path.GetExtension(file.FileName);
+            var storageExtension = "." + _configuration["StorageFlag"]; 
+            if (FileExtension != storageExtension)
+            {
+                return BadRequest($"Invalid File format, please upload a {_configuration["StorageFlag"]} file");
+            }
             try
             {
                 if (file.Length == 0 || file == null)
@@ -135,16 +141,17 @@ namespace Asset_Management.Controllers
                 int result = _service.MergeTree(NewAdditonTree);
                 _uploadlog.UpdateLog(file.FileName, "merged");
                 HttpContext.Items["assetsAdded"] = AssetHierarchyService.assetsAdded;
-                Console.WriteLine(AssetHierarchyService.assetsAdded.Count);
-
                 return Ok(result);
 
                 
             }
             catch(InvalidFileFormatException ex)
             {
-                return BadRequest($"Invalid File format, please upload a {_configuration["StorageFlag"]} file");
+                return BadRequest($"Invalid File format, please upload a valid {_configuration["StorageFlag"]} file");
 
+            }catch(Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
             }
 
         }

@@ -30,7 +30,18 @@
             {
               "Id": "asset2-1",
               "Name": "Fan A",
-              "Children": []
+              "Children": [
+                {
+                  "Id": "asset2-1-1",
+                  "Name": "Blade A",
+                  "Children": []
+                },
+                {
+                  "Id": "asset2-1-2",
+                  "Name": "Blade B",
+                  "Children": []
+                }
+              ]
             }
           ]
         }

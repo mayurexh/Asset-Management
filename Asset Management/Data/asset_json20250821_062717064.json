@@ -35,6 +35,34 @@
           ]
         }
       ]
+    },
+    {
+      "Id": "new-system",
+      "Name": "New System",
+      "Children": [
+        {
+          "Id": "asset3",
+          "Name": "Heating System",
+          "Children": [
+            {
+              "Id": "asset3-1",
+              "Name": "Heater A",
+              "Children": []
+            }
+          ]
+        },
+        {
+          "Id": "asset4",
+          "Name": "Ventilation System",
+          "Children": [
+            {
+              "Id": "asset4-1",
+              "Name": "Vent A",
+              "Children": []
+            }
+          ]
+        }
+      ]
     }
   ]
 }

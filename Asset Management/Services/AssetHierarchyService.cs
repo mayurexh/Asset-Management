@@ -232,11 +232,19 @@ namespace Asset_Management.Services
         public int MergeTree(Asset newTree)
         {
             int totalAdded = 0;
+            bool hasDuplicates = CheckDuplicated(newTree);
+            if (hasDuplicates)
+            {
+                throw new Exception("Duplicate nodes present");
+            }
+
 
             // If uploaded tree itself is a root wrapper, skip it
-            var nodesToMerge = newTree.Id == "root"
+            var nodesToMerge = newTree.Id == "root" && newTree.Name == "Root"
                 ? newTree.Children
-                : newTree.Children;
+                : new List<Asset> { newTree};
+
+            
 
             foreach (var child in nodesToMerge)
             {

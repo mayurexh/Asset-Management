@@ -1,0 +1,34 @@
+{
+  "id": "root",
+  "name": "Root",
+  "children": [
+    {
+      "id": "right",
+      "name": "Right System",
+      "children": [
+        {
+          "id": "asset2",
+          "name": "Cooling System",
+          "children": [
+            {
+              "id": "asset2-1",
+              "name": "Fan A",
+              "children": [
+                {
+                  "id": "asset2-1-1",
+                  "name": "Blade A",
+                  "children": []
+                },
+                {
+                  "id": "asset2-1-2",
+                  "name": "Blade B",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
