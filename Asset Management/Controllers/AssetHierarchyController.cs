@@ -68,7 +68,7 @@ namespace Asset_Management.Controllers
                     .SelectMany(v => v.Errors)
                     .Select(e => e.ErrorMessage)
                     .ToList();
-
+                Console.Write(errors);
                 return BadRequest(new { Errors = errors });
             }
 
