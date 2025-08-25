@@ -1,8 +1,10 @@
+using Asset_Management.Database;
 using Asset_Management.Extensions;
 using Asset_Management.Interfaces;
 using Asset_Management.Middleware;
 using Asset_Management.Services;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Formatting.Compact;
 
@@ -40,6 +42,10 @@ builder.Services.AddCors(options =>
                               "http://10.10.10.7:3000").AllowAnyHeader().AllowAnyMethod();
                       });
 });
+
+//register DbContext
+builder.Services.AddDbContext<AssetDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 

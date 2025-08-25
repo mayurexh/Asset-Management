@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml.Serialization;
 
 namespace Asset_Management.Models
 {
@@ -10,6 +11,11 @@ namespace Asset_Management.Models
 
         [XmlAttribute("name")]
         public string Name { get; set; }
+
+        public string? ParentId { get; set; }
+
+        [ForeignKey("ParentId")]
+        public Asset? Parent { get; set; }
 
         [XmlElement("asset")] //include case insensitiviy
         public List<Asset> Children { get; set; } = new List<Asset>();
