@@ -188,6 +188,10 @@ namespace Asset_Management.Controllers
                 {
                     //check the validation and format of the tree
                     var newRoot = _storage.ParseTree(content);
+                    foreach(var child in newRoot.Children)
+                    {
+                        Console.WriteLine($"Parent: {child.ParentId}, Name: {child.Name}, Id: {child.Id}");
+                    }
                     _service.ReplaceTree(newRoot);
                     _uploadlog.UpdateLog(file.FileName, "uploaded"); //updateLogService
                     return Ok("File uploaded successfully");

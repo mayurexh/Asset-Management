@@ -12,12 +12,12 @@ namespace Asset_Management.Extensions
 
             if (serviceType == "db")
             {
-                service.AddTransient<IAssetHierarchyService, DbAssetHierarchyService>();
+                service.AddScoped<IAssetHierarchyService, DbAssetHierarchyService>();
 
             }
             else
             {
-                service.AddTransient<IAssetHierarchyService, AssetHierarchyService>();
+                service.AddScoped<IAssetHierarchyService, AssetHierarchyService>();
             }
             return service;
 

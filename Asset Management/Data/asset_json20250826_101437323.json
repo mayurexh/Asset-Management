@@ -5,29 +5,6 @@
   "Parent": null,
   "Children": [
     {
-      "Id": "left",
-      "Name": "Left System",
-      "ParentId": null,
-      "Parent": null,
-      "Children": [
-        {
-          "Id": "asset1",
-          "Name": "Boiler System",
-          "ParentId": null,
-          "Parent": null,
-          "Children": [
-            {
-              "Id": "asset1-1",
-              "Name": "Pump A",
-              "ParentId": null,
-              "Parent": null,
-              "Children": []
-            }
-          ]
-        }
-      ]
-    },
-    {
       "Id": "right",
       "Name": "Right System",
       "ParentId": null,
@@ -44,7 +21,22 @@
               "Name": "Fan A",
               "ParentId": null,
               "Parent": null,
-              "Children": []
+              "Children": [
+                {
+                  "Id": "asset2-1-1",
+                  "Name": "Blade A",
+                  "ParentId": null,
+                  "Parent": null,
+                  "Children": []
+                },
+                {
+                  "Id": "asset2-1-2",
+                  "Name": "Blade B",
+                  "ParentId": null,
+                  "Parent": null,
+                  "Children": []
+                }
+              ]
             }
           ]
         }

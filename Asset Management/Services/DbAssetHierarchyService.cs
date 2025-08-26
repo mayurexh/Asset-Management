@@ -73,14 +73,39 @@ namespace Asset_Management.Services
             _dbContext.Assets.Remove(node);
         }
 
-        private Asset? FindNodeById(string id)
+        private Asset FindNodeByName(Asset node, string name)
         {
-            return _dbContext.Assets.FirstOrDefault(a => a.Id == id);
-        }
 
-        private Asset? FindNodeByName(string name)
+            if (node.Name.ToLower() == name.ToLower())
+            {
+                return node;
+
+            }
+            foreach (var child in node.Children)
+            {
+
+                var result = FindNodeByName(child, name);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            return null;
+
+        }
+        private Asset? FindNodeById(Asset node, string id)
         {
-            return _dbContext.Assets.FirstOrDefault(a => a.Name == name);
+            if (node.Id.ToLower() == id.ToLower())
+                return node;
+
+            foreach (var child in node.Children)
+            {
+                var result = FindNodeById(child, id);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
         }
 
         public int TotalAsset(Asset node)
@@ -111,21 +136,50 @@ namespace Asset_Management.Services
         }
         public void ReplaceTree(Asset newRoot)
         {
+            
             bool checkDuplicate = CheckDuplicated(newRoot);
             if (checkDuplicate)
                 throw new Exception("Duplicate nodes present");
 
-            // Validate root
-            if (!(newRoot.Id == "root" && newRoot.Name == "Root"))
-                throw new Exception("Root node must be Id='root' and Name='Root'");
+            var rootId = FindNodeById(newRoot, "root");
+            var rootName = FindNodeByName(newRoot, "Root");
+            //Console.WriteLine($"From Replace Tree method {rootId.Id} {rootName.Name}");
+            
 
-            // Clear DB
-            _dbContext.Assets.RemoveRange(_dbContext.Assets);
-            _dbContext.SaveChanges();
+            // if root node is not present in the tree
+            if (rootId == null && rootName == null)
+            {
 
-            // Insert new root + children
-            _dbContext.Assets.Add(newRoot);
-            _dbContext.SaveChanges();
+                Asset root = new Asset { Id = "root", Name = "Root", Children = new List<Asset> { newRoot } };
+                // Clear DB
+                _dbContext.Assets.RemoveRange(_dbContext.Assets);
+                _dbContext.SaveChanges();
+
+                _dbContext.ChangeTracker.Clear();
+
+                _dbContext.Assets.Add(root);
+                _dbContext.SaveChanges();
+            }
+
+            //first node is root 
+            else if (newRoot.Id.ToLower() == "root" && newRoot.Name.ToLower() == "root")
+            {
+                // Clear DB
+                _dbContext.Assets.RemoveRange(_dbContext.Assets);
+                _dbContext.SaveChanges();
+
+                _dbContext.ChangeTracker.Clear();
+
+                _dbContext.Add(newRoot);
+                _dbContext.SaveChanges();
+            }
+
+            else
+            {
+
+                //root present in the middle of the hierarchy tree
+                throw new Exception("Root Id present in the middle of the hierarchy");
+            }
         }
 
         public int TreeLength(Asset node)

@@ -199,7 +199,7 @@ namespace Asset_Management.Services
             }
 
             // first node is the root node
-            else if(NewRoot.Id == "root" && NewRoot.Name == "Root") 
+            else if(NewRoot.Id.ToLower() == "root" && NewRoot.Name.ToLower() == "root") 
             {
                 _root = NewRoot;
                 _storage.SaveTree(_root);
