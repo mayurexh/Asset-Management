@@ -33,7 +33,6 @@ namespace Asset_Management.Controllers
         }
 
         [HttpGet]
-        [Produces("application/json", "application/xml")]
         public IActionResult GetHierarchy()
         {
             var tree = _service.GetHierarchy();
@@ -78,10 +77,12 @@ namespace Asset_Management.Controllers
                 Name = request.Name,
                 Children = new List<Asset>()
             };
+            Console.WriteLine($"{request.Id}, {request.Name}, {request.ParentId}");
 
             bool success = _service.AddNode(request.ParentId, newAsset);
             if (!success)
             {
+                Console.WriteLine("Not successfull from AddNode Action");
                 // Return same structured error as ModelState
                 var fieldErrors = new Dictionary<string, string[]>
         {

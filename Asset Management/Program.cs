@@ -29,7 +29,21 @@ builder.Host.UseSerilog();
 builder.Services.AddControllers().AddXmlSerializerFormatters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Asset Hierarchy Management API",
+        Version = "v1",
+        Description = "An API for managing Hierarchy of Assets",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        {
+            Name = "Mayuresh",
+            Email = "mayuresh.pisat@wonderbiz.in",
+            Url = new Uri("https://github.com/mayurexh/Asset-Management")
+        },
+    });
+});
 
 
 //add CORS policy
@@ -62,7 +76,9 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 //});
 
 //Hierarchy Management Service
-builder.Services.AddTransient<IAssetHierarchyService,AssetHierarchyService>();
+//builder.Services.AddTransient<IAssetHierarchyService,AssetHierarchyService>();
+builder.Services.AddAssetHierarchyService(builder.Configuration);
+
 
 //Import Log service
 builder.Services.AddSingleton<IUploadLogService, UploadLogService>();

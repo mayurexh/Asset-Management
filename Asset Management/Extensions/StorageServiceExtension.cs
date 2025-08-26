@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Asset_Management.Services;
+﻿using Asset_Management.Database;
 using Asset_Management.Interfaces;
+using Asset_Management.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Asset_Management.Extensions
 {
@@ -15,10 +17,11 @@ namespace Asset_Management.Extensions
             {
                 service.AddTransient<IAssetStorageService, XmlAssetStorageService>();
             }
-            else
+            else 
             {
                 service.AddTransient<IAssetStorageService, JsonAssetStorageService>();
             }
+
             return service;
 
         }

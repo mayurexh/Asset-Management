@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace Asset_Management.Models
 {
-    [XmlRoot("asset")]
+    [XmlRoot("asset")]  
     public class Asset
     {
         [XmlAttribute("id")] //specifying xml attribute so that xml serializer doesn't throw unknow attribute error as it excepts attributes
@@ -15,6 +16,7 @@ namespace Asset_Management.Models
         public string? ParentId { get; set; }
 
         [ForeignKey("ParentId")]
+        [JsonIgnore]
         public Asset? Parent { get; set; }
 
         [XmlElement("asset")] //include case insensitiviy

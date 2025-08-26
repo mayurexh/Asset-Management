@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Asset_Management.Migrations
 {
     [DbContext(typeof(AssetDbContext))]
-    [Migration("20250825103748_InitialMigrate")]
-    partial class InitialMigrate
+    [Migration("20250826055106_SecondMigrate")]
+    partial class SecondMigrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
