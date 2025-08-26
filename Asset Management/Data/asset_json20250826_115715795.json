@@ -1,55 +1,39 @@
 {
   "Id": "root",
   "Name": "Root",
+  "ParentId": null,
+  "Parent": null,
   "Children": [
-    {
-      "Id": "new-system",
-      "Name": "New System",
-      "Children": [
-        {
-          "Id": "asset3",
-          "Name": "Heating System",
-          "Children": [
-            {
-              "Id": "asset3-1",
-              "Name": "Heater A",
-              "Children": []
-            }
-          ]
-        },
-        {
-          "Id": "asset4",
-          "Name": "Ventilation System",
-          "Children": [
-            {
-              "Id": "asset4-1",
-              "Name": "Vent A",
-              "Children": []
-            }
-          ]
-        }
-      ]
-    },
     {
       "Id": "root2",
       "Name": "Root 2",
+      "ParentId": null,
+      "Parent": null,
       "Children": [
         {
           "Id": "center",
           "Name": "Center System",
+          "ParentId": "root2",
+          "Parent": null,
           "Children": [
             {
               "Id": "asset3",
               "Name": "Heating System",
+              "ParentId": "center",
+              "Parent": null,
               "Children": [
                 {
                   "Id": "asset3-1",
                   "Name": "Heater A",
+                  "ParentId": "asset3",
+                  "Parent": null,
                   "Children": []
                 },
                 {
                   "Id": "asset3-2",
                   "Name": "Heater B",
+                  "ParentId": "asset3",
+                  "Parent": null,
                   "Children": []
                 }
               ]
@@ -59,14 +43,20 @@
         {
           "Id": "aux",
           "Name": "Auxiliary System",
+          "ParentId": "root2",
+          "Parent": null,
           "Children": [
             {
               "Id": "asset4",
               "Name": "Generator System",
+              "ParentId": "aux",
+              "Parent": null,
               "Children": [
                 {
                   "Id": "asset4-1",
                   "Name": "Generator A",
+                  "ParentId": "asset4",
+                  "Parent": null,
                   "Children": []
                 }
               ]

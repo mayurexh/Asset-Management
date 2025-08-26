@@ -4,6 +4,7 @@ using Asset_Management.Models;
 
 namespace Asset_Management.Services
 {
+    
     public class DbAssetHierarchyService : IAssetHierarchyService
     {
 
@@ -45,10 +46,18 @@ namespace Asset_Management.Services
             if (parent == null) return false;
 
             // Prevent duplicate ID
-            if (_dbContext.Assets.Any(a => a.Id == newNode.Id)) return false;
+            //if (_dbContext.Assets.Any(a => a.Id == newNode.Id)) return false;
+            if(_dbContext.Assets.FirstOrDefault(a=> a.Id == newNode.Id)!=null){
+                return false;
+            }
 
-            // Prevent duplicate Name under the same parent
-            if (parent.Children.Any(c => c.Name == newNode.Name)) return false;
+            // Prevent duplicate Name 
+            //if (parent.Children.Any(c => c.Name == newNode.Name)) return false;
+            if (_dbContext.Assets.FirstOrDefault(a => a.Name == newNode.Name) != null)
+            {
+                return false;
+            }
+
 
             parent.Children.Add(newNode);
             _dbContext.SaveChanges();

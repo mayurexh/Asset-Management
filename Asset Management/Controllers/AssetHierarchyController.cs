@@ -1,6 +1,7 @@
 ﻿using Asset_Management.Interfaces;
 using Asset_Management.Models;
 using Asset_Management.Services;
+using Asset_Management.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.RateLimiting;
@@ -14,6 +15,7 @@ using System.Xml.Serialization;
 
 namespace Asset_Management.Controllers
 {
+    
     [ApiController]
     [Route("api/[controller]")]
     public class AssetHierarchyController : ControllerBase
@@ -130,7 +132,8 @@ namespace Asset_Management.Controllers
                 using var sr = new StreamReader(file.OpenReadStream());
 
                 var content = sr.ReadToEnd();
-                var NewAdditonTree = _storage.ParseTree(content);
+                Asset NewAdditonTree = _storage.ParseTree(content);
+                PopulateParentIds.AssignParentIds(NewAdditonTree);
 
 
                 //check if root Node is null
@@ -188,6 +191,7 @@ namespace Asset_Management.Controllers
                 {
                     //check the validation and format of the tree
                     var newRoot = _storage.ParseTree(content);
+                    PopulateParentIds.AssignParentIds(newRoot);
                     foreach(var child in newRoot.Children)
                     {
                         Console.WriteLine($"Parent: {child.ParentId}, Name: {child.Name}, Id: {child.Id}");
