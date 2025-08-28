@@ -1,6 +1,8 @@
 ﻿using Asset_Management.Database;
 using Asset_Management.Interfaces;
 using Asset_Management.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace Asset_Management.Services
 {
@@ -80,6 +82,74 @@ namespace Asset_Management.Services
                 DeleteRecursively(child);
             }
             _dbContext.Assets.Remove(node);
+        }
+
+
+        public bool UpdateNode(string oldId, string newName)
+        {
+            var node = _dbContext.Assets.FirstOrDefault(a => a.Id == oldId);
+            bool checkName = _dbContext.Assets.Any(a => a.Name == newName);
+            if (node == null || checkName == true) return false;
+
+            string newId = GenerateIdFromName(newName);
+
+            // Insert new node
+            var newNode = new Asset
+            {
+                Id = newId,
+                Name = newName,
+                ParentId = node.ParentId
+            };
+            _dbContext.Assets.Add(newNode);
+            _dbContext.SaveChanges();
+
+            // Move children
+            var children = _dbContext.Assets.Where(a => a.ParentId == oldId);
+            foreach (var child in children)
+            {
+                child.ParentId = newId;
+            }
+            _dbContext.SaveChanges();
+
+            // Delete old node
+            _dbContext.Assets.Remove(node);
+            _dbContext.SaveChanges();
+            return true;
+
+
+        }
+
+        private string GenerateIdFromName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return string.Empty;
+
+            // Convert to lowercase, replace spaces with hyphens, remove invalid chars
+            string id = name
+                .ToLowerInvariant()
+                .Trim()
+                .Replace(" ", "-")  // Replace spaces with hyphens
+                .Replace("\t", "-") // Replace tabs with hyphens
+                .Replace("\n", "-") // Replace newlines with hyphens
+                .Replace("\r", "-"); // Replace carriage returns with hyphens
+
+            // Remove invalid characters (keep only a-z, 0-9, _, -)
+            id = Regex.Replace(id, @"[^a-zA-Z0-9_-]", "");
+
+            // Limit to 25 characters to leave room for timestamp suffix
+            if (id.Length > 25)
+                id = id.Substring(0, 25);
+
+            // Add timestamp suffix to ensure uniqueness
+            long timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            string timestampSuffix = (timestamp % 100000).ToString(); // Last 5 digits
+            id = $"{id}_{timestampSuffix}";
+
+            // Ensure it doesn't exceed 30 characters
+            if (id.Length > 30)
+                id = id.Substring(0, 30);
+
+            return id;
         }
 
         private Asset FindNodeByName(Asset node, string name)

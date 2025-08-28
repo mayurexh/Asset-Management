@@ -106,6 +106,22 @@ namespace Asset_Management.Controllers
             return Ok("Node deleted successfully.");
         }
 
+        [HttpPut("Update/{id}")]
+        public IActionResult UpdateNode(string id, string name)
+        {
+            bool success = _service.UpdateNode(id, name);
+
+            if (!success)
+                return BadRequest("Name already present in hierarchy ");
+            return Ok("Name updated");
+
+        }
+
+
+
+
+
+
         //[HttpGet("GetCount")]
         //public IActionResult GetCount()
         //{
@@ -261,6 +277,8 @@ namespace Asset_Management.Controllers
             return Ok("No import logs found");
         }
     }
+
+
 
     // DTO for POST request
     public class AssetAddRequest

@@ -77,7 +77,10 @@ namespace Asset_Management.Services
             }
             return false;
         }
-
+        public bool UpdateNode(string oldId, string newName)
+        {
+            return false;
+        }
         private Asset FindNodeByName(Asset node, string name)
         {
 

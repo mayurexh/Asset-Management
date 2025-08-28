@@ -8,6 +8,8 @@
         bool AddNode(string parentId, Asset newNode);
         bool RemoveNode(string nodeId);
 
+        bool UpdateNode(string nodeId, string newName);
+
         bool CheckDuplicated(Asset Node);
         int TotalAsset(Asset Node);
         void ReplaceTree(Asset newRoot);
