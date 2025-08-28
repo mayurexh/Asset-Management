@@ -30,6 +30,7 @@ public class JsonAssetStorageService : IAssetStorageService
                 MissingMemberHandling = MissingMemberHandling.Error
             });
 
+
             if (newRoot == null)
             {
                 throw new InvalidOperationException("Root object is null.");

@@ -1,0 +1,240 @@
+{
+  "name": "Main",
+  "children": [
+    {
+      "name": "Engineering",
+      "children": [
+        {
+          "name": "Mechanical",
+          "children": [
+            {
+              "name": "CNC Machines",
+              "children": []
+            },
+            {
+              "name": "Hydraulics",
+              "children": []
+            },
+            {
+              "name": "Robotics",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Electrical",
+          "children": [
+            {
+              "name": "Power Systems",
+              "children": []
+            },
+            {
+              "name": "Control Panels",
+              "children": []
+            },
+            {
+              "name": "Automation",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Civil",
+          "children": [
+            {
+              "name": "Structural",
+              "children": []
+            },
+            {
+              "name": "Geotechnical",
+              "children": []
+            },
+            {
+              "name": "Surveying",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "IT",
+      "children": [
+        {
+          "name": "Infrastructure",
+          "children": [
+            {
+              "name": "Servers",
+              "children": []
+            },
+            {
+              "name": "Networking",
+              "children": []
+            },
+            {
+              "name": "Storage",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Software",
+          "children": [
+            {
+              "name": "Web Development",
+              "children": [
+                {
+                  "name": "Frontend",
+                  "children": []
+                },
+                {
+                  "name": "Backend",
+                  "children": []
+                },
+                {
+                  "name": "Fullstack",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "Mobile Development",
+              "children": [
+                {
+                  "name": "Android",
+                  "children": []
+                },
+                {
+                  "name": "iOS",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "Data Science",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Operations",
+      "children": [
+        {
+          "name": "Logistics",
+          "children": [
+            {
+              "name": "Fleet Management",
+              "children": []
+            },
+            {
+              "name": "Inventory",
+              "children": []
+            },
+            {
+              "name": "Warehouse",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Procurement",
+          "children": [
+            {
+              "name": "Raw Materials",
+              "children": []
+            },
+            {
+              "name": "Vendors",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Maintenance",
+          "children": [
+            {
+              "name": "Preventive",
+              "children": []
+            },
+            {
+              "name": "Corrective",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "HR",
+      "children": [
+        {
+          "name": "Recruitment",
+          "children": [
+            {
+              "name": "Campus Hiring",
+              "children": []
+            },
+            {
+              "name": "Lateral Hiring",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Training",
+          "children": [
+            {
+              "name": "Technical Training",
+              "children": []
+            },
+            {
+              "name": "Soft Skills",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Payroll",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "Finance",
+      "children": [
+        {
+          "name": "Accounts",
+          "children": [
+            {
+              "name": "Payables",
+              "children": []
+            },
+            {
+              "name": "Receivables",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Budgeting",
+          "children": [
+            {
+              "name": "Capex",
+              "children": []
+            },
+            {
+              "name": "Opex",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Auditing",
+          "children": []
+        }
+      ]
+    }
+  ]
+}
