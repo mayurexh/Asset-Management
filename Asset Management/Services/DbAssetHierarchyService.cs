@@ -21,7 +21,7 @@ namespace Asset_Management.Services
             var root = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
             if (root == null)
             {
-                root = new Asset { Id = "root", Name = "Root" };
+                root = new Asset {Name = "Root"};
                 _dbContext.Assets.Add(root);
                 _dbContext.SaveChanges();
                 return root;
@@ -42,21 +42,18 @@ namespace Asset_Management.Services
             }
         }
 
-        public bool AddNode(string parentId, Asset newNode)
+        public bool AddNode(int parentId, Asset newNode)
         {
             var parent = _dbContext.Assets.FirstOrDefault(a => a.Id == parentId);
+            Console.WriteLine($"FROM ADD NODE parentID = {parent.Id}, parentName = {parent.Name}");
             if (parent == null) return false;
 
-            // Prevent duplicate ID
-            //if (_dbContext.Assets.Any(a => a.Id == newNode.Id)) return false;
-            if(_dbContext.Assets.FirstOrDefault(a=> a.Id == newNode.Id)!=null){
-                return false;
-            }
 
             // Prevent duplicate Name 
             //if (parent.Children.Any(c => c.Name == newNode.Name)) return false;
             if (_dbContext.Assets.FirstOrDefault(a => a.Name == newNode.Name) != null)
             {
+
                 return false;
             }
 
@@ -65,7 +62,8 @@ namespace Asset_Management.Services
             _dbContext.SaveChanges();
             return true;
         }
-        public bool RemoveNode(string nodeId)
+
+        public bool RemoveNode(int nodeId)
         {
             var node = _dbContext.Assets.FirstOrDefault(a => a.Id == nodeId);
             if (node == null) return false;
@@ -77,79 +75,34 @@ namespace Asset_Management.Services
         private void DeleteRecursively(Asset node)
         {
             _dbContext.Entry(node).Collection(a => a.Children).Load();
+
             foreach (var child in node.Children.ToList())
             {
                 DeleteRecursively(child);
             }
+
+            // Mark node for deletion
             _dbContext.Assets.Remove(node);
         }
 
 
-        public bool UpdateNode(string oldId, string newName)
+        public bool UpdateNode(int oldId, string newName)
         {
             var node = _dbContext.Assets.FirstOrDefault(a => a.Id == oldId);
-            bool checkName = _dbContext.Assets.Any(a => a.Name == newName);
-            if (node == null || checkName == true) return false;
+            if (node == null) return false;
+            //check if same exists elsewhere
+            var checkName = _dbContext.Assets.Any(a => a.Name == newName);
 
-            string newId = GenerateIdFromName(newName);
-
-            // Insert new node
-            var newNode = new Asset
+            if (!checkName)
             {
-                Id = newId,
-                Name = newName,
-                ParentId = node.ParentId
-            };
-            _dbContext.Assets.Add(newNode);
-            _dbContext.SaveChanges();
-
-            // Move children
-            var children = _dbContext.Assets.Where(a => a.ParentId == oldId);
-            foreach (var child in children)
-            {
-                child.ParentId = newId;
+                node.Name = newName;
+                _dbContext.SaveChanges();
+                return true;
             }
-            _dbContext.SaveChanges();
-
-            // Delete old node
-            _dbContext.Assets.Remove(node);
-            _dbContext.SaveChanges();
-            return true;
+            return false;
 
 
-        }
 
-        private string GenerateIdFromName(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                return string.Empty;
-
-            // Convert to lowercase, replace spaces with hyphens, remove invalid chars
-            string id = name
-                .ToLowerInvariant()
-                .Trim()
-                .Replace(" ", "-")  // Replace spaces with hyphens
-                .Replace("\t", "-") // Replace tabs with hyphens
-                .Replace("\n", "-") // Replace newlines with hyphens
-                .Replace("\r", "-"); // Replace carriage returns with hyphens
-
-            // Remove invalid characters (keep only a-z, 0-9, _, -)
-            id = Regex.Replace(id, @"[^a-zA-Z0-9_-]", "");
-
-            // Limit to 25 characters to leave room for timestamp suffix
-            if (id.Length > 25)
-                id = id.Substring(0, 25);
-
-            // Add timestamp suffix to ensure uniqueness
-            long timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            string timestampSuffix = (timestamp % 100000).ToString(); // Last 5 digits
-            id = $"{id}_{timestampSuffix}";
-
-            // Ensure it doesn't exceed 30 characters
-            if (id.Length > 30)
-                id = id.Substring(0, 30);
-
-            return id;
         }
 
         private Asset FindNodeByName(Asset node, string name)
@@ -172,9 +125,9 @@ namespace Asset_Management.Services
             return null;
 
         }
-        private Asset? FindNodeById(Asset node, string id)
+        private Asset? FindNodeById(Asset node, int id)
         {
-            if (node.Id.ToLower() == id.ToLower())
+            if (node.Id == id)
                 return node;
 
             foreach (var child in node.Children)
@@ -194,72 +147,90 @@ namespace Asset_Management.Services
 
         public bool CheckDuplicated(Asset node)
         {
-            // Check duplicate IDs
-            bool hasDuplicateIds = _dbContext.Assets
-                .GroupBy(a => a.Id.ToLower())
-                .Any(g => g.Count() > 1);
 
-            // Check duplicate Names
-            bool hasDuplicateNames = _dbContext.Assets
-                .GroupBy(a => a.Name.ToLower())
-                .Any(g => g.Count() > 1);
-
-            // Root special rule
-            var root = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
-            if (root != null && (root.Id.ToLower() != "root" || root.Name.ToLower() != "root"))
-            {
-                return true;
-            }
-
-            return hasDuplicateIds || hasDuplicateNames;
+            return true;
         }
         public void ReplaceTree(Asset newRoot)
         {
-            
-            bool checkDuplicate = CheckDuplicated(newRoot);
-            if (checkDuplicate)
-                throw new Exception("Duplicate nodes present");
 
-            var rootId = FindNodeById(newRoot, "root");
-            var rootName = FindNodeByName(newRoot, "Root");
-            //Console.WriteLine($"From Replace Tree method {rootId.Id} {rootName.Name}");
-            
+            // Check for duplicates in the incoming tree
+            if (HasDuplicatesInTree(newRoot))
+                throw new Exception("Duplicate nodes present in uploaded tree");
 
-            // if root node is not present in the tree
-            if (rootId == null && rootName == null)
+            // Check if incoming tree has a "Root" node
+            if (ContainsRootNode(newRoot))
+                throw new Exception("Node name \"Root\" present in the hierarchy.");
+
+            try
             {
-
-                Asset root = new Asset { Id = "root", Name = "Root", Children = new List<Asset> { newRoot } };
-                // Clear DB
-                _dbContext.Assets.RemoveRange(_dbContext.Assets);
-                _dbContext.SaveChanges();
-
-                _dbContext.ChangeTracker.Clear();
-
-                _dbContext.Assets.Add(root);
-                _dbContext.SaveChanges();
+                // Try truncate table (faster, resets IDs)
+                _dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE Assets");
+            }
+            catch
+            {
+                // Fallback: delete all one by one  + reseed identity
+                _dbContext.Database.ExecuteSqlRaw("DELETE FROM Assets");
+                _dbContext.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('Assets', RESEED, 0)");
             }
 
-            //first node is root 
-            else if (newRoot.Id.ToLower() == "root" && newRoot.Name.ToLower() == "root")
+            //    // Clear DB
+            //    _dbContext.Assets.RemoveRange(_dbContext.Assets);
+            //_dbContext.SaveChanges();
+            //_dbContext.ChangeTracker.Clear();
+
+            // Create new root
+            var root = new Asset { Name = "Root" };
+            _dbContext.Add(root);
+            _dbContext.SaveChanges(); // Save to get the generated ID
+
+            // Set parent relationships and add tree
+            SetParentIds(newRoot, root.Id);
+            _dbContext.Add(newRoot);
+            _dbContext.SaveChanges();
+
+
+        }
+
+        private bool ContainsRootNode(Asset root)
+        {
+            if (root.Name.ToLower() == "root")
+                return true;
+            foreach(var child in root.Children)
             {
-                // Clear DB
-                _dbContext.Assets.RemoveRange(_dbContext.Assets);
-                _dbContext.SaveChanges();
-
-                _dbContext.ChangeTracker.Clear();
-
-                _dbContext.Add(newRoot);
-                _dbContext.SaveChanges();
+                ContainsRootNode(child);
             }
+            return false;
 
-            else
+        }
+        private void SetParentIds(Asset node, int id)
+        {
+            node.ParentId = id;
+            node.Id = 0;
+
+            foreach (var child in node.Children)
             {
-
-                //root present in the middle of the hierarchy tree
-                throw new Exception("Root Id present in the middle of the hierarchy");
+                SetParentIds(child, 0); // Will be updated after parent is saved
             }
         }
+        private bool HasDuplicatesInTree(Asset root)
+        {
+            var names = new HashSet<string>();
+            return CheckDuplicatesRecursively(root, names);
+        }
+
+        private bool CheckDuplicatesRecursively(Asset node, HashSet<string> names)
+        {
+            if (!names.Add(node.Name.ToLower()))
+                return true; // Duplicate found
+
+            foreach (var child in node.Children)
+            {
+                if (CheckDuplicatesRecursively(child, names))
+                    return true;
+            }
+            return false;
+        }
+
 
         public int TreeLength(Asset node)
         {
@@ -279,23 +250,22 @@ namespace Asset_Management.Services
             int totalAdded = 0;
 
             // Global duplicate check in the incoming tree itself (before merge)
-            bool hasDuplicates = CheckDuplicated(newTree);
+            bool hasDuplicates = HasDuplicatesInTree(newTree);
             if (hasDuplicates)
                 throw new Exception("Duplicate nodes present in uploaded tree");
 
-            // If uploaded tree itself is a root wrapper, skip it
-            var nodesToMerge = newTree.Id == "root" && newTree.Name == "Root"
-                ? newTree.Children
-                : new List<Asset> { newTree };
+            //Since we're dealing with parsed trees, just use the tree as-is
+            // No need to check for "root" wrapper since IDs are now auto-generated
+            var nodesToMerge = new List<Asset> { newTree };
 
             // Get the actual DB root
             var dbRoot = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
             if (dbRoot == null)
             {
-                // If DB is empty → insert new root
-                dbRoot = new Asset { Id = "root", Name = "Root", Children = new List<Asset>() };
+                //Let EF Core generate the ID
+                dbRoot = new Asset { Name = "Root", Children = new List<Asset>() };
                 _dbContext.Assets.Add(dbRoot);
-                _dbContext.SaveChanges();
+                _dbContext.SaveChanges(); // Save to get generated ID
             }
 
             foreach (var child in nodesToMerge)
@@ -311,13 +281,15 @@ namespace Asset_Management.Services
 
         private int MergeNode(Asset currentParent, Asset newNode)
         {
-            // Step 1: Check if there is already a child with same Id or Name under currentParent
+            // ✅ Only check by Name since IDs will be auto-generated
+            // Don't compare IDs from parsed files with DB IDs
             var existingNode = _dbContext.Assets
                 .FirstOrDefault(a => a.ParentId == currentParent.Id &&
-                                     (a.Id == newNode.Id || a.Name == newNode.Name));
+                                   a.Name.ToLower() == newNode.Name.ToLower());
 
             if (existingNode != null)
             {
+                // Node exists under this parent → merge children
                 int addedCount = 0;
                 foreach (var child in newNode.Children)
                 {
@@ -326,12 +298,13 @@ namespace Asset_Management.Services
                 return addedCount;
             }
 
-            // Step 2: Check if node already exists anywhere in the tree (duplicate globally)
+            // ✅ Check globally by name only
             var duplicateNode = _dbContext.Assets
-                .FirstOrDefault(a => a.Id == newNode.Id || a.Name == newNode.Name);
+                .FirstOrDefault(a => a.Name.ToLower() == newNode.Name.ToLower());
 
             if (duplicateNode != null)
             {
+                // Node exists elsewhere → merge children there
                 int addedCount = 0;
                 foreach (var child in newNode.Children)
                 {
@@ -340,12 +313,26 @@ namespace Asset_Management.Services
                 return addedCount;
             }
 
-            // Step 3: No duplicates → add as a new child
-            newNode.ParentId = currentParent.Id;   // attach to DB parent
-            _dbContext.Assets.Add(newNode);
+            // ✅ No duplicates → add as new child
+            newNode.Id = 0; // Reset to let EF Core generate new ID
+            newNode.ParentId = currentParent.Id;
 
-            return TreeLength(newNode);  // counts how many nodes were inserted under this branch
+            // Reset all child IDs recursively
+            //ResetChildIds(newNode);
+
+            _dbContext.Assets.Add(newNode);
+            return TreeLength(newNode);
         }
+
+        //private void ResetChildIds(Asset node)
+        //{
+        //    foreach (var child in node.Children)
+        //    {
+        //        child.Id = 0;
+        //        child.ParentId = 0; // Will be set when parent is saved
+        //        //ResetChildIds(child);
+        //    }
+        //}
 
 
 

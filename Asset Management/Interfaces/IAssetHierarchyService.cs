@@ -5,10 +5,10 @@
     public interface IAssetHierarchyService
     {
         Asset GetHierarchy();
-        bool AddNode(string parentId, Asset newNode);
-        bool RemoveNode(string nodeId);
+        bool AddNode(int parentId, Asset newNode);
+        bool RemoveNode(int nodeId);
 
-        bool UpdateNode(string nodeId, string newName);
+        bool UpdateNode(int nodeId, string newName);
 
         bool CheckDuplicated(Asset Node);
         int TotalAsset(Asset Node);

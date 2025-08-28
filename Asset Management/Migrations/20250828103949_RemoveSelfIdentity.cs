@@ -5,7 +5,7 @@
 namespace Asset_Management.Migrations
 {
     /// <inheritdoc />
-    public partial class SecondMigrate : Migration
+    public partial class RemoveSelfIdentity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

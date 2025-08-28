@@ -20,6 +20,10 @@ namespace Asset_Management.Database
                 .WithMany(a => a.Children)      // parent can have many children
                 .HasForeignKey(a => a.ParentId) // FK is ParentId
                 .OnDelete(DeleteBehavior.ClientCascade); // prevent cascade delete from nuking whole tree
+
+
+          
+
         }
 
 

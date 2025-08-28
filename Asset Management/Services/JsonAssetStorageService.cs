@@ -68,7 +68,7 @@ public class JsonAssetStorageService : IAssetStorageService
             string latestfile = Path.Combine(_dataDirectory, "assets_latest.json");
             string json = File.ReadAllText(latestfile);
             return JsonConvert.DeserializeObject<Asset>(json, settings)
-                   ?? new Asset { Id = "root", Name = "Root" };
+                   ?? new Asset { Name = "Root" };
 
         }
         catch (JsonException)

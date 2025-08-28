@@ -75,11 +75,10 @@ namespace Asset_Management.Controllers
 
             var newAsset = new Asset
             {
-                Id = request.Id,
                 Name = request.Name,
                 Children = new List<Asset>()
             };
-            Console.WriteLine($"{request.Id}, {request.Name}, {request.ParentId}");
+            Console.WriteLine($"{request.Name}, {request.ParentId}");
 
             bool success = _service.AddNode(request.ParentId, newAsset);
             if (!success)
@@ -97,17 +96,17 @@ namespace Asset_Management.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteNode(string id)
+        public IActionResult DeleteNode(int id)
         {
             bool success = _service.RemoveNode(id);
             if (!success)
-                return BadRequest("Node not found or root node cannot be deleted.");
+                return BadRequest("Node cannot be deleted.");
 
             return Ok("Node deleted successfully.");
         }
 
         [HttpPut("Update/{id}")]
-        public IActionResult UpdateNode(string id, string name)
+        public IActionResult UpdateNode(int id, string name)
         {
             bool success = _service.UpdateNode(id, name);
 
@@ -118,22 +117,11 @@ namespace Asset_Management.Controllers
         }
 
 
-
-
-
-
-        //[HttpGet("GetCount")]
-        //public IActionResult GetCount()
-        //{
-        //    int count = _service.TreeLength(_storage.LoadTree());
-        //    return Ok($"{count}");
-        //}
-
         [HttpPost("UploadExistingTree")]
-        public IActionResult UploadInExisitng(IFormFile file)
+        public IActionResult UploadInExisting(IFormFile file)
         {
             var FileExtension = System.IO.Path.GetExtension(file.FileName);
-            var storageExtension = "." + _configuration["StorageFlag"]; 
+            var storageExtension = "." + _configuration["StorageFlag"];
             if (FileExtension != storageExtension)
             {
                 return BadRequest($"Invalid File format, please upload a {_configuration["StorageFlag"]} file");
@@ -143,37 +131,38 @@ namespace Asset_Management.Controllers
                 if (file.Length == 0 || file == null)
                 {
                     return BadRequest("File Invalid");
-
                 }
                 using var sr = new StreamReader(file.OpenReadStream());
-
                 var content = sr.ReadToEnd();
-                Asset NewAdditonTree = _storage.ParseTree(content);
-                PopulateParentIds.AssignParentIds(NewAdditonTree);
+                Asset NewAdditionTree = _storage.ParseTree(content);
 
+                // ✅ Remove the null check since int IDs default to 0
+                // Reset IDs to 0 so EF Core can generate new ones
+                //ResetTreeIds(NewAdditionTree);
 
-                //check if root Node is null
-                if (NewAdditonTree.Id == null)
-                {
-                    return BadRequest("Root node cannot be null");
-                }
-
-                int result = _service.MergeTree(NewAdditonTree);
+                int result = _service.MergeTree(NewAdditionTree);
                 _uploadlog.UpdateLog(file.FileName, "merged");
                 HttpContext.Items["assetsAdded"] = AssetHierarchyService.assetsAdded;
                 return Ok(result);
 
-                
             }
-            catch(InvalidFileFormatException ex)
+            catch (InvalidFileFormatException ex)
             {
                 return BadRequest($"Invalid File format, please upload a valid {_configuration["StorageFlag"]} file");
-
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest($"{ex.Message}");
             }
+        }
 
+        private void ResetTreeIds(Asset node)
+        {
+            node.Id = 0; // Let EF Core generate new ID
+            foreach (var child in node.Children)
+            {
+                ResetTreeIds(child);
+            }
         }
 
         [HttpPost("Upload")]
@@ -207,7 +196,7 @@ namespace Asset_Management.Controllers
                 {
                     //check the validation and format of the tree
                     var newRoot = _storage.ParseTree(content);
-                    PopulateParentIds.AssignParentIds(newRoot);
+                    //PopulateParentIds.AssignParentIds(newRoot);
                     foreach(var child in newRoot.Children)
                     {
                         Console.WriteLine($"Parent: {child.ParentId}, Name: {child.Name}, Id: {child.Id}");
@@ -283,10 +272,7 @@ namespace Asset_Management.Controllers
     // DTO for POST request
     public class AssetAddRequest
     {
-        [Required(ErrorMessage = "ID is required.")]
-        [RegularExpression(@"^[a-zA-Z0-9_-]{1,30}$",
-            ErrorMessage = "Invalid ID. Must be alphanumeric and can contain _ or -, max 30 characters.")]
-        public string Id { get; set; } = string.Empty;
+       
 
         [Required(ErrorMessage = "Name is required.")]
         [RegularExpression(@"^[a-zA-Z0-9 ]{1,30}$",
@@ -294,8 +280,7 @@ namespace Asset_Management.Controllers
         public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Parent ID is required.")]
-        [RegularExpression(@"^[a-zA-Z0-9_-]{1,30}$",
-            ErrorMessage = "Invalid Parent ID. Must be alphanumeric and can contain _ or -, max 30 characters.")]
-        public string ParentId { get; set; } = string.Empty;
+
+        public int ParentId { get; set; }
     }
 }

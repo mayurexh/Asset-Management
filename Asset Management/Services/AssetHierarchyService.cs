@@ -25,15 +25,12 @@ namespace Asset_Management.Services
             return _root;
         }
 
-        public bool AddNode(string parentId, Asset newNode)
+        public bool AddNode(int parentId, Asset newNode)
         {
             var parent = FindNodeById(_root, parentId);
             if (parent == null)
                 return false;
 
-            // Prevent duplicate ID
-            if (FindNodeById(_root, newNode.Id) != null)
-                return false;
 
             // Prevent duplicated Asset Name
             if (FindNodeByName(_root, newNode.Name) != null)
@@ -45,7 +42,7 @@ namespace Asset_Management.Services
             return true;
         }
 
-        public bool RemoveNode(string nodeId)
+        public bool RemoveNode(int nodeId)
         {
             // Disallow deleting root
             if (_root.Id == nodeId)
@@ -62,7 +59,7 @@ namespace Asset_Management.Services
             return removed;
         }
 
-        private bool RemoveNodeRecursive(Asset current, string nodeId)
+        private bool RemoveNodeRecursive(Asset current, int nodeId)
         {
             foreach (var child in current.Children.ToList())
             {
@@ -77,7 +74,7 @@ namespace Asset_Management.Services
             }
             return false;
         }
-        public bool UpdateNode(string oldId, string newName)
+        public bool UpdateNode(int oldId, string newName)
         {
             return false;
         }
@@ -100,7 +97,7 @@ namespace Asset_Management.Services
             return null;
 
         }
-        private Asset? FindNodeById(Asset node, string id)
+        private Asset? FindNodeById(Asset node, int id)
         {
             if (node.Id == id)
                 return node;
@@ -141,16 +138,9 @@ namespace Asset_Management.Services
             if (node == null) return false;
 
             // Convert to lowercase for case-insensitive comparison
-            string idLower = node.Id?.ToLowerInvariant();
             string nameLower = node.Name?.ToLowerInvariant();
 
-            // Check duplicate IDs
-            if (!string.IsNullOrEmpty(idLower))
-            {
-                if (seenIds.Contains(idLower))
-                    return true; // duplicate found
-                seenIds.Add(idLower);
-            }
+            
 
             // Check duplicate Names
             if (!string.IsNullOrEmpty(nameLower))
@@ -160,12 +150,7 @@ namespace Asset_Management.Services
                 seenNames.Add(nameLower);
             }
 
-            // Special rule for root: id and name must both be "root"
-            if ((idLower == "root" && nameLower != "root") ||
-                (idLower != "root" && nameLower == "root"))
-            {
-                return true; // invalid root
-            }
+            
 
             // Recurse on children
             foreach (var child in node.Children)
@@ -181,39 +166,7 @@ namespace Asset_Management.Services
 
         public void ReplaceTree(Asset NewRoot)
         {
-            //check root node is present in the tree anywhere
-            var rootIdPresent = FindNodeById(NewRoot, "root");
-            var rootNamePresent = FindNodeByName(NewRoot, "Root");
-
-
-            bool checkDuplicate = CheckDuplicated(NewRoot);
-            if (checkDuplicate)
-            {
-                throw new Exception("Duplicate nodes present");
-            }
-
-            // if root node is not present in the tree
-            if(rootIdPresent == null && rootNamePresent == null)
-            {
-                //wrap uploaded tree within a root node
-                Asset root = new Asset { Id = "root", Name = "Root", Children = new List<Asset> { NewRoot } };
-                _root = root;
-                _storage.SaveTree(_root);
-            }
-
-            // first node is the root node
-            else if(NewRoot.Id.ToLower() == "root" && NewRoot.Name.ToLower() == "root") 
-            {
-                _root = NewRoot;
-                _storage.SaveTree(_root);
-            }
-            else
-            {
-                //root present in the middle of the hierarchy tree
-                throw new Exception("Root Id present in the middle of the hierarchy");
-
-            }
-
+            Console.WriteLine("FDS");
 
             
         }
@@ -234,32 +187,8 @@ namespace Asset_Management.Services
 
         public int MergeTree(Asset newTree)
         {
-            int totalAdded = 0;
-            bool hasDuplicates = CheckDuplicated(newTree);
-            if (hasDuplicates)
-            {
-                throw new Exception("Duplicate nodes present");
-            }
-
-
-            // If uploaded tree itself is a root wrapper, skip it
-            var nodesToMerge = newTree.Id == "root" && newTree.Name == "Root"
-                ? newTree.Children
-                : new List<Asset> { newTree};
-
             
-
-            foreach (var child in nodesToMerge)
-            {
-                totalAdded += MergeNode(_root, child);
-            }
-
-            if (totalAdded > 0)
-            {
-                _storage.SaveTree(_root);
-            }
-
-            return totalAdded;
+            return 5;
         }
 
         private int MergeNode(Asset currentParent, Asset newNode)

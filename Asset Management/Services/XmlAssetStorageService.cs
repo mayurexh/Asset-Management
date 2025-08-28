@@ -108,7 +108,7 @@ namespace Asset_Management.Services
         {
             if (!File.Exists(_datafile))
             {
-                var _root = new Asset { Id = "root", Name = "Root" };
+                var _root = new Asset { Name = "Root" };
                 SaveTree(_root);
                 return _root;
             }
