@@ -16,7 +16,7 @@ namespace Asset_Management.Controllers
             _service = service;
         }
 
-        [HttpGet("Asset/{assetId}")]
+        [HttpGet("Asset/{assetId}/AllSignals")]
         public IActionResult GetSignals(int assetId)
         {
             try
@@ -31,9 +31,27 @@ namespace Asset_Management.Controllers
 
         }
 
+        [HttpGet("Asset/{assetId}/Signal/{signalId}")]
+        public IActionResult GetSpecificSignal(int assetId, int signalId)
+        {
+            try
+            {
+                Signal signal = _service.GetSpecificSignal(assetId, signalId);
+                return Ok(signal);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error : {ex.Message}");
+            }
+        }
+
         [HttpPost("Asset/{assetId}/AddSignal")]
         public IActionResult AddSignal(int assetId, [FromBody] GlobalSignalDTO request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid Name/Description/Value Type");
+            }
             try
             {
                 _service.AddSignal(assetId, request);
@@ -54,6 +72,7 @@ namespace Asset_Management.Controllers
         [HttpPut("Asset/{assetId}/UpdateSignal/{signalId}")]
         public IActionResult UpdateSignal(int assetId, int signalId ,[FromBody] GlobalSignalDTO request)
         {
+            
             try
             {
                 _service.UpdateSignal(assetId, signalId, request);

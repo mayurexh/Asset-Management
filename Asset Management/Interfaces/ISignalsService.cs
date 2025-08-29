@@ -7,6 +7,8 @@ namespace Asset_Management.Interfaces
     {
         IEnumerable<Signal> GetSignals(int assetId);
 
+        Signal GetSpecificSignal(int assetId, int signalId);
+
         void AddSignal(int assetId, GlobalSignalDTO signal);
 
         void UpdateSignal(int assetId, int signalId , GlobalSignalDTO signal);

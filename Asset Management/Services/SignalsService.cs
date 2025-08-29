@@ -16,13 +16,24 @@ namespace Asset_Management.Services
 
         public IEnumerable<Signal> GetSignals(int assetId)
         {
-            var asset = _dbContext.Assets.Any(a => a.Id == assetId);
-            if (!asset)
+            var asset = _dbContext.Assets.Include(a=>a.Signals).FirstOrDefault(a => a.Id == assetId);
+            if (asset == null)
                 throw new Exception("Asset not found");
-            var signals = _dbContext.Signals.Where(s => s.AssetId == assetId).ToList();
+            var signals = asset.Signals.ToList();
 
             return signals;
         }
+        public Signal GetSpecificSignal(int assetId, int signalId)
+        {
+            var asset = _dbContext.Assets.Include(a=>a.Signals).FirstOrDefault(a => a.Id == assetId);
+            if (asset == null)
+                throw new Exception("Asset not found");
+            var signal = asset.Signals.FirstOrDefault(s=>s.Id == signalId);
+            if (signal == null)
+                throw new Exception("Signal not found");
+            return signal;
+        }
+
 
         public void AddSignal(int assetId, GlobalSignalDTO signal)
         {
