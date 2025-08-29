@@ -1,0 +1,40 @@
+{
+  "name": "Manufacturing Unit",
+  "children": [
+    {
+      "name": "Boiler System",
+      "children": [
+        {
+          "name": "Pump B",
+          "children": []
+        },
+        {
+          "name": "Pressure Sensor",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "Water Treatment",
+      "children": [
+        {
+          "name": "Filter Unit",
+          "children": []
+        },
+        {
+          "name": "Chemical Dosing",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "Electrical Panel",
+      "children": [
+        {
+          "name": "Main Switch",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

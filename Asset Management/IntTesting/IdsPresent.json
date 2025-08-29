@@ -1,0 +1,52 @@
+{
+  "id": 1,
+  "name": "Main Plant",
+  "parentId": null,
+  "children": [
+    {
+      "id": 2,
+      "name": "Production Line A",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 3,
+          "name": "Assembly Unit",
+          "parentId": 2,
+          "children": []
+        },
+        {
+          "id": 4,
+          "name": "Wire Unit",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 5,
+              "name": "Machine X",
+              "parentId": 4,
+              "children": []
+            },
+            {
+              "id": 6,
+              "name": "Machine Y",
+              "parentId": 4,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Production Line B",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 8,
+          "name": "Cooling System",
+          "parentId": 7,
+          "children": []
+        }
+      ]
+    }
+  ]
+}

@@ -35,7 +35,6 @@ public class JsonAssetStorageService : IAssetStorageService
             {
                 throw new InvalidOperationException("Root object is null.");
             }
-
             return newRoot;
         }
         catch (InvalidOperationException ex)
@@ -83,7 +82,8 @@ public class JsonAssetStorageService : IAssetStorageService
     {
         var settings = new JsonSerializerSettings
         {
-            Formatting = Formatting.Indented
+            Formatting = Formatting.Indented,
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         };
 
         string filePath = GetVersionedFileName();

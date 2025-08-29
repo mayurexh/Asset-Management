@@ -1,0 +1,36 @@
+{
+  "name": "Main Plant",
+  "children": [
+    {
+      "name": "Production Line A",
+      "children": [
+        {
+          "name": "Root",
+          "children": [
+            {
+              "name": "Machine X",
+              "children": []
+            },
+            {
+              "name": "Machine Y",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Packaging Unit",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "Production Line B",
+      "children": [
+        {
+          "name": "Cooling System",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

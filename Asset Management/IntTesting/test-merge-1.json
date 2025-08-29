@@ -1,0 +1,31 @@
+{
+  "name": "Production Plant",
+  "children": [
+    {
+      "name": "Boiler System",
+      "children": [
+        {
+          "name": "Pump A",
+          "children": []
+        },
+        {
+          "name": "Valve Control",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "Cooling Tower",
+      "children": [
+        {
+          "name": "Fan Unit 1",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "Electrical Panel",
+      "children": []
+    }
+  ]
+}

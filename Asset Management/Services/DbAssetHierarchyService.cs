@@ -1,6 +1,7 @@
 ﻿using Asset_Management.Database;
 using Asset_Management.Interfaces;
 using Asset_Management.Models;
+using Asset_Management.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
@@ -11,11 +12,14 @@ namespace Asset_Management.Services
     {
 
         private readonly AssetDbContext _dbContext;
+        private readonly IAssetStorageService _storage;
 
-        public DbAssetHierarchyService(AssetDbContext dbContext)
+        public DbAssetHierarchyService(AssetDbContext dbContext, IAssetStorageService storage)
         {
             _dbContext = dbContext;
+            _storage = storage;
         }
+
         public Asset GetHierarchy()
         {
             var root = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
@@ -65,7 +69,9 @@ namespace Asset_Management.Services
 
         public bool RemoveNode(int nodeId)
         {
+
             var node = _dbContext.Assets.FirstOrDefault(a => a.Id == nodeId);
+            if (node.ParentId == null) return false; //disallow deleting root node.
             if (node == null) return false;
 
             DeleteRecursively(node);   // handles children + node itself
@@ -89,6 +95,7 @@ namespace Asset_Management.Services
         public bool UpdateNode(int oldId, string newName)
         {
             var node = _dbContext.Assets.FirstOrDefault(a => a.Id == oldId);
+            if (node.ParentId == null) return false; //disallow updating root node.
             if (node == null) return false;
             //check if same exists elsewhere
             var checkName = _dbContext.Assets.Any(a => a.Name == newName);
@@ -173,20 +180,20 @@ namespace Asset_Management.Services
                 _dbContext.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('Assets', RESEED, 0)");
             }
 
-            //    // Clear DB
-            //    _dbContext.Assets.RemoveRange(_dbContext.Assets);
-            //_dbContext.SaveChanges();
-            //_dbContext.ChangeTracker.Clear();
-
             // Create new root
             var root = new Asset { Name = "Root" };
             _dbContext.Add(root);
             _dbContext.SaveChanges(); // Save to get the generated ID
 
+
             // Set parent relationships and add tree
             SetParentIds(newRoot, root.Id);
             _dbContext.Add(newRoot);
             _dbContext.SaveChanges();
+
+            //in memory objects reflect db state
+            //saving in file for downloading and tracking purpose.
+            _storage.SaveTree(root);
 
 
         }
@@ -197,7 +204,8 @@ namespace Asset_Management.Services
                 return true;
             foreach(var child in root.Children)
             {
-                ContainsRootNode(child);
+                if (ContainsRootNode(child))
+                    return true;
             }
             return false;
 
@@ -209,6 +217,7 @@ namespace Asset_Management.Services
 
             foreach (var child in node.Children)
             {
+                child.Id = 0;
                 SetParentIds(child, 0); // Will be updated after parent is saved
             }
         }
@@ -254,24 +263,20 @@ namespace Asset_Management.Services
             if (hasDuplicates)
                 throw new Exception("Duplicate nodes present in uploaded tree");
 
-            //Since we're dealing with parsed trees, just use the tree as-is
-            // No need to check for "root" wrapper since IDs are now auto-generated
-            var nodesToMerge = new List<Asset> { newTree };
-
             // Get the actual DB root
             var dbRoot = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
             if (dbRoot == null)
             {
-                //Let EF Core generate the ID
-                dbRoot = new Asset { Name = "Root", Children = new List<Asset>() };
+                dbRoot = new Asset { Name = "Root" };
                 _dbContext.Assets.Add(dbRoot);
                 _dbContext.SaveChanges(); // Save to get generated ID
             }
-
-            foreach (var child in nodesToMerge)
+            foreach(var child in newTree.Children)
             {
                 totalAdded += MergeNode(dbRoot, child);
+
             }
+
 
             if (totalAdded > 0)
                 _dbContext.SaveChanges();
@@ -281,58 +286,41 @@ namespace Asset_Management.Services
 
         private int MergeNode(Asset currentParent, Asset newNode)
         {
-            // ✅ Only check by Name since IDs will be auto-generated
-            // Don't compare IDs from parsed files with DB IDs
-            var existingNode = _dbContext.Assets
-                .FirstOrDefault(a => a.ParentId == currentParent.Id &&
-                                   a.Name.ToLower() == newNode.Name.ToLower());
-
-            if (existingNode != null)
-            {
-                // Node exists under this parent → merge children
-                int addedCount = 0;
-                foreach (var child in newNode.Children)
-                {
-                    addedCount += MergeNode(existingNode, child);
-                }
-                return addedCount;
-            }
-
-            // ✅ Check globally by name only
-            var duplicateNode = _dbContext.Assets
+            // FIRST: Check if node exists GLOBALLY by name (most important check)
+            var globalMatch = _dbContext.Assets
                 .FirstOrDefault(a => a.Name.ToLower() == newNode.Name.ToLower());
 
-            if (duplicateNode != null)
+            if (globalMatch != null)
             {
-                // Node exists elsewhere → merge children there
+                // Node exists somewhere - merge all children into it
                 int addedCount = 0;
                 foreach (var child in newNode.Children)
                 {
-                    addedCount += MergeNode(duplicateNode, child);
+                    addedCount += MergeNode(globalMatch, child);
                 }
                 return addedCount;
             }
 
-            // ✅ No duplicates → add as new child
-            newNode.Id = 0; // Reset to let EF Core generate new ID
+            // SECOND: If no global match, add as new node under current parent
+            newNode.Id = 0; // Let EF generate new ID
             newNode.ParentId = currentParent.Id;
 
             // Reset all child IDs recursively
-            //ResetChildIds(newNode);
+            ResetChildIds(newNode);
 
             _dbContext.Assets.Add(newNode);
             return TreeLength(newNode);
         }
 
-        //private void ResetChildIds(Asset node)
-        //{
-        //    foreach (var child in node.Children)
-        //    {
-        //        child.Id = 0;
-        //        child.ParentId = 0; // Will be set when parent is saved
-        //        //ResetChildIds(child);
-        //    }
-        //}
+        private void ResetChildIds(Asset node)
+        {
+            foreach (var child in node.Children)
+            {
+                child.Id = 0;
+                child.ParentId = 0; // Will be set by EF Core navigation properties
+                ResetChildIds(child);
+            }
+        }
 
 
 
