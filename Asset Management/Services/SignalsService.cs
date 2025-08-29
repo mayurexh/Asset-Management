@@ -29,8 +29,16 @@ namespace Asset_Management.Services
             var asset = _dbContext.Assets.FirstOrDefault(a => a.Id == assetId);
             if (asset == null)
                 throw new Exception("Asset not found");
-            asset.Signals.Add(new Signal { Name= signal.Name, ValueType = signal.ValueType, Description = signal.Description});
-            _dbContext.SaveChanges();
+            try
+            {
+                asset.Signals.Add(new Signal { Name = signal.Name, ValueType = signal.ValueType, Description = signal.Description });
+                _dbContext.SaveChanges();
+            }
+            catch(DbUpdateException ex)
+            {
+                throw;
+            }
+            
 
         }
         public void UpdateSignal(int assetId, int signalId, GlobalSignalDTO request)

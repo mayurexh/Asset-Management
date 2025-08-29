@@ -27,7 +27,7 @@ namespace Asset_Management.Database
                 .HasForeignKey(s => s.AssetId)   // FK is AssetId
                 .OnDelete(DeleteBehavior.Cascade); // delete signals when asset is deleted
 
-            // Unique constraint: Signal names must be unique within same Asset
+            // Unique constraint - Signal names must be unique within same Asset
             // Handle using DbUpdateException
             modelBuilder.Entity<Signal>()
                 .HasIndex(s => new { s.AssetId, s.Name })
