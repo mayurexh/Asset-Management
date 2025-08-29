@@ -44,18 +44,6 @@
               "Name": "Pressure Sensor",
               "ParentId": 3,
               "Children": []
-            },
-            {
-              "Id": 6,
-              "Name": "Pump A",
-              "ParentId": 3,
-              "Children": []
-            },
-            {
-              "Id": 7,
-              "Name": "Valve Control",
-              "ParentId": 3,
-              "Children": []
             }
           ]
         },
@@ -76,14 +64,7 @@
           "Id": 4,
           "Name": "Cooling Tower",
           "ParentId": 2,
-          "Children": [
-            {
-              "Id": 8,
-              "Name": "Fan Unit 1",
-              "ParentId": 4,
-              "Children": []
-            }
-          ]
+          "Children": []
         }
       ]
     }

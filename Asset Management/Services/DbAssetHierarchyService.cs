@@ -193,7 +193,10 @@ namespace Asset_Management.Services
 
             //in memory objects reflect db state
             //saving in file for downloading and tracking purpose.
-            _storage.SaveTree(root);
+            //recursivley load children in root to represent deep hierarchy
+            var dbroot = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
+            LoadChildren(dbroot);
+            _storage.SaveTree(dbroot);
 
 
         }
@@ -280,6 +283,12 @@ namespace Asset_Management.Services
 
             if (totalAdded > 0)
                 _dbContext.SaveChanges();
+
+            //recursivley load children in root to represent deep hierarchy
+            var dbroot = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
+            LoadChildren(dbroot);
+            _storage.SaveTree(dbroot);
+
 
             return totalAdded;
         }

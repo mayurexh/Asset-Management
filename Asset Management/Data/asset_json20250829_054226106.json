@@ -1,0 +1,46 @@
+{
+  "Id": 1,
+  "Name": "Root",
+  "ParentId": null,
+  "Parent": null,
+  "Children": [
+    {
+      "Id": 6,
+      "Name": "Boiler System",
+      "ParentId": 1,
+      "Children": [
+        {
+          "Id": 9,
+          "Name": "Pump A",
+          "ParentId": 6,
+          "Children": []
+        },
+        {
+          "Id": 10,
+          "Name": "Valve Control",
+          "ParentId": 6,
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Id": 7,
+      "Name": "Cooling Tower",
+      "ParentId": 1,
+      "Children": [
+        {
+          "Id": 11,
+          "Name": "Fan Unit 1",
+          "ParentId": 7,
+          "Children": []
+        }
+      ]
+    },
+    {
+      "Id": 8,
+      "Name": "Electrical Panel",
+      "ParentId": 1,
+      "Children": []
+    }
+  ]
+}
