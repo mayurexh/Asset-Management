@@ -27,5 +27,9 @@ namespace Asset_Management.Models
 
         [XmlElement("asset")] //include case insensitiviy
         public List<Asset> Children { get; set; } = new List<Asset>();
+
+        [JsonIgnore]
+        [XmlIgnore]
+        public List<Signal> Signals { get; set; } = new List<Signal>();
     }
 }   

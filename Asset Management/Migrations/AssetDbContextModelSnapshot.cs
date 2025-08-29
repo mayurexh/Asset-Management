@@ -43,6 +43,36 @@ namespace Asset_Management.Migrations
                     b.ToTable("Assets");
                 });
 
+            modelBuilder.Entity("Asset_Management.Models.Signal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssetId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ValueType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId", "Name")
+                        .IsUnique();
+
+                    b.ToTable("Signals");
+                });
+
             modelBuilder.Entity("Asset_Management.Models.Asset", b =>
                 {
                     b.HasOne("Asset_Management.Models.Asset", "Parent")
@@ -53,9 +83,22 @@ namespace Asset_Management.Migrations
                     b.Navigation("Parent");
                 });
 
+            modelBuilder.Entity("Asset_Management.Models.Signal", b =>
+                {
+                    b.HasOne("Asset_Management.Models.Asset", "Asset")
+                        .WithMany("Signals")
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
+                });
+
             modelBuilder.Entity("Asset_Management.Models.Asset", b =>
                 {
                     b.Navigation("Children");
+
+                    b.Navigation("Signals");
                 });
 #pragma warning restore 612, 618
         }

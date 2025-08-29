@@ -1,0 +1,89 @@
+﻿using Asset_Management.Interfaces;
+using Asset_Management.Models;
+using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+
+namespace Asset_Management.Controllers
+{
+    public class SignalsController : Controller
+    {
+        private readonly ISignalsService _service;
+        public SignalsController(ISignalsService service)
+        {
+
+            _service = service;
+        }
+
+        [HttpGet("Asset/{assetId}")]
+        public IActionResult GetSignals(int assetId)
+        {
+            try
+            {
+                IEnumerable<Signal> signals = _service.GetSignals(assetId);
+                return Ok(signals);
+
+            }catch(Exception ex)
+            {
+                return BadRequest($"Error : {ex.Message}");
+            }
+
+        }
+
+        [HttpPost("Asset/{assetId}/AddSignal")]
+        public IActionResult AddSignal(int assetId, [FromBody] GlobalSignalDTO request)
+        {
+            try
+            {
+                _service.AddSignal(assetId, request);
+                return Ok("Signal added successfully");
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+
+
+        }
+        [HttpPut("Asset/{assetId}/UpdateSignal/{signalId}")]
+        public IActionResult UpdateSignal(int assetId, int signalId ,[FromBody] GlobalSignalDTO request)
+        {
+            try
+            {
+                _service.UpdateSignal(assetId, signalId, request);
+                return Ok("Signal updated successfully");
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("Delete/Asset/{assetId}/Signal/{signalId}")]
+        public IActionResult DeleteSignal(int signalId, int assetId)
+        {
+            try
+            {
+                _service.DeleteSignal(signalId, assetId);
+                return Ok("Signal deleted successfully");
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
+
+    }
+
+    public class GlobalSignalDTO
+    {
+        public string Name { get; set; }
+        public string ValueType { get; set; }
+        public string? Description { get; set; }
+
+    }
+    
+}

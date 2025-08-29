@@ -61,7 +61,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<AssetDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
+//register Signals Service
+builder.Services.AddScoped<ISignalsService, SignalsService>();
 
 //Adding (built-in) Middleware for RateLimiter 
 //builder.Services.AddRateLimiter(options =>
@@ -87,24 +88,6 @@ builder.Services.AddSingleton<IUploadLogService, UploadLogService>();
 builder.Services.AddStorageServices(builder.Configuration);
 
 
-//JsonSerializerService 
-//builder.Services.AddSingleton<IAssetStorageService, JsonAssetStorageService>();
-
-//XmlSerializerService
-//builder.Services.AddSingleton<IAssetStorageService, XmlAssetStorageService>();
-
-
-
-// Add Storage service in DI based on "StorageFlag" in appsettings.json
-//string FileType = builder.Configuration["StorageFlag"].ToLower();
-//if (FileType == "xml")
-//{
-//    builder.Services.AddSingleton<IAssetStorageService, XmlAssetStorageService>();
-//}
-//else
-//{
-//    builder.Services.AddSingleton<IAssetStorageService, JsonAssetStorageService>();
-//}
 
 var app = builder.Build();
 

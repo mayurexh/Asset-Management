@@ -29,15 +29,46 @@ namespace Asset_Management.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Signals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ValueType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AssetId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Signals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Signals_Assets_AssetId",
+                        column: x => x.AssetId,
+                        principalTable: "Assets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Assets_ParentId",
                 table: "Assets",
                 column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Signals_AssetId_Name",
+                table: "Signals",
+                columns: new[] { "AssetId", "Name" },
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Signals");
+
             migrationBuilder.DropTable(
                 name: "Assets");
         }
