@@ -21,7 +21,7 @@
               "children": [],
               "signals": [
                 {
-                  "id": 79,
+                  "id": 104,
                   "name": "Speed",
                   "valueType": "real",
                   "description": null,
@@ -32,14 +32,14 @@
           ],
           "signals": [
             {
-              "id": 76,
+              "id": 101,
               "name": "Temperature",
               "valueType": "real",
               "description": null,
               "assetId": 3
             },
             {
-              "id": 77,
+              "id": 102,
               "name": "Pressure",
               "valueType": "int",
               "description": null,
@@ -54,7 +54,7 @@
           "children": [],
           "signals": [
             {
-              "id": 78,
+              "id": 103,
               "name": "Voltage",
               "valueType": "real",
               "description": null,
