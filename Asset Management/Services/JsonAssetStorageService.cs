@@ -1,6 +1,7 @@
 ﻿using Asset_Management.Interfaces;
 using Asset_Management.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 
 public class InvalidFileFormatException : Exception
@@ -83,7 +84,8 @@ public class JsonAssetStorageService : IAssetStorageService
         var settings = new JsonSerializerSettings
         {
             Formatting = Formatting.Indented,
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
 
         string filePath = GetVersionedFileName();

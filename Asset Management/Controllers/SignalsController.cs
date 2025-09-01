@@ -7,6 +7,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Asset_Management.Controllers
 {
+
+    [ApiController]
+    [Route("api/[controller]")]
     public class SignalsController : Controller
     {
         private readonly ISignalsService _service;
@@ -60,7 +63,7 @@ namespace Asset_Management.Controllers
             }
             catch(DbUpdateException ex)
             {
-                return BadRequest("Signal already present under the same asset");
+                    return BadRequest("Signal already present under the same asset");
             }
             catch (Exception ex)
             {
@@ -78,14 +81,18 @@ namespace Asset_Management.Controllers
                 _service.UpdateSignal(assetId, signalId, request);
                 return Ok("Signal updated successfully");
 
+            }catch(DbUpdateException ex)
+            {
+                return BadRequest("Signal with same name already exists");
             }
+
             catch (Exception ex)
             {
                 return BadRequest($"Error: {ex.Message}");
             }
         }
 
-        [HttpDelete("Delete/Asset/{assetId}/Signal/{signalId}")]
+        [HttpDelete("Asset/{assetId}/Delete/Signal/{signalId}")]
         public IActionResult DeleteSignal(int signalId, int assetId)
         {
             try
@@ -112,7 +119,7 @@ namespace Asset_Management.Controllers
 
         [RegularExpression(@"^[a-zA-Z0-9 ]{1,30}$",
             ErrorMessage = "Invalid Description. Only letters, numbers, and spaces are allowed, max 30 characters.")]
-        public string? Description { get; set; }
+        public string? Description { get; set; }    
 
     }
     

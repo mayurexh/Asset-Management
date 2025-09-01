@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Asset_Management.Models
 {
@@ -11,6 +12,7 @@ namespace Asset_Management.Models
         public string? Description { get; set; }
         public int AssetId { get; set; }
 
+        [JsonIgnore]
         public Asset Asset { get; set; }
 
     }

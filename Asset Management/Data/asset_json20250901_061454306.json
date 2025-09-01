@@ -5,50 +5,6 @@
   "parent": null,
   "children": [
     {
-      "id": 2,
-      "name": "Not Root",
-      "parentId": 1,
-      "children": [
-        {
-          "id": 3,
-          "name": "Child A",
-          "parentId": 2,
-          "children": [],
-          "signals": [
-            {
-              "id": 64,
-              "name": "mayuresh 2",
-              "valueType": "string",
-              "description": "",
-              "assetId": 3
-            },
-            {
-              "id": 29,
-              "name": "mayuresh",
-              "valueType": "string",
-              "description": "",
-              "assetId": 3
-            }
-          ]
-        },
-        {
-          "id": 4,
-          "name": "Child B",
-          "parentId": 2,
-          "children": [],
-          "signals": []
-        },
-        {
-          "id": 5,
-          "name": "Child C",
-          "parentId": 2,
-          "children": [],
-          "signals": []
-        }
-      ],
-      "signals": []
-    },
-    {
       "id": 6,
       "name": "Boiler System",
       "parentId": 1,
@@ -64,6 +20,43 @@
           "id": 10,
           "name": "Pressure Sensor",
           "parentId": 6,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": [
+        {
+          "id": 27,
+          "name": "jldsk",
+          "valueType": "string",
+          "description": "",
+          "assetId": 6
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Not Root",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 3,
+          "name": "Child A",
+          "parentId": 2,
+          "children": [],
+          "signals": []
+        },
+        {
+          "id": 4,
+          "name": "Child B",
+          "parentId": 2,
+          "children": [],
+          "signals": []
+        },
+        {
+          "id": 5,
+          "name": "Child C",
+          "parentId": 2,
           "children": [],
           "signals": []
         }

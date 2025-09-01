@@ -37,6 +37,7 @@ namespace Asset_Management.Services
             return root;
         }
 
+        
         private void LoadChildren(Asset parent)
         {
             _dbContext.Entry(parent).Collection(p => p.Children).Load();

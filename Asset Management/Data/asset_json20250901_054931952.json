@@ -1,0 +1,53 @@
+{
+  "id": 1,
+  "name": "Root",
+  "parentId": null,
+  "parent": null,
+  "children": [
+    {
+      "id": 2,
+      "name": "Not Root",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 3,
+          "name": "Child A",
+          "parentId": 2,
+          "children": [],
+          "signals": [
+            {
+              "id": 24,
+              "name": "Signal 1",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 25,
+              "name": "Signal 2 changed to  1",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Child B",
+          "parentId": 2,
+          "children": [],
+          "signals": []
+        },
+        {
+          "id": 5,
+          "name": "Child C",
+          "parentId": 2,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": []
+    }
+  ],
+  "signals": []
+}

@@ -14,22 +14,7 @@
           "name": "Child A",
           "parentId": 2,
           "children": [],
-          "signals": [
-            {
-              "id": 64,
-              "name": "mayuresh 2",
-              "valueType": "string",
-              "description": "",
-              "assetId": 3
-            },
-            {
-              "id": 29,
-              "name": "mayuresh",
-              "valueType": "string",
-              "description": "",
-              "assetId": 3
-            }
-          ]
+          "signals": []
         },
         {
           "id": 4,
@@ -46,7 +31,15 @@
           "signals": []
         }
       ],
-      "signals": []
+      "signals": [
+        {
+          "id": 28,
+          "name": "dsfsd",
+          "valueType": "string",
+          "description": "",
+          "assetId": 2
+        }
+      ]
     },
     {
       "id": 6,

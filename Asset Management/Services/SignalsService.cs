@@ -9,9 +9,11 @@ namespace Asset_Management.Services
     public class SignalsService : ISignalsService
     {
         private readonly AssetDbContext _dbContext;
-        public SignalsService(AssetDbContext dbContext)
+        private readonly IAssetStorageService _storage;
+        public SignalsService(AssetDbContext dbContext, IAssetStorageService storage)
         {
             _dbContext = dbContext;
+            _storage = storage;
         }
 
         public IEnumerable<Signal> GetSignals(int assetId)
@@ -34,7 +36,30 @@ namespace Asset_Management.Services
             return signal;
         }
 
+        private void LoadSignals(Asset parent)
+        {
+            _dbContext.Entry(parent).Collection(p => p.Signals).Load();
+            foreach (var child in parent.Children)
+            {
+                LoadSignals(child);
+            }
+        }
+        private void LoadChildren(Asset parent)
+        {
+            _dbContext.Entry(parent).Collection(p => p.Children).Load();
+            foreach(var child in parent.Children)
+            {
+                LoadChildren(child);
+            }
+        }
 
+        private void SaveLatestHierarchy(Asset asset)
+        {
+            var root = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
+            LoadSignals(asset);
+            LoadChildren(root);
+            _storage.SaveTree(root);
+        }
         public void AddSignal(int assetId, GlobalSignalDTO signal)
         {
             var asset = _dbContext.Assets.FirstOrDefault(a => a.Id == assetId);
@@ -44,12 +69,13 @@ namespace Asset_Management.Services
             {
                 asset.Signals.Add(new Signal { Name = signal.Name, ValueType = signal.ValueType, Description = signal.Description });
                 _dbContext.SaveChanges();
+                SaveLatestHierarchy(asset);
+
             }
             catch(DbUpdateException ex)
             {
                 throw;
             }
-            
 
         }
         public void UpdateSignal(int assetId, int signalId, GlobalSignalDTO request)
@@ -62,10 +88,20 @@ namespace Asset_Management.Services
             if (signal == null)
                 throw new Exception("Signal not found");
             //update changes 
-            signal.Name = request.Name;
-            signal.Description = request.Description;
-            signal.ValueType = request.ValueType;
-            _dbContext.SaveChanges();
+            try
+            {
+                signal.Name = request.Name;
+                signal.Description = request.Description;
+                signal.ValueType = request.ValueType;
+                _dbContext.SaveChanges();
+                SaveLatestHierarchy(asset);
+
+            }
+            catch (DbUpdateException ex)
+            {
+                throw;
+            }
+            
 
         }
 
@@ -81,6 +117,7 @@ namespace Asset_Management.Services
             //do deletion
             _dbContext.Signals.Remove(signal);
             _dbContext.SaveChanges();
+            SaveLatestHierarchy(asset);
         }
 
 

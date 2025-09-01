@@ -1,0 +1,24 @@
+{
+  "id": 1,
+  "name": "Root",
+  "parentId": null,
+  "parent": null,
+  "children": [
+    {
+      "id": 2,
+      "name": "Main",
+      "parentId": 1,
+      "children": [],
+      "signals": [
+        {
+          "id": 16,
+          "name": "main signal 1",
+          "valueType": "string",
+          "description": "",
+          "assetId": 2
+        }
+      ]
+    }
+  ],
+  "signals": []
+}

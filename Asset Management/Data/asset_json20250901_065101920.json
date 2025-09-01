@@ -16,13 +16,6 @@
           "children": [],
           "signals": [
             {
-              "id": 64,
-              "name": "mayuresh 2",
-              "valueType": "string",
-              "description": "",
-              "assetId": 3
-            },
-            {
               "id": 29,
               "name": "mayuresh",
               "valueType": "string",
