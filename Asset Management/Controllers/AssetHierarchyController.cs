@@ -5,6 +5,7 @@ using Asset_Management.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.ObjectPool;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
@@ -196,6 +197,8 @@ namespace Asset_Management.Controllers
                 {
                     //check the validation and format of the tree
                     var newRoot = _storage.ParseTree(content);
+                    ValidateAssetRecursively(newRoot);
+                    Console.WriteLine("Parsing Done");
                     //PopulateParentIds.AssignParentIds(newRoot);
                     foreach(var child in newRoot.Children)
                     {
@@ -208,12 +211,39 @@ namespace Asset_Management.Controllers
                 catch (InvalidFileFormatException ex)
                 {
                     return BadRequest($"{ex.Message}");
-                }catch(Exception ex)
+                }catch(DbUpdateException ex)
+                {
+                    return BadRequest($"Database Saving exception");
+                }
+                catch(ValidationException ex)
+                {
+                    return BadRequest($"Invalid json format, please check for missing fields");
+                }
+                catch(Exception ex)
                 {
                     return BadRequest($"{ex.Message}"); 
                 }
 
 
+            }
+        }
+        private void ValidateAssetRecursively(Asset asset)
+        {
+            // Validate current asset
+            var context = new ValidationContext(asset);
+            Validator.ValidateObject(asset, context, validateAllProperties: true);
+
+            // Validate signals
+            foreach (var signal in asset.Signals)
+            {
+                var signalContext = new ValidationContext(signal);
+                Validator.ValidateObject(signal, signalContext, validateAllProperties: true);
+            }
+
+            // Validate children
+            foreach (var child in asset.Children)
+            {
+                ValidateAssetRecursively(child);
             }
         }
 

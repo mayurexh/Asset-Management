@@ -1,0 +1,18 @@
+{
+  "name": "RootAsset",
+  "children": [
+    {
+      "name": "Child1",
+      "children": [
+        { "name": "GrandChild1" },
+        { "name": "GrandChild2" }
+      ]
+    },
+    {
+      "name": "Child2",
+      "children": [
+        { "name": "GrandChild3" }
+      ]
+    }
+  ]
+}

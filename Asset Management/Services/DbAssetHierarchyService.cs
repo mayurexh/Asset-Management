@@ -181,25 +181,43 @@ namespace Asset_Management.Services
                 _dbContext.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('Assets', RESEED, 0)");
             }
 
-            // Create new root
-            var root = new Asset { Name = "Root" };
-            _dbContext.Add(root);
-            _dbContext.SaveChanges(); // Save to get the generated ID
+            try
+            {
+                // Create new root
+                var root = new Asset { Name = "Root" };
+                _dbContext.Add(root);
+                _dbContext.SaveChanges(); // Save to get the generated ID
 
 
-            // Set parent relationships and add tree
-            SetParentIds(newRoot, root.Id);
-            _dbContext.Add(newRoot);
-            _dbContext.SaveChanges();
+                // Set parent relationships and add tree
+                ResetIds(newRoot);
+                SetParentIds(newRoot, root.Id);
+                _dbContext.Add(newRoot);
+                _dbContext.SaveChanges();
 
-            //in memory objects reflect db state
-            //saving in file for downloading and tracking purpose.
-            //recursivley load children in root to represent deep hierarchy
-            var dbroot = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
-            LoadChildren(dbroot);
-            _storage.SaveTree(dbroot);
+                //in memory objects reflect db state
+                //saving in file for downloading and tracking purpose.
+                //recursivley load children in root to represent deep hierarchy
+                var dbroot = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
+                LoadChildren(dbroot);
+                _storage.SaveTree(dbroot);
+            }catch(DbUpdateException ex)
+            {
+
+                throw;
+            }
+            
 
 
+        }
+        private void ResetIds(Asset asset)
+        {
+            asset.Id = 0;
+            foreach (var s in asset.Signals)
+                s.Id = 0;
+
+            foreach (var child in asset.Children)
+                ResetIds(child);
         }
 
         private bool ContainsRootNode(Asset root)

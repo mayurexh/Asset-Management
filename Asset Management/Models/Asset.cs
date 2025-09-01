@@ -13,6 +13,7 @@ namespace Asset_Management.Models
         [XmlAttribute("id")] //specifying xml attribute so that xml serializer doesn't throw unknow attribute error as it excepts attributes
         public int Id { get; set; }
 
+        [Required]
         [XmlAttribute("name")]
         public string Name { get; set; }
 
@@ -28,6 +29,7 @@ namespace Asset_Management.Models
         [XmlElement("asset")] //include case insensitiviy
         public List<Asset> Children { get; set; } = new List<Asset>();
 
+        [Required]
         [XmlIgnore]
         public List<Signal> Signals { get; set; } = new List<Signal>();
     }

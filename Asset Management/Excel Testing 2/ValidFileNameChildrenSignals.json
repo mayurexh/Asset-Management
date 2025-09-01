@@ -1,0 +1,38 @@
+{
+  "name": "RootAsset",
+  "children": [
+    {
+      "name": "Child1",
+      "signals": [
+        {
+          "name": "Temperature",
+          "valueType": "real"
+        },
+        {
+          "name": "Pressure",
+          "valueType": "int"
+        }
+      ],
+      "children": [
+        {
+          "name": "GrandChild1",
+          "signals": [
+            {
+              "name": "Speed",
+              "valueType": "real"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Child2",
+      "signals": [
+        {
+          "name": "Voltage",
+          "valueType": "real"
+        }
+      ]
+    }
+  ]
+}

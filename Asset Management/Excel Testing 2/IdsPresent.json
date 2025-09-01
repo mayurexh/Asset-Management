@@ -1,0 +1,31 @@
+{
+  "id": 100,
+  "name": "RootAsset",
+  "children": [
+    {
+      "id": 101,
+      "name": "Child1",
+      "children": [],
+      "signals": [
+        {
+          "id": 201,
+          "name": "Temperature",
+          "valueType": "real"
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "name": "Child2",
+      "children": [],
+
+      "signals": [
+        {
+          "id": 202,
+          "name": "Pressure",
+          "valueType": "int"
+        }
+      ]
+    }
+  ]
+}

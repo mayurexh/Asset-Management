@@ -28,7 +28,7 @@ public class JsonAssetStorageService : IAssetStorageService
         {
             var newRoot = JsonConvert.DeserializeObject<Asset>(content, new JsonSerializerSettings
             {
-                MissingMemberHandling = MissingMemberHandling.Error
+                MissingMemberHandling = MissingMemberHandling.Error //only throws error more extra fields and not missing members
             });
 
 
@@ -44,7 +44,7 @@ public class JsonAssetStorageService : IAssetStorageService
         }
         catch (JsonSerializationException ex)
         {
-            throw new InvalidFileFormatException("Invalid File", ex);
+            throw new InvalidFileFormatException("Invalid File, extra fields present only Name, Children and Signals allowed" , ex);
         }
         
     }

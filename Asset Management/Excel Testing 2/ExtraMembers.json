@@ -1,0 +1,16 @@
+{
+  "name": "RootAsset",
+  "extraField": "oops_this_should_fail",
+  "children": [
+    {
+      "name": "Child1",
+      "signals": [
+        {
+          "name": "Temperature",
+          "valueType": "real",
+          "unexpected": 123
+        }
+      ]
+    }
+  ]
+}
