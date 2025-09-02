@@ -53,7 +53,7 @@ namespace Asset_Management.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid Name/Description/Value Type");
+                return BadRequest("Invalid Name or Description");
             }
             try
             {

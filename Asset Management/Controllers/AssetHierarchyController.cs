@@ -2,6 +2,7 @@
 using Asset_Management.Models;
 using Asset_Management.Services;
 using Asset_Management.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.RateLimiting;
@@ -61,17 +62,13 @@ namespace Asset_Management.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles ="Admin")]
         public IActionResult AddNode([FromBody] AssetAddRequest request)
         {
             if (!ModelState.IsValid)
             {
-                // Extract all validation errors
-                var errors = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-                Console.Write(errors);
-                return BadRequest(new { Errors = errors });
+                
+                return BadRequest("Invalid Name. Only letters, numbers, and spaces are allowed, max 30 characters.");
             }
 
             var newAsset = new Asset
@@ -85,18 +82,15 @@ namespace Asset_Management.Controllers
             if (!success)
             {
                 Console.WriteLine("Not successfull from AddNode Action");
-                // Return same structured error as ModelState
-                var fieldErrors = new Dictionary<string, string[]>
-        {
-            { "parentId", new[] { "Parent not found or ID already exists or Name already exists." } }
-        };
-                return BadRequest(new { errors = fieldErrors });
+                
+                return BadRequest("Asset with same name already exists.");
             }
 
             return Ok("Node added successfully.");
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles ="Admin")]
         public IActionResult DeleteNode(int id)
         {
             bool success = _service.RemoveNode(id);
@@ -107,6 +101,8 @@ namespace Asset_Management.Controllers
         }
 
         [HttpPut("Update/{id}")]
+        [Authorize(Roles = "Admin")]
+
         public IActionResult UpdateNode(int id, string name)
         {
             bool success = _service.UpdateNode(id, name);
@@ -119,6 +115,7 @@ namespace Asset_Management.Controllers
 
 
         [HttpPost("UploadExistingTree")]
+        [Authorize(Roles ="Admin")]
         public IActionResult UploadInExisting(IFormFile file)
         {
             var FileExtension = System.IO.Path.GetExtension(file.FileName);
@@ -167,6 +164,7 @@ namespace Asset_Management.Controllers
         }
 
         [HttpPost("Upload")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> UploadHierarchy(IFormFile file)
         {
 

@@ -1,0 +1,69 @@
+{
+  "id": 1,
+  "name": "Root",
+  "parentId": null,
+  "parent": null,
+  "children": [
+    {
+      "id": 2,
+      "name": "Main Plant",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 3,
+          "name": "Production Line A",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 5,
+              "name": "Assembly Unit",
+              "parentId": 3,
+              "children": [],
+              "signals": []
+            },
+            {
+              "id": 6,
+              "name": "Wire Unit",
+              "parentId": 3,
+              "children": [
+                {
+                  "id": 8,
+                  "name": "Machine X",
+                  "parentId": 6,
+                  "children": [],
+                  "signals": []
+                },
+                {
+                  "id": 9,
+                  "name": "Machine Y",
+                  "parentId": 6,
+                  "children": [],
+                  "signals": []
+                }
+              ],
+              "signals": []
+            }
+          ],
+          "signals": []
+        },
+        {
+          "id": 4,
+          "name": "Production Line B",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 7,
+              "name": "Cooling System",
+              "parentId": 4,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": []
+        }
+      ],
+      "signals": []
+    }
+  ],
+  "signals": []
+}

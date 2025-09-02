@@ -48,7 +48,7 @@
               "id": 12,
               "name": "boiler line 1",
               "valueType": "string",
-              "description": "First boiler line.",
+              "description": "",
               "assetId": 3
             }
           ]

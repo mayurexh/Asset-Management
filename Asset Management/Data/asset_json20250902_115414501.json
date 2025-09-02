@@ -5,6 +5,28 @@
   "parent": null,
   "children": [
     {
+      "id": 11,
+      "name": "Water Treatment",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 13,
+          "name": "Filter Unit",
+          "parentId": 11,
+          "children": [],
+          "signals": []
+        },
+        {
+          "id": 14,
+          "name": "Chemical Dosing",
+          "parentId": 11,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": []
+    },
+    {
       "id": 2,
       "name": "Production Plant",
       "parentId": 1,
@@ -14,20 +36,6 @@
           "name": "Boiler System",
           "parentId": 2,
           "children": [
-            {
-              "id": 6,
-              "name": "Pump A",
-              "parentId": 3,
-              "children": [],
-              "signals": []
-            },
-            {
-              "id": 7,
-              "name": "Valve Control",
-              "parentId": 3,
-              "children": [],
-              "signals": []
-            },
             {
               "id": 9,
               "name": "Pump B",
@@ -41,27 +49,18 @@
               "parentId": 3,
               "children": [],
               "signals": []
-            }
-          ],
-          "signals": [
+            },
             {
-              "id": 12,
-              "name": "boiler line 1",
-              "valueType": "string",
-              "description": "First boiler line.",
-              "assetId": 3
-            }
-          ]
-        },
-        {
-          "id": 4,
-          "name": "Cooling Tower",
-          "parentId": 2,
-          "children": [
+              "id": 6,
+              "name": "Pump A",
+              "parentId": 3,
+              "children": [],
+              "signals": []
+            },
             {
-              "id": 8,
-              "name": "Fan Unit 1",
-              "parentId": 4,
+              "id": 7,
+              "name": "Valve Control",
+              "parentId": 3,
               "children": [],
               "signals": []
             }
@@ -82,27 +81,20 @@
             }
           ],
           "signals": []
-        }
-      ],
-      "signals": []
-    },
-    {
-      "id": 11,
-      "name": "Water Treatment",
-      "parentId": 1,
-      "children": [
-        {
-          "id": 13,
-          "name": "Filter Unit",
-          "parentId": 11,
-          "children": [],
-          "signals": []
         },
         {
-          "id": 14,
-          "name": "Chemical Dosing",
-          "parentId": 11,
-          "children": [],
+          "id": 4,
+          "name": "Cooling Tower",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 8,
+              "name": "Fan Unit 1",
+              "parentId": 4,
+              "children": [],
+              "signals": []
+            }
+          ],
           "signals": []
         }
       ],
