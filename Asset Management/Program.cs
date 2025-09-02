@@ -2,11 +2,18 @@ using Asset_Management.Database;
 using Asset_Management.Extensions;
 using Asset_Management.Interfaces;
 using Asset_Management.Middleware;
+using Asset_Management.Models;
 using Asset_Management.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Formatting.Compact;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -87,6 +94,34 @@ builder.Services.AddSingleton<IUploadLogService, UploadLogService>();
 // Register Json and XML storage service using Extensions
 builder.Services.AddStorageServices(builder.Configuration);
 
+// Add a password hasher
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+//configure jwt settings
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
+
+// Add Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+});
+
+builder.Services.AddAuthorization();
 
 
 var app = builder.Build();
@@ -104,6 +139,9 @@ app.UseHttpsRedirection();
 
 app.UseCors(MyAllowSpecificOrigins);
 //app.UseAuthorization();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 //app.UseMiddleware<RateLimitingCustomMiddelware>();
 app.UseMiddleware<NewAssetsLoggerMiddleware>();

@@ -1,0 +1,99 @@
+﻿using Asset_Management.Database;
+using Asset_Management.DTO;
+using Asset_Management.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace Asset_Management.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthController : Controller
+    {
+        private readonly AssetDbContext _dbContext;
+        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IConfiguration _configuration;
+        public AuthController(AssetDbContext dbContext, IPasswordHasher<User> passwordHasher, IConfiguration configuration) {
+            _dbContext = dbContext;
+            _passwordHasher = passwordHasher;
+            _configuration = configuration;
+        
+        }
+
+        [HttpPost("Register")]
+        public IActionResult Register(RegisterDTO dto)
+        {
+            //check if any user with similar username exists 
+            if (_dbContext.Users.Any(u => u.Username == dto.Username))
+                return BadRequest("Username already exists");
+
+            var user = new User
+            {
+                Username = dto.Username,
+                Role = "Viewer",
+                CreatedAtUtc = DateTime.UtcNow
+            };
+
+            user.PasswordHash = _passwordHasher.HashPassword(user, dto.Password);
+
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
+
+            return Ok("User Registered");
+        }
+
+        [HttpPost("Login")]
+        public IActionResult Login(LoginDTO dto)
+        {
+            // Find user by username
+            var user = _dbContext.Users.FirstOrDefault(u => u.Username == dto.Username);
+            if (user == null)
+                return Unauthorized("Invalid username or password");
+
+            // Verify password
+            var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
+            if (result == PasswordVerificationResult.Failed)
+                return Unauthorized("Invalid username or password");
+
+            // Create claims
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.Role)
+    };
+
+            //generate JWT 
+            var jwtSettings = _configuration.GetSection("Jwt");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpiresInMinutes"])),
+                signingCredentials: creds
+             );
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return Ok(new
+            {
+                Token = tokenString,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpiresInMinutes"]))
+            });
+
+
+
+
+        }
+    }
+
+    
+}

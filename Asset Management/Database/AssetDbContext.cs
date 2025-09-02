@@ -12,6 +12,8 @@ namespace Asset_Management.Database
         public DbSet<Asset> Assets { get; set; }
         public DbSet<Signal> Signals { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure self-referencing relationship
@@ -32,6 +34,9 @@ namespace Asset_Management.Database
             modelBuilder.Entity<Signal>()
                 .HasIndex(s => new { s.AssetId, s.Name })
                 .IsUnique();
+
+            // unique username constrain for Users
+            modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
 
 
         }
