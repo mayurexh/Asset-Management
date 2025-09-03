@@ -28,7 +28,7 @@ public class JsonAssetStorageService : IAssetStorageService
         {
             var newRoot = JsonConvert.DeserializeObject<Asset>(content, new JsonSerializerSettings
             {
-                MissingMemberHandling = MissingMemberHandling.Error //only throws error more extra fields and not missing members
+                MissingMemberHandling = MissingMemberHandling.Error //only throws error for extra fields and not missing members
             });
 
 

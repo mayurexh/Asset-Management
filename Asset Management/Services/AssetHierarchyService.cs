@@ -25,6 +25,11 @@ namespace Asset_Management.Services
             return _root;
         }
 
+        public bool AddToRoot(string assetName)
+        {
+            return true;
+        }
+
         public bool AddNode(int parentId, Asset newNode)
         {
             var parent = FindNodeById(_root, parentId);

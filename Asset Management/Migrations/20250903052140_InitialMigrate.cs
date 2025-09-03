@@ -68,6 +68,11 @@ namespace Asset_Management.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "CreatedAtUtc", "PasswordHash", "Role", "Username" },
+                values: new object[] { 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "AQAAAAIAAYagAAAAEIdgTPG+a4yi3RXmgJdIP+/vlZvopEnVlHnjJDJmVq/rGjZljrxpK1RoZ+iFAg0mhw==", "Admin", "admin" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Assets_ParentId",
                 table: "Assets",

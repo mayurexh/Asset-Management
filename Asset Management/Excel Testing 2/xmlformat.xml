@@ -1,0 +1,6 @@
+﻿<assets>
+  <asset id="1" name="Root" parentId="">
+    <asset id="2" name="Laptop" parentId="1" />
+    <asset id="3" name="Printer" parentId="1" />
+  </asset>
+</assets>

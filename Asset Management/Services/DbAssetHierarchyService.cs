@@ -67,6 +67,20 @@ namespace Asset_Management.Services
             _dbContext.SaveChanges();
             return true;
         }
+        public bool AddToRoot(string assetName)
+        {
+            var root = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
+            var asset = new Asset
+            {
+                Name = assetName,
+                Children = new List<Asset>(),
+                Signals = new List<Signal>()
+
+            };
+            root.Children.Add(asset);
+            _dbContext.SaveChanges();
+            return true;
+        }
 
         public bool RemoveNode(int nodeId)
         {

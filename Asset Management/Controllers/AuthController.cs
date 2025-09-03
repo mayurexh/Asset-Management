@@ -3,6 +3,7 @@ using Asset_Management.DTO;
 using Asset_Management.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -28,6 +29,11 @@ namespace Asset_Management.Controllers
         [HttpPost("Register")]
         public IActionResult Register(RegisterDTO dto)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Username can only contain letters, numbers, hyphens (-), and underscores (_) (upto 30 characters)");
+            }
             //check if any user with similar username exists 
             if (_dbContext.Users.Any(u => u.Username == dto.Username))
                 return BadRequest("Username already exists");
@@ -50,6 +56,9 @@ namespace Asset_Management.Controllers
         [HttpPost("Login")]
         public IActionResult Login(LoginDTO dto)
         {
+
+            if (!ModelState.IsValid)
+                return BadRequest("Username can only contain letters, numbers, hyphens (-), and underscores (_) (upto 30 characters)");
             // Find user by username
             var user = _dbContext.Users.FirstOrDefault(u => u.Username == dto.Username);
             if (user == null)

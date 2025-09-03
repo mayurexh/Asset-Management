@@ -6,6 +6,8 @@
     {
         Asset GetHierarchy();
         bool AddNode(int parentId, Asset newNode);
+        bool AddToRoot(string assetName);
+
         bool RemoveNode(int nodeId);
 
         bool UpdateNode(int nodeId, string newName);

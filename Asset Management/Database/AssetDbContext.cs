@@ -38,7 +38,15 @@ namespace Asset_Management.Database
             // unique username constrain for Users
             modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
 
-
+            // seed admin
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 1,
+                Username = "admin",
+                Role = "Admin",
+                PasswordHash = "AQAAAAIAAYagAAAAEIdgTPG+a4yi3RXmgJdIP+/vlZvopEnVlHnjJDJmVq/rGjZljrxpK1RoZ+iFAg0mhw==",
+                CreatedAtUtc = new DateTime(2025, 01, 01, 0, 0, 0, DateTimeKind.Utc)
+            });
         }
 
 

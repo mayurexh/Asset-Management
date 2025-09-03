@@ -5,6 +5,65 @@
   "parent": null,
   "children": [
     {
+      "id": 57,
+      "name": "Boiler System",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 60,
+          "name": "Pump B",
+          "parentId": 57,
+          "children": [],
+          "signals": []
+        },
+        {
+          "id": 61,
+          "name": "Pressure Sensor",
+          "parentId": 57,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "id": 58,
+      "name": "Water Treatment",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 62,
+          "name": "Filter Unit",
+          "parentId": 58,
+          "children": [],
+          "signals": []
+        },
+        {
+          "id": 63,
+          "name": "Chemical Dosing",
+          "parentId": 58,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "id": 59,
+      "name": "Electrical Panel",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 64,
+          "name": "Main Switch",
+          "parentId": 59,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": []
+    },
+    {
       "id": 2,
       "name": "Main",
       "parentId": 1,

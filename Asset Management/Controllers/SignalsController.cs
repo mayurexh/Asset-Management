@@ -75,7 +75,11 @@ namespace Asset_Management.Controllers
         [HttpPut("Asset/{assetId}/UpdateSignal/{signalId}")]
         public IActionResult UpdateSignal(int assetId, int signalId ,[FromBody] GlobalSignalDTO request)
         {
-            
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid Description or Name. Only letters, numbers, and spaces are allowed, max 30 characters.");
+            }
+
             try
             {
                 _service.UpdateSignal(assetId, signalId, request);

@@ -3,6 +3,7 @@ using Asset_Management.Models;
 using Asset_Management.Services;
 using Asset_Management.Utils;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.RateLimiting;
@@ -39,6 +40,7 @@ namespace Asset_Management.Controllers
         [HttpGet]
         public IActionResult GetHierarchy()
         {
+            
             var tree = _service.GetHierarchy();
             if (tree == null)
             {
@@ -88,6 +90,26 @@ namespace Asset_Management.Controllers
 
             return Ok("Node added successfully.");
         }
+
+        [HttpPost("AddNewAsset")]
+        [Authorize(Roles ="Admin")]
+        public IActionResult AddNewAsset(string assetName)
+        {
+
+            bool isMatch = Regex.IsMatch(assetName, @"^[a-zA-Z0-9 ]{1,30}$");
+            Console.WriteLine("FROM ADD TO ROOT, IS VALID? " + isMatch);
+            if(!isMatch)
+            {
+                return BadRequest("Invalid Name. Only letters, numbers, and spaces are allowed, max 30 characters.");
+            }
+            bool success = _service.AddToRoot(assetName);
+            if (!success)
+            {
+                return BadRequest("Unable to add Asset");
+            }
+            return Ok($"Asset {assetName} added");
+        }
+
 
         [HttpDelete("{id}")]
         [Authorize(Roles ="Admin")]
