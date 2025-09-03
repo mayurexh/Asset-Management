@@ -1,0 +1,40 @@
+{
+  "name": "MachiD(S*F()nes",
+  "children": [
+    {
+      "name": "Lathe",
+      "children": [
+        {
+          "name": "Lathe Tooling",
+          "children": []
+        },
+        {
+          "name": "Lathe Maintenance",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "Drill",
+      "children": [
+        {
+          "name": "Drill Bits",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "Welding",
+      "children": [
+        {
+          "name": "Arc Welding",
+          "children": []
+        },
+        {
+          "name": "Gas Welding",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

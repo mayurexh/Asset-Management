@@ -1,0 +1,54 @@
+{
+  "id": 1,
+  "name": "Root",
+  "parentId": null,
+  "parent": null,
+  "children": [
+    {
+      "id": 2,
+      "name": "Machines",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 3,
+          "name": "Lathe",
+          "parentId": 2,
+          "children": [],
+          "signals": [
+            {
+              "id": 10,
+              "name": "Speed",
+              "valueType": "real",
+              "description": null,
+              "assetId": 3
+            },
+            {
+              "id": 11,
+              "name": "Temperature",
+              "valueType": "real",
+              "description": null,
+              "assetId": 3
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Drill",
+          "parentId": 2,
+          "children": [],
+          "signals": [
+            {
+              "id": 12,
+              "name": "RPM",
+              "valueType": "int",
+              "description": null,
+              "assetId": 4
+            }
+          ]
+        }
+      ],
+      "signals": []
+    }
+  ],
+  "signals": []
+}

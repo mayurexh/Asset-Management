@@ -5,8 +5,30 @@
   "parent": null,
   "children": [
     {
+      "id": 8,
+      "name": "Welding",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 9,
+          "name": "Arc Welding",
+          "parentId": 8,
+          "children": [],
+          "signals": []
+        },
+        {
+          "id": 10,
+          "name": "Gas Welding",
+          "parentId": 8,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": []
+    },
+    {
       "id": 2,
-      "name": "MachiD(S*F()nes",
+      "name": "Machines",
       "parentId": 1,
       "children": [
         {
@@ -15,14 +37,14 @@
           "parentId": 2,
           "children": [
             {
-              "id": 6,
+              "id": 5,
               "name": "Lathe Tooling",
               "parentId": 3,
               "children": [],
               "signals": []
             },
             {
-              "id": 7,
+              "id": 6,
               "name": "Lathe Maintenance",
               "parentId": 3,
               "children": [],
@@ -37,31 +59,9 @@
           "parentId": 2,
           "children": [
             {
-              "id": 8,
+              "id": 7,
               "name": "Drill Bits",
               "parentId": 4,
-              "children": [],
-              "signals": []
-            }
-          ],
-          "signals": []
-        },
-        {
-          "id": 5,
-          "name": "Welding",
-          "parentId": 2,
-          "children": [
-            {
-              "id": 9,
-              "name": "Arc Welding",
-              "parentId": 5,
-              "children": [],
-              "signals": []
-            },
-            {
-              "id": 10,
-              "name": "Gas Welding",
-              "parentId": 5,
               "children": [],
               "signals": []
             }

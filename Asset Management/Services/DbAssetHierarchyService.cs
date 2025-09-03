@@ -13,6 +13,7 @@ namespace Asset_Management.Services
 
         private readonly AssetDbContext _dbContext;
         private readonly IAssetStorageService _storage;
+        public static List<Asset> assetsAdded = new List<Asset>();
 
         public DbAssetHierarchyService(AssetDbContext dbContext, IAssetStorageService storage)
         {
@@ -329,13 +330,33 @@ namespace Asset_Management.Services
         private int MergeNode(Asset currentParent, Asset newNode)
         {
             // FIRST: Check if node exists GLOBALLY by name (most important check)
-            var globalMatch = _dbContext.Assets
+            var globalMatch = _dbContext.Assets.Include(a=>a.Signals)
                 .FirstOrDefault(a => a.Name.ToLower() == newNode.Name.ToLower());
 
             if (globalMatch != null)
             {
                 // Node exists somewhere - merge all children into it
                 int addedCount = 0;
+
+                //if (newNode.Signals != null && newNode.Signals.Any())
+                //{
+                //    foreach (var signal in newNode.Signals)
+                //    {
+                //        // Check if signal already exists under this asset
+                //        bool exists = _dbContext.Signals.Any(s =>
+                //            s.Name.ToLower() == signal.Name.ToLower() &&
+                //            s.AssetId == globalMatch.Id);
+
+                //        if (!exists)
+                //        {
+                //            signal.Id = 0; // let EF assign
+                //            signal.AssetId = globalMatch.Id;
+                //            _dbContext.Signals.Add(signal);
+                //        }
+                //    }
+                //}
+
+
                 foreach (var child in newNode.Children)
                 {
                     addedCount += MergeNode(globalMatch, child);
@@ -351,6 +372,9 @@ namespace Asset_Management.Services
             ResetChildIds(newNode);
 
             _dbContext.Assets.Add(newNode);
+
+            assetsAdded.Add(newNode);
+
             return TreeLength(newNode);
         }
 

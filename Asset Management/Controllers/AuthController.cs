@@ -57,8 +57,8 @@ namespace Asset_Management.Controllers
         public IActionResult Login(LoginDTO dto)
         {
 
-            if (!ModelState.IsValid)
-                return BadRequest("Username can only contain letters, numbers, hyphens (-), and underscores (_) (upto 30 characters)");
+            //if (!ModelState.IsValid)
+            //    return BadRequest("Username can only contain letters, numbers, hyphens (-), and underscores (_) (upto 30 characters)");
             // Find user by username
             var user = _dbContext.Users.FirstOrDefault(u => u.Username == dto.Username);
             if (user == null)
@@ -78,9 +78,11 @@ namespace Asset_Management.Controllers
     };
 
             //generate JWT 
-            var jwtSettings = _configuration.GetSection("Jwt");
+            var jwtSettings = _configuration.GetSection("Jwt"); //plain string 
+            //jwt sign in algos need a cryptographic key object 
+            //wrap key into a security key object that jwt can understand
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256); //header {type: jwt, algo: SHA256)
 
             var token = new JwtSecurityToken(
                 issuer: jwtSettings["Issuer"],
@@ -90,7 +92,10 @@ namespace Asset_Management.Controllers
                 signingCredentials: creds
              );
 
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token); //generates a token based on the creds and encrypts the payload
+
+            //result = {Base64Url(Header)}.{Base64Url(Payload)}.{Base64Url(Signature)}
+            //Signature is generated when WriteToken takes algo type and key from the creds and uses SHA256(header.payload,key);
 
             return Ok(new
             {

@@ -124,9 +124,15 @@ namespace Asset_Management.Controllers
 
         [HttpPut("Update/{id}")]
         [Authorize(Roles = "Admin")]
-
         public IActionResult UpdateNode(int id, string name)
         {
+
+            bool isMatch = Regex.IsMatch(name, @"^[a-zA-Z0-9 ]{1,30}$");
+            Console.WriteLine("FROM ADD TO ROOT, IS VALID? " + isMatch);
+            if (!isMatch)
+            {
+                return BadRequest("Invalid Name. Only letters, numbers, and spaces are allowed, max 30 characters.");
+            }
             bool success = _service.UpdateNode(id, name);
 
             if (!success)
@@ -155,20 +161,26 @@ namespace Asset_Management.Controllers
                 using var sr = new StreamReader(file.OpenReadStream());
                 var content = sr.ReadToEnd();
                 Asset NewAdditionTree = _storage.ParseTree(content);
+                ValidateAssetRecursively(NewAdditionTree);
 
-                // ✅ Remove the null check since int IDs default to 0
+
+                // Remove the null check since int IDs default to 0
                 // Reset IDs to 0 so EF Core can generate new ones
                 //ResetTreeIds(NewAdditionTree);
 
                 int result = _service.MergeTree(NewAdditionTree);
                 _uploadlog.UpdateLog(file.FileName, "merged");
-                HttpContext.Items["assetsAdded"] = AssetHierarchyService.assetsAdded;
+                HttpContext.Items["assetsAdded"] = DbAssetHierarchyService.assetsAdded;
                 return Ok(result);
 
             }
             catch (InvalidFileFormatException ex)
             {
                 return BadRequest($"Invalid File format, please upload a valid {_configuration["StorageFlag"]} file");
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest($"Invalid json format, please check for missing fields");
             }
             catch (Exception ex)
             {
@@ -196,13 +208,15 @@ namespace Asset_Management.Controllers
 
             }
 
-            var FileExtension = System.IO.Path.GetExtension(file.FileName);
+            var FileExtension = System.IO.Path.GetExtension(file.FileName); 
 
             // check if file uploaded by user is of type _configuration["StorageFlag"] as based on the StorageFlag storage service is injected
             // at start of the program
             var storageExtension = "."+_configuration["StorageFlag"]; // "." is added because GetExtension method return extension with a . (eg. .json/.xml)
-            Type type = storageExtension.GetType();
-            Console.WriteLine(type);
+
+
+
+
             if (FileExtension != storageExtension)
             {
                 return BadRequest($"Invalid File format, please upload a {_configuration["StorageFlag"]} file");

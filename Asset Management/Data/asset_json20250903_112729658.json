@@ -6,7 +6,7 @@
   "children": [
     {
       "id": 2,
-      "name": "MachiD(S*F()nes",
+      "name": "Machines",
       "parentId": 1,
       "children": [
         {
@@ -15,31 +15,24 @@
           "parentId": 2,
           "children": [
             {
-              "id": 6,
-              "name": "Lathe Tooling",
-              "parentId": 3,
-              "children": [],
-              "signals": []
-            },
-            {
               "id": 7,
               "name": "Lathe Maintenance",
               "parentId": 3,
               "children": [],
-              "signals": []
-            }
-          ],
-          "signals": []
-        },
-        {
-          "id": 4,
-          "name": "Drill",
-          "parentId": 2,
-          "children": [
+              "signals": [
+                {
+                  "id": 24,
+                  "name": "sf2",
+                  "valueType": "string",
+                  "description": "",
+                  "assetId": 7
+                }
+              ]
+            },
             {
-              "id": 8,
-              "name": "Drill Bits",
-              "parentId": 4,
+              "id": 6,
+              "name": "Lathe Tooling",
+              "parentId": 3,
               "children": [],
               "signals": []
             }

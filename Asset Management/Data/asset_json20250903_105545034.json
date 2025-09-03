@@ -5,8 +5,23 @@
   "parent": null,
   "children": [
     {
+      "id": 11,
+      "name": "Milling",
+      "parentId": 1,
+      "children": [],
+      "signals": [
+        {
+          "id": 19,
+          "name": "Power Consumption",
+          "valueType": "real",
+          "description": null,
+          "assetId": 11
+        }
+      ]
+    },
+    {
       "id": 2,
-      "name": "MachiD(S*F()nes",
+      "name": "Machines",
       "parentId": 1,
       "children": [
         {
@@ -19,7 +34,15 @@
               "name": "Lathe Tooling",
               "parentId": 3,
               "children": [],
-              "signals": []
+              "signals": [
+                {
+                  "id": 18,
+                  "name": "Tool Pressure",
+                  "valueType": "real",
+                  "description": null,
+                  "assetId": 6
+                }
+              ]
             },
             {
               "id": 7,
@@ -29,7 +52,22 @@
               "signals": []
             }
           ],
-          "signals": []
+          "signals": [
+            {
+              "id": 16,
+              "name": "Speed",
+              "valueType": "real",
+              "description": null,
+              "assetId": 3
+            },
+            {
+              "id": 17,
+              "name": "Vibration",
+              "valueType": "real",
+              "description": null,
+              "assetId": 3
+            }
+          ]
         },
         {
           "id": 4,

@@ -1,0 +1,63 @@
+{
+  "name": "Machines",
+  "children": [
+    {
+      "name": "Lathe",
+      "children": [
+        {
+          "name": "Lathe Tooling",
+          "children": [
+            {
+              "name": "Cutting Tools",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Milling",
+      "children": [
+        {
+          "name": "CNC Milling",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "Electronics",
+      "children": [
+        {
+          "name": "Sensors",
+          "children": [
+            {
+              "name": "Temperature Sensors",
+              "children": []
+            },
+            {
+              "name": "Pressure Sensors",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Controllers",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "Furniture",
+      "children": [
+        {
+          "name": "Chairs",
+          "children": []
+        },
+        {
+          "name": "Desks",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

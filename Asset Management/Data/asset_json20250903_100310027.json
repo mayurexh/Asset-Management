@@ -6,24 +6,24 @@
   "children": [
     {
       "id": 2,
-      "name": "MachiD(S*F()nes",
+      "name": "Production Plant",
       "parentId": 1,
       "children": [
         {
           "id": 3,
-          "name": "Lathe",
+          "name": "Boiler System",
           "parentId": 2,
           "children": [
             {
               "id": 6,
-              "name": "Lathe Tooling",
+              "name": "Pump A",
               "parentId": 3,
               "children": [],
               "signals": []
             },
             {
               "id": 7,
-              "name": "Lathe Maintenance",
+              "name": "Valve Control",
               "parentId": 3,
               "children": [],
               "signals": []
@@ -33,12 +33,12 @@
         },
         {
           "id": 4,
-          "name": "Drill",
+          "name": "Cooling Tower",
           "parentId": 2,
           "children": [
             {
               "id": 8,
-              "name": "Drill Bits",
+              "name": "Fan Unit 1",
               "parentId": 4,
               "children": [],
               "signals": []
@@ -48,24 +48,9 @@
         },
         {
           "id": 5,
-          "name": "Welding",
+          "name": "Electrical Panel",
           "parentId": 2,
-          "children": [
-            {
-              "id": 9,
-              "name": "Arc Welding",
-              "parentId": 5,
-              "children": [],
-              "signals": []
-            },
-            {
-              "id": 10,
-              "name": "Gas Welding",
-              "parentId": 5,
-              "children": [],
-              "signals": []
-            }
-          ],
+          "children": [],
           "signals": []
         }
       ],
