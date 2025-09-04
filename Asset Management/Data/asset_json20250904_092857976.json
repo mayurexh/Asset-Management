@@ -37,7 +37,15 @@
               "signals": []
             }
           ],
-          "signals": []
+          "signals": [
+            {
+              "id": 35,
+              "name": "sig 1 4",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            }
+          ]
         },
         {
           "id": 4,
@@ -71,15 +79,7 @@
               "id": 9,
               "name": "Narc Welding",
               "parentId": 5,
-              "children": [
-                {
-                  "id": 11,
-                  "name": "narc2",
-                  "parentId": 9,
-                  "children": [],
-                  "signals": []
-                }
-              ],
+              "children": [],
               "signals": [
                 {
                   "id": 32,

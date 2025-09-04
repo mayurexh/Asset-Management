@@ -71,15 +71,7 @@
               "id": 9,
               "name": "Narc Welding",
               "parentId": 5,
-              "children": [
-                {
-                  "id": 11,
-                  "name": "narc2",
-                  "parentId": 9,
-                  "children": [],
-                  "signals": []
-                }
-              ],
+              "children": [],
               "signals": [
                 {
                   "id": 32,

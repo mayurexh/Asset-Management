@@ -37,7 +37,15 @@
               "signals": []
             }
           ],
-          "signals": []
+          "signals": [
+            {
+              "id": 36,
+              "name": "udsiof",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            }
+          ]
         },
         {
           "id": 4,

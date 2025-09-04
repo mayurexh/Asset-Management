@@ -38,14 +38,17 @@ namespace Asset_Management.Services
             return root;
         }
 
-        private void SaveHierarchyVersion()
+        private void SaveHierarchyVersion(string? action = null)
         {
+            if (string.IsNullOrWhiteSpace(action))
+                action = "None";
+
             //in memory objects reflect db state
             //saving in file for downloading and tracking purpose.
             //recursivley load children in root to represent deep hierarchy
             var root = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
             LoadChildren(root);
-            _storage.SaveTree(root);
+            _storage.SaveTree(root, action);
         }
         private void LoadChildren(Asset parent)
         {
@@ -89,6 +92,7 @@ namespace Asset_Management.Services
             };
             root.Children.Add(asset);
             _dbContext.SaveChanges();
+            SaveHierarchyVersion("Asset Add");
             return true;
         }
 
@@ -101,6 +105,7 @@ namespace Asset_Management.Services
 
             DeleteRecursively(node);   // handles children + node itself
             _dbContext.SaveChanges();
+            SaveHierarchyVersion("Asset Remove");
             return true;
         }
         private void DeleteRecursively(Asset node)
@@ -129,6 +134,7 @@ namespace Asset_Management.Services
             {
                 node.Name = newName;
                 _dbContext.SaveChanges();
+                
                 return true;
             }
             return false;
