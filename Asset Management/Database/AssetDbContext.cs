@@ -14,6 +14,8 @@ namespace Asset_Management.Database
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<HierarchyVersion> HierarchyVersions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure self-referencing relationship

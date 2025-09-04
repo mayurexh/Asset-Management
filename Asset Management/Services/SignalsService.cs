@@ -44,22 +44,30 @@ namespace Asset_Management.Services
                 LoadSignals(child);
             }
         }
+        
+
+        private void SaveHierarchyVersion(string? action = null)
+        {
+            if (string.IsNullOrWhiteSpace(action))
+                action = "None";
+            //in memory objects reflect db state
+            //saving in file for downloading and tracking purpose.
+            //recursivley load children in root to represent deep hierarchy
+            var root = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
+            LoadChildren(root);
+            _storage.SaveTree(root, action);
+        }
         private void LoadChildren(Asset parent)
         {
             _dbContext.Entry(parent).Collection(p => p.Children).Load();
-            foreach(var child in parent.Children)
+            _dbContext.Entry(parent).Collection(p => p.Signals).Load();
+            foreach (var child in parent.Children)
             {
                 LoadChildren(child);
             }
         }
 
-        private void SaveLatestHierarchy(Asset asset)
-        {
-            var root = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
-            LoadSignals(asset);
-            LoadChildren(root);
-            _storage.SaveTree(root);
-        }
+        
         public void AddSignal(int assetId, GlobalSignalDTO signal)
         {
             var asset = _dbContext.Assets.FirstOrDefault(a => a.Id == assetId);
@@ -69,7 +77,7 @@ namespace Asset_Management.Services
             {
                 asset.Signals.Add(new Signal { Name = signal.Name, ValueType = signal.ValueType, Description = signal.Description });
                 _dbContext.SaveChanges();
-                SaveLatestHierarchy(asset);
+                SaveHierarchyVersion(action: "Add Signal");
 
             }
             catch(DbUpdateException ex)
@@ -94,7 +102,7 @@ namespace Asset_Management.Services
                 signal.Description = request.Description;
                 signal.ValueType = request.ValueType;
                 _dbContext.SaveChanges();
-                SaveLatestHierarchy(asset);
+                SaveHierarchyVersion( action: "Update Signal");
 
             }
             catch (DbUpdateException ex)
@@ -117,7 +125,7 @@ namespace Asset_Management.Services
             //do deletion
             _dbContext.Signals.Remove(signal);
             _dbContext.SaveChanges();
-            SaveLatestHierarchy(asset);
+            SaveHierarchyVersion(action: "Delete Signal");
         }
 
 

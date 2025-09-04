@@ -31,9 +31,9 @@ namespace Asset_Management.Middleware
                         WriteIndented = true
                     });
 
-                    Console.WriteLine("=== Added Assets ===");
-                    Console.WriteLine(json);
-                    _logger.LogInformation($"Added assets: {json}");
+                    //Console.WriteLine("=== Added Assets ===");
+                    //Console.WriteLine(json);
+                    //_logger.LogInformation($"Added assets: {json}");
                     //clear the assets Added list so that middleware includes only newly added assets
                     AssetHierarchyService.assetsAdded.Clear();
                 }

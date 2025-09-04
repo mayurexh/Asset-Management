@@ -122,8 +122,10 @@ namespace Asset_Management.Services
 
         }
 
-        public void SaveTree(Asset root)
+        public void SaveTree(Asset root, string? action = null)
         {
+            if (string.IsNullOrWhiteSpace(action))
+                action = "Add";
             XmlSerializer serializer = new XmlSerializer(typeof(Asset));
             using var writer = new StreamWriter(_datafile);
             serializer.Serialize(writer, root);

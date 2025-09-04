@@ -10,36 +10,6 @@
       "parentId": 1,
       "children": [
         {
-          "id": 3,
-          "name": "Lathe",
-          "parentId": 2,
-          "children": [
-            {
-              "id": 6,
-              "name": "Lathe Tooling",
-              "parentId": 3,
-              "children": [],
-              "signals": [
-                {
-                  "id": 29,
-                  "name": "new",
-                  "valueType": "string",
-                  "description": "",
-                  "assetId": 6
-                }
-              ]
-            },
-            {
-              "id": 7,
-              "name": "Lathe Maintenance",
-              "parentId": 3,
-              "children": [],
-              "signals": []
-            }
-          ],
-          "signals": []
-        },
-        {
           "id": 4,
           "name": "Drill",
           "parentId": 2,
@@ -63,6 +33,28 @@
           ]
         },
         {
+          "id": 3,
+          "name": "Lathe",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 6,
+              "name": "Lathe Tooling",
+              "parentId": 3,
+              "children": [],
+              "signals": []
+            },
+            {
+              "id": 7,
+              "name": "Lathe Maintenance",
+              "parentId": 3,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": []
+        },
+        {
           "id": 5,
           "name": "Welding",
           "parentId": 2,
@@ -72,15 +64,7 @@
               "name": "Arc Welding",
               "parentId": 5,
               "children": [],
-              "signals": [
-                {
-                  "id": 32,
-                  "name": "Arc signal 1",
-                  "valueType": "string",
-                  "description": "",
-                  "assetId": 9
-                }
-              ]
+              "signals": []
             },
             {
               "id": 10,
@@ -93,15 +77,7 @@
           "signals": []
         }
       ],
-      "signals": [
-        {
-          "id": 34,
-          "name": "add new signal",
-          "valueType": "string",
-          "description": "",
-          "assetId": 2
-        }
-      ]
+      "signals": []
     }
   ],
   "signals": []

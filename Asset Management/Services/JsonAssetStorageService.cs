@@ -1,4 +1,5 @@
-﻿using Asset_Management.Interfaces;
+﻿using Asset_Management.Database;
+using Asset_Management.Interfaces;
 using Asset_Management.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -15,10 +16,11 @@ public class InvalidFileFormatException : Exception
 public class JsonAssetStorageService : IAssetStorageService
 {
     private readonly string _dataDirectory;
-
+    private readonly AssetDbContext _dbContext;
     
-    public JsonAssetStorageService(IWebHostEnvironment env)
+    public JsonAssetStorageService(IWebHostEnvironment env, AssetDbContext dbContext)
     {
+        _dbContext = dbContext;
         _dataDirectory = Path.Combine(env.ContentRootPath, "Data"); //Asset Management/assets.json
     }
 
@@ -79,8 +81,10 @@ public class JsonAssetStorageService : IAssetStorageService
     }
 
 
-    public void SaveTree(Asset root)
+    public void SaveTree(Asset root, string? action = null)
     {
+        if (string.IsNullOrWhiteSpace(action))
+            action = "None";
         var settings = new JsonSerializerSettings
         {
             Formatting = Formatting.Indented,
@@ -91,6 +95,23 @@ public class JsonAssetStorageService : IAssetStorageService
         string filePath = GetVersionedFileName();
 
         string json = JsonConvert.SerializeObject(root, settings);
+
+
+        //save versoning to database
+
+
+        HierarchyVersion hieararchy = new HierarchyVersion
+        {
+            Action = action,
+            EditedTime = new DateTime(2025, 01, 01, 0, 0, 0, DateTimeKind.Utc),
+            SnapshotJson = json
+
+        };
+
+
+
+        _dbContext.HierarchyVersions.Add(hieararchy);
+        _dbContext.SaveChanges();
 
         File.WriteAllText(filePath, json); //write to latest version of a file
 

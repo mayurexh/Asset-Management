@@ -49,7 +49,15 @@
               "name": "Drill Bits",
               "parentId": 4,
               "children": [],
-              "signals": []
+              "signals": [
+                {
+                  "id": 33,
+                  "name": "drill its signal 1",
+                  "valueType": "string",
+                  "description": "",
+                  "assetId": 8
+                }
+              ]
             }
           ],
           "signals": [
@@ -95,8 +103,8 @@
       ],
       "signals": [
         {
-          "id": 34,
-          "name": "add new signal",
+          "id": 30,
+          "name": "Special char signal",
           "valueType": "string",
           "description": "",
           "assetId": 2

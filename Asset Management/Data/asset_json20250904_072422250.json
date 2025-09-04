@@ -95,8 +95,8 @@
       ],
       "signals": [
         {
-          "id": 34,
-          "name": "add new signal",
+          "id": 30,
+          "name": "Special char signal",
           "valueType": "string",
           "description": "",
           "assetId": 2

@@ -38,10 +38,19 @@ namespace Asset_Management.Services
             return root;
         }
 
-        
+        private void SaveHierarchyVersion()
+        {
+            //in memory objects reflect db state
+            //saving in file for downloading and tracking purpose.
+            //recursivley load children in root to represent deep hierarchy
+            var root = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
+            LoadChildren(root);
+            _storage.SaveTree(root);
+        }
         private void LoadChildren(Asset parent)
         {
             _dbContext.Entry(parent).Collection(p => p.Children).Load();
+            _dbContext.Entry(parent).Collection(p => p.Signals).Load();
             foreach (var child in parent.Children)
             {
                 LoadChildren(child);
@@ -210,12 +219,7 @@ namespace Asset_Management.Services
                 _dbContext.Add(newRoot);
                 _dbContext.SaveChanges();
 
-                //in memory objects reflect db state
-                //saving in file for downloading and tracking purpose.
-                //recursivley load children in root to represent deep hierarchy
-                var dbroot = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
-                LoadChildren(dbroot);
-                _storage.SaveTree(dbroot);
+                SaveHierarchyVersion();
             }catch(DbUpdateException ex)
             {
 
