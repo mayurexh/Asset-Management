@@ -15,6 +15,21 @@
           "parentId": 2,
           "children": [
             {
+              "id": 6,
+              "name": "Lathe Tooling",
+              "parentId": 3,
+              "children": [
+                {
+                  "id": 11,
+                  "name": "Cutting Tools",
+                  "parentId": 6,
+                  "children": [],
+                  "signals": []
+                }
+              ],
+              "signals": []
+            },
+            {
               "id": 7,
               "name": "Lathe Maintenance",
               "parentId": 3,
@@ -22,7 +37,15 @@
               "signals": []
             }
           ],
-          "signals": []
+          "signals": [
+            {
+              "id": 48,
+              "name": "kjlj",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            }
+          ]
         },
         {
           "id": 4,

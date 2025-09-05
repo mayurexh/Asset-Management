@@ -87,6 +87,11 @@ namespace Asset_Management.Services
         }
         public bool AddToRoot(string assetName)
         {
+            bool isPresent = _dbContext.Assets.Any(a => a.Name == assetName);
+            if (isPresent)
+            {
+                return false;
+            }
             var root = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
             var asset = new Asset
             {
@@ -95,9 +100,11 @@ namespace Asset_Management.Services
                 Signals = new List<Signal>()
 
             };
+            string action = "Asset Add";
             root.Children.Add(asset);
             _dbContext.SaveChanges();
-            SaveHierarchyVersion("Asset Add");
+            SaveHierarchyVersion(action);
+            _logService.Log(action, assetName);
             return true;
         }
 
@@ -110,7 +117,9 @@ namespace Asset_Management.Services
 
             DeleteRecursively(node);   // handles children + node itself
             _dbContext.SaveChanges();
-            SaveHierarchyVersion("Delete Asset");
+            string action = "Delete Asset";
+            SaveHierarchyVersion(action);
+            _logService.Log(action, node.Name);
             return true;
         }
         private void DeleteRecursively(Asset node)
@@ -137,9 +146,13 @@ namespace Asset_Management.Services
 
             if (!checkName)
             {
+
                 node.Name = newName;
                 _dbContext.SaveChanges();
-                SaveHierarchyVersion(action: "Update Asset");
+
+                string action = "Update Asset";
+                SaveHierarchyVersion(action);
+                _logService.Log(action, newName);
                 
                 return true;
             }
