@@ -15,21 +15,6 @@
           "parentId": 2,
           "children": [
             {
-              "id": 5,
-              "name": "GrandChild1",
-              "parentId": 3,
-              "children": [],
-              "signals": [
-                {
-                  "id": 46,
-                  "name": "Speed",
-                  "valueType": "real",
-                  "description": null,
-                  "assetId": 5
-                }
-              ]
-            },
-            {
               "id": 20,
               "name": "child12",
               "parentId": 3,
@@ -43,6 +28,21 @@
                 }
               ],
               "signals": []
+            },
+            {
+              "id": 5,
+              "name": "GrandChild1",
+              "parentId": 3,
+              "children": [],
+              "signals": [
+                {
+                  "id": 46,
+                  "name": "Speed",
+                  "valueType": "real",
+                  "description": null,
+                  "assetId": 5
+                }
+              ]
             }
           ],
           "signals": [
@@ -80,13 +80,6 @@
               "name": "Cutting Tools",
               "parentId": 10,
               "children": [
-                {
-                  "id": 22,
-                  "name": "cut 1",
-                  "parentId": 16,
-                  "children": [],
-                  "signals": []
-                },
                 {
                   "id": 19,
                   "name": "new ",

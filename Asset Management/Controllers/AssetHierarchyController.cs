@@ -1,4 +1,5 @@
-﻿using Asset_Management.Interfaces;
+﻿using Asset_Management.DTO;
+using Asset_Management.Interfaces;
 using Asset_Management.Models;
 using Asset_Management.Services;
 using Asset_Management.Utils;
@@ -28,6 +29,7 @@ namespace Asset_Management.Controllers
         private readonly IConfiguration _configuration;
         private readonly IAssetStorageService _storage;
         private readonly IUploadLogService _uploadlog;
+
         public AssetHierarchyController(IAssetHierarchyService service, IWebHostEnvironment env, IConfiguration configuration, IAssetStorageService storage, IUploadLogService uploadlog)
         {
             _service = service;
@@ -156,7 +158,7 @@ namespace Asset_Management.Controllers
             {
                 if (file.Length == 0 || file == null)
                 {
-                    return BadRequest("File Invalid");
+                    return BadRequest("Empty file");
                 }
                 using var sr = new StreamReader(file.OpenReadStream());
                 var content = sr.ReadToEnd();
@@ -204,7 +206,7 @@ namespace Asset_Management.Controllers
 
             if (file.Length == 0 || file == null)
             {
-                return BadRequest("File Invalid");
+                return BadRequest("Empty File");
 
             }
 
@@ -251,7 +253,7 @@ namespace Asset_Management.Controllers
                 }
                 catch(ValidationException ex)
                 {
-                    return BadRequest($"Invalid json format, please check for missing fields");
+                    return BadRequest($"Invalid name, value or description fields present in the uploaded heirarchy");
                 }
                 catch(Exception ex)
                 {
@@ -333,18 +335,5 @@ namespace Asset_Management.Controllers
 
 
 
-    // DTO for POST request
-    public class AssetAddRequest
-    {
-       
-
-        [Required(ErrorMessage = "Name is required.")]
-        [RegularExpression(@"^[a-zA-Z0-9 ]{1,30}$",
-            ErrorMessage = "Invalid Name. Only letters, numbers, and spaces are allowed, max 30 characters.")]
-        public string Name { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Parent ID is required.")]
-
-        public int ParentId { get; set; }
-    }
+    
 }

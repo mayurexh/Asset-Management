@@ -14,6 +14,7 @@ namespace Asset_Management.Models
         public int Id { get; set; }
 
         [Required]
+        [RegularExpression(@"^[a-zA-Z0-9 ]{1,30}$")]
         [XmlAttribute("name")]
         public string Name { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using Asset_Management.Controllers;
+using Asset_Management.DTO;
 using Asset_Management.Models;
 
 namespace Asset_Management.Interfaces

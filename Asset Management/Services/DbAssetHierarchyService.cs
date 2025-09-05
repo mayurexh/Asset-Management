@@ -14,11 +14,13 @@ namespace Asset_Management.Services
         private readonly AssetDbContext _dbContext;
         private readonly IAssetStorageService _storage;
         public static List<Asset> assetsAdded = new List<Asset>();
+        public readonly IAssetLogService _logService;
 
-        public DbAssetHierarchyService(AssetDbContext dbContext, IAssetStorageService storage)
+        public DbAssetHierarchyService(AssetDbContext dbContext, IAssetStorageService storage, IAssetLogService logService)
         {
             _dbContext = dbContext;
             _storage = storage;
+            _logService = logService;
         }
 
         public Asset GetHierarchy()
@@ -75,9 +77,12 @@ namespace Asset_Management.Services
                 return false;
             }
 
-
+            string action = "Asset Add";
             parent.Children.Add(newNode);
             _dbContext.SaveChanges();
+            SaveHierarchyVersion(action);
+            _logService.Log(action, asset: newNode.Name);
+
             return true;
         }
         public bool AddToRoot(string assetName)
@@ -105,7 +110,7 @@ namespace Asset_Management.Services
 
             DeleteRecursively(node);   // handles children + node itself
             _dbContext.SaveChanges();
-            SaveHierarchyVersion("Asset Remove");
+            SaveHierarchyVersion("Delete Asset");
             return true;
         }
         private void DeleteRecursively(Asset node)
@@ -134,6 +139,7 @@ namespace Asset_Management.Services
             {
                 node.Name = newName;
                 _dbContext.SaveChanges();
+                SaveHierarchyVersion(action: "Update Asset");
                 
                 return true;
             }
@@ -224,8 +230,7 @@ namespace Asset_Management.Services
                 SetParentIds(newRoot, root.Id);
                 _dbContext.Add(newRoot);
                 _dbContext.SaveChanges();
-
-                SaveHierarchyVersion();
+                SaveHierarchyVersion("Replace Hierarchy");
             }catch(DbUpdateException ex)
             {
 
@@ -332,6 +337,7 @@ namespace Asset_Management.Services
             var dbroot = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
             LoadChildren(dbroot);
             _storage.SaveTree(dbroot);
+            SaveHierarchyVersion("Hierarchy Merge");
 
 
             return totalAdded;

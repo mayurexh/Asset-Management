@@ -5,67 +5,6 @@
   "parent": null,
   "children": [
     {
-      "id": 2,
-      "name": "RootAsset",
-      "parentId": 1,
-      "children": [
-        {
-          "id": 3,
-          "name": "Child1",
-          "parentId": 2,
-          "children": [
-            {
-              "id": 5,
-              "name": "GrandChild1",
-              "parentId": 3,
-              "children": [],
-              "signals": [
-                {
-                  "id": 46,
-                  "name": "Speed",
-                  "valueType": "real",
-                  "description": null,
-                  "assetId": 5
-                }
-              ]
-            },
-            {
-              "id": 20,
-              "name": "child12",
-              "parentId": 3,
-              "children": [
-                {
-                  "id": 21,
-                  "name": "child13",
-                  "parentId": 20,
-                  "children": [],
-                  "signals": []
-                }
-              ],
-              "signals": []
-            }
-          ],
-          "signals": [
-            {
-              "id": 43,
-              "name": "Temperature",
-              "valueType": "real",
-              "description": null,
-              "assetId": 3
-            },
-            {
-              "id": 44,
-              "name": "Pressure",
-              "valueType": "int",
-              "description": null,
-              "assetId": 3
-            }
-          ]
-        }
-      ],
-      "signals": []
-    },
-    {
       "id": 6,
       "name": "Lathe",
       "parentId": 1,
@@ -79,22 +18,7 @@
               "id": 16,
               "name": "Cutting Tools",
               "parentId": 10,
-              "children": [
-                {
-                  "id": 22,
-                  "name": "cut 1",
-                  "parentId": 16,
-                  "children": [],
-                  "signals": []
-                },
-                {
-                  "id": 19,
-                  "name": "new ",
-                  "parentId": 16,
-                  "children": [],
-                  "signals": []
-                }
-              ],
+              "children": [],
               "signals": []
             }
           ],
@@ -125,7 +49,7 @@
       "children": [
         {
           "id": 12,
-          "name": "Sensosrs",
+          "name": "Sensors",
           "parentId": 8,
           "children": [
             {
@@ -173,6 +97,67 @@
           "parentId": 9,
           "children": [],
           "signals": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "id": 2,
+      "name": "RootAsset",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 3,
+          "name": "Child1",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 5,
+              "name": "GrandChild1",
+              "parentId": 3,
+              "children": [],
+              "signals": [
+                {
+                  "id": 46,
+                  "name": "Speed",
+                  "valueType": "real",
+                  "description": null,
+                  "assetId": 5
+                }
+              ]
+            }
+          ],
+          "signals": [
+            {
+              "id": 43,
+              "name": "Temperature",
+              "valueType": "real",
+              "description": null,
+              "assetId": 3
+            },
+            {
+              "id": 44,
+              "name": "Pressure",
+              "valueType": "int",
+              "description": null,
+              "assetId": 3
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Child2",
+          "parentId": 2,
+          "children": [],
+          "signals": [
+            {
+              "id": 45,
+              "name": "Voltage",
+              "valueType": "real",
+              "description": null,
+              "assetId": 4
+            }
+          ]
         }
       ],
       "signals": []

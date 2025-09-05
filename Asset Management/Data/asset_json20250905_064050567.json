@@ -28,21 +28,6 @@
                   "assetId": 5
                 }
               ]
-            },
-            {
-              "id": 20,
-              "name": "child12",
-              "parentId": 3,
-              "children": [
-                {
-                  "id": 21,
-                  "name": "child13",
-                  "parentId": 20,
-                  "children": [],
-                  "signals": []
-                }
-              ],
-              "signals": []
             }
           ],
           "signals": [
@@ -79,22 +64,7 @@
               "id": 16,
               "name": "Cutting Tools",
               "parentId": 10,
-              "children": [
-                {
-                  "id": 22,
-                  "name": "cut 1",
-                  "parentId": 16,
-                  "children": [],
-                  "signals": []
-                },
-                {
-                  "id": 19,
-                  "name": "new ",
-                  "parentId": 16,
-                  "children": [],
-                  "signals": []
-                }
-              ],
+              "children": [],
               "signals": []
             }
           ],

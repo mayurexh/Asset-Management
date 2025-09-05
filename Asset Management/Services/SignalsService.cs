@@ -2,6 +2,7 @@
 using Asset_Management.Database;
 using Asset_Management.Interfaces;
 using Asset_Management.Models;
+using Asset_Management.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace Asset_Management.Services

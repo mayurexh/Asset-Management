@@ -1,5 +1,5 @@
 {
-  "name": "MachiD(S*F()nes",
+  "name": "Mach*DF&(*Sis",
   "children": [
     {
       "name": "Lathe",
@@ -19,7 +19,10 @@
       "children": [
         {
           "name": "Drill Bits",
-          "children": []
+          "children": [],
+          "signal": {
+            "name" : "DFUSOF*)(DF", "valuetype" :  "real"
+          }
         }
       ]
     },

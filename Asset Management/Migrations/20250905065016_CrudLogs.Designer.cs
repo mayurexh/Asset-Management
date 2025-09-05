@@ -4,6 +4,7 @@ using Asset_Management.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Asset_Management.Migrations
 {
     [DbContext(typeof(AssetDbContext))]
-    partial class AssetDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250905065016_CrudLogs")]
+    partial class CrudLogs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,9 +61,6 @@ namespace Asset_Management.Migrations
 
                     b.Property<string>("Asset")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("LogTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Signal")
                         .HasColumnType("nvarchar(max)");

@@ -17,10 +17,13 @@ public class JsonAssetStorageService : IAssetStorageService
 {
     private readonly string _dataDirectory;
     private readonly AssetDbContext _dbContext;
-    
-    public JsonAssetStorageService(IWebHostEnvironment env, AssetDbContext dbContext)
+    private readonly IConfiguration _configuration;
+
+
+    public JsonAssetStorageService(IWebHostEnvironment env, AssetDbContext dbContext, IConfiguration configuration)
     {
         _dbContext = dbContext;
+        _configuration = configuration;
         _dataDirectory = Path.Combine(env.ContentRootPath, "Data"); //Asset Management/assets.json
     }
 
@@ -30,7 +33,7 @@ public class JsonAssetStorageService : IAssetStorageService
         {
             var newRoot = JsonConvert.DeserializeObject<Asset>(content, new JsonSerializerSettings
             {
-                MissingMemberHandling = MissingMemberHandling.Error //only throws error for extra fields and not missing members
+                MissingMemberHandling = MissingMemberHandling.Ignore //only throws error/ignore for extra fields and not missing members
             });
 
 
@@ -98,20 +101,33 @@ public class JsonAssetStorageService : IAssetStorageService
 
 
         //save versoning to database
-
-
-        HierarchyVersion hieararchy = new HierarchyVersion
+        if (_configuration["HierarchyServiceFlag"].ToLower() == "db")
         {
-            Action = action,
-            EditedTime = new DateTime(2025, 01, 01, 0, 0, 0, DateTimeKind.Utc),
-            SnapshotJson = json
+            HierarchyVersion hieararchy = new HierarchyVersion
+            {
+                Action = action,
+                EditedTime = new DateTime(2025, 01, 01, 0, 0, 0, DateTimeKind.Utc),
+                SnapshotJson = json
 
-        };
+            };
 
+            //delete file version after n number of entries 
+            var count = _dbContext.HierarchyVersions.Count();
+            int limit = 5;
+            if (count >= limit)
+            {
+                var rowsToDelete = _dbContext.HierarchyVersions.OrderByDescending(h => h).Take(limit).ToList();
+                _dbContext.HierarchyVersions.RemoveRange(rowsToDelete);
+            }
+            
+            
 
+            _dbContext.HierarchyVersions.Add(hieararchy);
+            _dbContext.SaveChanges();
 
-        _dbContext.HierarchyVersions.Add(hieararchy);
-        _dbContext.SaveChanges();
+        }
+
+        
 
         File.WriteAllText(filePath, json); //write to latest version of a file
 
