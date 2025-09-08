@@ -5,6 +5,13 @@
   "parent": null,
   "children": [
     {
+      "id": 21,
+      "name": "kkuhi",
+      "parentId": 1,
+      "children": [],
+      "signals": []
+    },
+    {
       "id": 2,
       "name": "RootAsset",
       "parentId": 1,
@@ -15,15 +22,15 @@
           "parentId": 2,
           "children": [
             {
-              "id": 6,
-              "name": "GrandChild2",
+              "id": 5,
+              "name": "GrandChild1",
               "parentId": 3,
               "children": [],
               "signals": []
             },
             {
-              "id": 5,
-              "name": "GrandChild1",
+              "id": 6,
+              "name": "GrandChild2",
               "parentId": 3,
               "children": [],
               "signals": []
@@ -144,13 +151,6 @@
           "signals": []
         }
       ],
-      "signals": []
-    },
-    {
-      "id": 21,
-      "name": "kkuhi",
-      "parentId": 1,
-      "children": [],
       "signals": []
     }
   ],

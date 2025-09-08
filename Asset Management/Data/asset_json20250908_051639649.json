@@ -1,0 +1,84 @@
+{
+  "id": 1,
+  "name": "Root",
+  "parentId": null,
+  "parent": null,
+  "children": [
+    {
+      "id": 2,
+      "name": "RootAsset",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 3,
+          "name": "Child1",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 5,
+              "name": "GrandChild1",
+              "parentId": 3,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": [
+            {
+              "id": 58,
+              "name": "Child signal 3",
+              "valueType": "real",
+              "description": null,
+              "assetId": 3
+            },
+            {
+              "id": 52,
+              "name": "Temperature",
+              "valueType": "real",
+              "description": null,
+              "assetId": 3
+            },
+            {
+              "id": 55,
+              "name": "Child signal 1",
+              "valueType": "real",
+              "description": null,
+              "assetId": 3
+            },
+            {
+              "id": 56,
+              "name": "Child signal 2",
+              "valueType": "real",
+              "description": null,
+              "assetId": 3
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Child2",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 7,
+              "name": "GrandChild3",
+              "parentId": 4,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": [
+            {
+              "id": 53,
+              "name": "Pressure",
+              "valueType": "int",
+              "description": null,
+              "assetId": 4
+            }
+          ]
+        }
+      ],
+      "signals": []
+    }
+  ],
+  "signals": []
+}

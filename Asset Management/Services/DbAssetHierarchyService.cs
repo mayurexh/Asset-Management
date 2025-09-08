@@ -3,11 +3,23 @@ using Asset_Management.Interfaces;
 using Asset_Management.Models;
 using Asset_Management.Utils;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace Asset_Management.Services
 {
+    public enum AssetAction
+    {
+        AddAsset = 1,
+        UpdateAsset = 2,
+        DeleteAsset = 3,
+        ReplaceHierarchy = 4,
+        MergeHierarchy = 5
+    }
     
+
+
     public class DbAssetHierarchyService : IAssetHierarchyService
     {
 
@@ -23,6 +35,20 @@ namespace Asset_Management.Services
             _logService = logService;
         }
 
+        private string SerializeJson(Asset asset)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
+
+            string json = JsonConvert.SerializeObject(asset, settings);
+
+            return json;
+        }
         public Asset GetHierarchy()
         {
             var root = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
@@ -233,6 +259,8 @@ namespace Asset_Management.Services
             try
             {
                 // Create new root
+                string action = "Replace Hierarchy";
+                var json = SerializeJson(newRoot); //json before saving to database for log purposes
                 var root = new Asset { Name = "Root" };
                 _dbContext.Add(root);
                 _dbContext.SaveChanges(); // Save to get the generated ID
@@ -243,7 +271,8 @@ namespace Asset_Management.Services
                 SetParentIds(newRoot, root.Id);
                 _dbContext.Add(newRoot);
                 _dbContext.SaveChanges();
-                SaveHierarchyVersion("Replace Hierarchy");
+                _logService.Log(action, asset: json);
+                SaveHierarchyVersion(action);
             }catch(DbUpdateException ex)
             {
 
@@ -322,7 +351,8 @@ namespace Asset_Management.Services
         public int MergeTree(Asset newTree)
         {
             int totalAdded = 0;
-
+            string action = "Merge Hierarchy";
+            var json = SerializeJson(newTree);
             // Global duplicate check in the incoming tree itself (before merge)
             bool hasDuplicates = HasDuplicatesInTree(newTree);
             if (hasDuplicates)
@@ -350,7 +380,8 @@ namespace Asset_Management.Services
             var dbroot = _dbContext.Assets.FirstOrDefault(a => a.ParentId == null);
             LoadChildren(dbroot);
             _storage.SaveTree(dbroot);
-            SaveHierarchyVersion("Hierarchy Merge");
+            _logService.Log(action, asset: json);
+            SaveHierarchyVersion(action);
 
 
             return totalAdded;

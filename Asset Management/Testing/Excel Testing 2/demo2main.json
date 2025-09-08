@@ -10,7 +10,12 @@
         },
         {
           "name": "Lathe Maintenance",
-          "children": []
+          "children": [
+            {
+              "name": "Gote Tooling",
+              "children": []
+            }
+          ]
         }
       ]
     },

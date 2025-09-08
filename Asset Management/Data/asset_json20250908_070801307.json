@@ -19,7 +19,15 @@
               "name": "GrandChild2",
               "parentId": 3,
               "children": [],
-              "signals": []
+              "signals": [
+                {
+                  "id": 61,
+                  "name": "one",
+                  "valueType": "string",
+                  "description": "",
+                  "assetId": 6
+                }
+              ]
             },
             {
               "id": 5,

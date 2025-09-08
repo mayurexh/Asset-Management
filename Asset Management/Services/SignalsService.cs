@@ -1,22 +1,47 @@
 ﻿using Asset_Management.Controllers;
 using Asset_Management.Database;
+using Asset_Management.DTO;
 using Asset_Management.Interfaces;
 using Asset_Management.Models;
-using Asset_Management.DTO;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Asset_Management.Services
 {
+    public enum SignalAction
+    {
+        AddSignal = 1,
+        UpdateSignal = 2,
+        DeleteSignal = 3,
+    }
     public class SignalsService : ISignalsService
     {
         private readonly AssetDbContext _dbContext;
         private readonly IAssetStorageService _storage;
-        public SignalsService(AssetDbContext dbContext, IAssetStorageService storage)
+        private readonly IAssetLogService _logger;
+        public SignalsService(AssetDbContext dbContext, IAssetStorageService storage, IAssetLogService logger)
         {
             _dbContext = dbContext;
             _storage = storage;
+            _logger = logger;
         }
 
+
+        private string SerializeJson(Asset asset)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
+
+            string json = JsonConvert.SerializeObject(asset, settings);
+
+            return json;
+        }
         public IEnumerable<Signal> GetSignals(int assetId)
         {
             var asset = _dbContext.Assets.Include(a=>a.Signals).FirstOrDefault(a => a.Id == assetId);
@@ -71,6 +96,7 @@ namespace Asset_Management.Services
         
         public void AddSignal(int assetId, GlobalSignalDTO signal)
         {
+            var action = "Add Signal";
             var asset = _dbContext.Assets.FirstOrDefault(a => a.Id == assetId);
             if (asset == null)
                 throw new Exception("Asset not found");
@@ -79,6 +105,7 @@ namespace Asset_Management.Services
                 asset.Signals.Add(new Signal { Name = signal.Name, ValueType = signal.ValueType, Description = signal.Description });
                 _dbContext.SaveChanges();
                 SaveHierarchyVersion(action: "Add Signal");
+                _logger.Log(action, null, signal.Name);
 
             }
             catch(DbUpdateException ex)
@@ -89,6 +116,7 @@ namespace Asset_Management.Services
         }
         public void UpdateSignal(int assetId, int signalId, GlobalSignalDTO request)
         {
+            string action = "Update Signal";
             //write Include as EF core uses lazy loading by default, i.e navigataional properties of Signals are not loaded
             var asset = _dbContext.Assets.Include(a=>a.Signals).FirstOrDefault(a => a.Id == assetId);
             if (asset == null)
@@ -104,6 +132,7 @@ namespace Asset_Management.Services
                 signal.ValueType = request.ValueType;
                 _dbContext.SaveChanges();
                 SaveHierarchyVersion( action: "Update Signal");
+                _logger.Log(action, null, signal: request.Name);
 
             }
             catch (DbUpdateException ex)
@@ -116,6 +145,7 @@ namespace Asset_Management.Services
 
         public void DeleteSignal(int signalId, int assetId)
         {
+            var action = "Delete Signal";
             var asset = _dbContext.Assets.Include(a => a.Signals).FirstOrDefault(a => a.Id == assetId);
             if (asset == null)
                 throw new Exception("Asset not found");
@@ -127,6 +157,7 @@ namespace Asset_Management.Services
             _dbContext.Signals.Remove(signal);
             _dbContext.SaveChanges();
             SaveHierarchyVersion(action: "Delete Signal");
+            _logger.Log(action, null, signal: signal.Name);
         }
 
 

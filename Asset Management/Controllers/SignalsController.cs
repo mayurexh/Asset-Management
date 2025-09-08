@@ -2,6 +2,7 @@
 using Asset_Management.Interfaces;
 using Asset_Management.Models;
 using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -50,6 +51,7 @@ namespace Asset_Management.Controllers
         }
 
         [HttpPost("Asset/{assetId}/AddSignal")]
+        [Authorize(Roles ="Admin")]
         public IActionResult AddSignal(int assetId, [FromBody] GlobalSignalDTO request)
         {
             if (!ModelState.IsValid)
@@ -74,6 +76,8 @@ namespace Asset_Management.Controllers
 
         }
         [HttpPut("Asset/{assetId}/UpdateSignal/{signalId}")]
+        [Authorize(Roles = "Admin")]
+
         public IActionResult UpdateSignal(int assetId, int signalId ,[FromBody] GlobalSignalDTO request)
         {
             if (!ModelState.IsValid)
@@ -98,6 +102,8 @@ namespace Asset_Management.Controllers
         }
 
         [HttpDelete("Asset/{assetId}/Delete/Signal/{signalId}")]
+        [Authorize(Roles = "Admin")]
+
         public IActionResult DeleteSignal(int signalId, int assetId)
         {
             try

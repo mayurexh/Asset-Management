@@ -1,0 +1,70 @@
+{
+  "id": 1,
+  "name": "Root",
+  "parentId": null,
+  "parent": null,
+  "children": [
+    {
+      "id": 2,
+      "name": "RootAsset",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 3,
+          "name": "Child1",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 5,
+              "name": "GrandChild1",
+              "parentId": 3,
+              "children": [],
+              "signals": []
+            },
+            {
+              "id": 6,
+              "name": "GrandChild2",
+              "parentId": 3,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": [
+            {
+              "id": 59,
+              "name": "Temperature",
+              "valueType": "real",
+              "description": null,
+              "assetId": 3
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Child2",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 7,
+              "name": "GrandChild3",
+              "parentId": 4,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": [
+            {
+              "id": 60,
+              "name": "Pressure",
+              "valueType": "int",
+              "description": null,
+              "assetId": 4
+            }
+          ]
+        }
+      ],
+      "signals": []
+    }
+  ],
+  "signals": []
+}
