@@ -30,7 +30,7 @@
               "signals": [
                 {
                   "id": 71,
-                  "name": "223",
+                  "name": "22",
                   "valueType": "string",
                   "description": "",
                   "assetId": 6
@@ -48,13 +48,6 @@
                   "valueType": "string",
                   "description": "",
                   "assetId": 6
-                },
-                {
-                  "id": 74,
-                  "name": "dfjds",
-                  "valueType": "string",
-                  "description": "",
-                  "assetId": 6
                 }
               ]
             },
@@ -68,8 +61,43 @@
           ],
           "signals": [
             {
-              "id": 75,
-              "name": "9uu",
+              "id": 65,
+              "name": "from chrome",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 66,
+              "name": "new sig 2",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 67,
+              "name": "signa",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 68,
+              "name": "si",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 69,
+              "name": "fds",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 70,
+              "name": "sig 2",
               "valueType": "string",
               "description": "",
               "assetId": 3

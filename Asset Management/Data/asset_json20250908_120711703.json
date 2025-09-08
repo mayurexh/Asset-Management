@@ -68,8 +68,43 @@
           ],
           "signals": [
             {
-              "id": 75,
-              "name": "9uu",
+              "id": 65,
+              "name": "from chrome to edge",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 66,
+              "name": "new sig 2",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 67,
+              "name": "signa",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 68,
+              "name": "si",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 69,
+              "name": "fds",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 70,
+              "name": "sig 2",
               "valueType": "string",
               "description": "",
               "assetId": 3

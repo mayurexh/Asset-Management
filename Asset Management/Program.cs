@@ -1,5 +1,6 @@
 using Asset_Management.Database;
 using Asset_Management.Extensions;
+using Asset_Management.Hubs;
 using Asset_Management.Interfaces;
 using Asset_Management.Middleware;
 using Asset_Management.Models;
@@ -64,8 +65,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:3000",
-                              "http://10.10.10.7:3000").AllowAnyHeader().AllowAnyMethod();
+                          policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                          
                       });
 });
 
@@ -137,6 +138,10 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 builder.Services.AddScoped<IAssetLogService, AssetLogService>();
 
+
+//signal R DI
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 
@@ -160,5 +165,8 @@ app.UseAuthorization();
 app.UseMiddleware<NewAssetsLoggerMiddleware>();
 
 app.MapControllers();
+
+app.MapHub<NotificationHub>("/Notification");
+
 
 app.Run();

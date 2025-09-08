@@ -68,8 +68,15 @@
           ],
           "signals": [
             {
-              "id": 75,
-              "name": "9uu",
+              "id": 69,
+              "name": "fds",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 70,
+              "name": "sig 2",
               "valueType": "string",
               "description": "",
               "assetId": 3

@@ -27,36 +27,7 @@
                   "signals": []
                 }
               ],
-              "signals": [
-                {
-                  "id": 71,
-                  "name": "223",
-                  "valueType": "string",
-                  "description": "",
-                  "assetId": 6
-                },
-                {
-                  "id": 72,
-                  "name": "new signal",
-                  "valueType": "string",
-                  "description": "",
-                  "assetId": 6
-                },
-                {
-                  "id": 73,
-                  "name": "new sig 3",
-                  "valueType": "string",
-                  "description": "",
-                  "assetId": 6
-                },
-                {
-                  "id": 74,
-                  "name": "dfjds",
-                  "valueType": "string",
-                  "description": "",
-                  "assetId": 6
-                }
-              ]
+              "signals": []
             },
             {
               "id": 7,
@@ -68,8 +39,22 @@
           ],
           "signals": [
             {
-              "id": 75,
-              "name": "9uu",
+              "id": 67,
+              "name": "signa",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 65,
+              "name": "from chrome",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            },
+            {
+              "id": 66,
+              "name": "new sig 2",
               "valueType": "string",
               "description": "",
               "assetId": 3

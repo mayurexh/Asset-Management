@@ -6,9 +6,16 @@
   "children": [
     {
       "id": 2,
-      "name": "mac",
+      "name": "Machines",
       "parentId": 1,
       "children": [
+        {
+          "id": 23,
+          "name": "child",
+          "parentId": 2,
+          "children": [],
+          "signals": []
+        },
         {
           "id": 3,
           "name": "Lathe",
@@ -27,54 +34,25 @@
                   "signals": []
                 }
               ],
-              "signals": [
-                {
-                  "id": 71,
-                  "name": "223",
-                  "valueType": "string",
-                  "description": "",
-                  "assetId": 6
-                },
-                {
-                  "id": 72,
-                  "name": "new signal",
-                  "valueType": "string",
-                  "description": "",
-                  "assetId": 6
-                },
-                {
-                  "id": 73,
-                  "name": "new sig 3",
-                  "valueType": "string",
-                  "description": "",
-                  "assetId": 6
-                },
-                {
-                  "id": 74,
-                  "name": "dfjds",
-                  "valueType": "string",
-                  "description": "",
-                  "assetId": 6
-                }
-              ]
+              "signals": []
             },
             {
               "id": 7,
               "name": "Lathe Maintenance",
               "parentId": 3,
-              "children": [],
+              "children": [
+                {
+                  "id": 11,
+                  "name": "Gote Tooling",
+                  "parentId": 7,
+                  "children": [],
+                  "signals": []
+                }
+              ],
               "signals": []
             }
           ],
-          "signals": [
-            {
-              "id": 75,
-              "name": "9uu",
-              "valueType": "string",
-              "description": "",
-              "assetId": 3
-            }
-          ]
+          "signals": []
         },
         {
           "id": 4,
@@ -112,38 +90,9 @@
             }
           ],
           "signals": []
-        },
-        {
-          "id": 23,
-          "name": "child",
-          "parentId": 2,
-          "children": [],
-          "signals": []
         }
       ],
-      "signals": [
-        {
-          "id": 62,
-          "name": "sig1",
-          "valueType": "string",
-          "description": "",
-          "assetId": 2
-        },
-        {
-          "id": 63,
-          "name": "nnew ",
-          "valueType": "string",
-          "description": "",
-          "assetId": 2
-        },
-        {
-          "id": 64,
-          "name": "one more",
-          "valueType": "string",
-          "description": "",
-          "assetId": 2
-        }
-      ]
+      "signals": []
     },
     {
       "id": 13,
@@ -217,34 +166,6 @@
           "signals": []
         }
       ],
-      "signals": []
-    },
-    {
-      "id": 24,
-      "name": "mac2",
-      "parentId": 1,
-      "children": [],
-      "signals": []
-    },
-    {
-      "id": 25,
-      "name": "new 2",
-      "parentId": 1,
-      "children": [],
-      "signals": []
-    },
-    {
-      "id": 26,
-      "name": "new 3",
-      "parentId": 1,
-      "children": [],
-      "signals": []
-    },
-    {
-      "id": 27,
-      "name": "from chrome",
-      "parentId": 1,
-      "children": [],
       "signals": []
     }
   ],

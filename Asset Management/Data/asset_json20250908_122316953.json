@@ -66,15 +66,7 @@
               "signals": []
             }
           ],
-          "signals": [
-            {
-              "id": 75,
-              "name": "9uu",
-              "valueType": "string",
-              "description": "",
-              "assetId": 3
-            }
-          ]
+          "signals": []
         },
         {
           "id": 4,

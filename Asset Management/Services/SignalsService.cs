@@ -1,11 +1,14 @@
 ﻿using Asset_Management.Controllers;
 using Asset_Management.Database;
 using Asset_Management.DTO;
+using Asset_Management.Hubs;
 using Asset_Management.Interfaces;
 using Asset_Management.Models;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Security.Claims;
 
 namespace Asset_Management.Services
 {
@@ -20,14 +23,21 @@ namespace Asset_Management.Services
         private readonly AssetDbContext _dbContext;
         private readonly IAssetStorageService _storage;
         private readonly IAssetLogService _logger;
-        public SignalsService(AssetDbContext dbContext, IAssetStorageService storage, IAssetLogService logger)
+        private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public SignalsService(AssetDbContext dbContext, IAssetStorageService storage, IAssetLogService logger, IHubContext<NotificationHub> hubContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _storage = storage;
             _logger = logger;
+            _hubContext = hubContext;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-
+        private string? GetCurrentUser()
+        {
+            return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+        }
         private string SerializeJson(Asset asset)
         {
             var settings = new JsonSerializerSettings
@@ -94,7 +104,7 @@ namespace Asset_Management.Services
         }
 
         
-        public void AddSignal(int assetId, GlobalSignalDTO signal)
+        public async Task AddSignal(int assetId, GlobalSignalDTO signal)
         {
             var action = "Add Signal";
             var asset = _dbContext.Assets.FirstOrDefault(a => a.Id == assetId);
@@ -106,6 +116,11 @@ namespace Asset_Management.Services
                 _dbContext.SaveChanges();
                 SaveHierarchyVersion(action: "Add Signal");
                 _logger.Log(action, null, signal.Name);
+                await _hubContext.Clients.All.SendAsync(
+                    "ReceiveMessage",
+                    $"{GetCurrentUser()}",
+                    $"Signal added: {signal.Name}"
+                );
 
             }
             catch(DbUpdateException ex)
@@ -114,7 +129,7 @@ namespace Asset_Management.Services
             }
 
         }
-        public void UpdateSignal(int assetId, int signalId, GlobalSignalDTO request)
+        public async Task UpdateSignal(int assetId, int signalId, GlobalSignalDTO request)
         {
             string action = "Update Signal";
             //write Include as EF core uses lazy loading by default, i.e navigataional properties of Signals are not loaded
@@ -127,12 +142,18 @@ namespace Asset_Management.Services
             //update changes 
             try
             {
+                var currentName = signal.Name;
                 signal.Name = request.Name;
                 signal.Description = request.Description;
                 signal.ValueType = request.ValueType;
                 _dbContext.SaveChanges();
                 SaveHierarchyVersion( action: "Update Signal");
                 _logger.Log(action, null, signal: request.Name);
+                await _hubContext.Clients.All.SendAsync(
+                    "UpdateSignal",
+                    $"{GetCurrentUser()}",
+                    $"Signal updated: {currentName} to: {signal.Name}"
+                );
 
             }
             catch (DbUpdateException ex)
@@ -143,7 +164,7 @@ namespace Asset_Management.Services
 
         }
 
-        public void DeleteSignal(int signalId, int assetId)
+        public async Task DeleteSignal(int signalId, int assetId)
         {
             var action = "Delete Signal";
             var asset = _dbContext.Assets.Include(a => a.Signals).FirstOrDefault(a => a.Id == assetId);
@@ -153,11 +174,15 @@ namespace Asset_Management.Services
             if (signal == null)
                 throw new Exception("Signal not found");
 
+
+            string signalName = signal.Name; //for sending notification
+            Console.WriteLine($"FROM DELETE SIGNAL " + signalName);
             //do deletion
             _dbContext.Signals.Remove(signal);
             _dbContext.SaveChanges();
             SaveHierarchyVersion(action: "Delete Signal");
             _logger.Log(action, null, signal: signal.Name);
+            await _hubContext.Clients.All.SendAsync("DeleteSignal", GetCurrentUser() ,$"Deleted Signal {signalName}");
         }
 
 

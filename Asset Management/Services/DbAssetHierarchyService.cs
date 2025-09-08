@@ -1,7 +1,9 @@
 ﻿using Asset_Management.Database;
+using Asset_Management.Hubs;
 using Asset_Management.Interfaces;
 using Asset_Management.Models;
 using Asset_Management.Utils;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -27,12 +29,14 @@ namespace Asset_Management.Services
         private readonly IAssetStorageService _storage;
         public static List<Asset> assetsAdded = new List<Asset>();
         public readonly IAssetLogService _logService;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public DbAssetHierarchyService(AssetDbContext dbContext, IAssetStorageService storage, IAssetLogService logService)
+        public DbAssetHierarchyService(AssetDbContext dbContext, IAssetStorageService storage, IAssetLogService logService, IHubContext<NotificationHub> hubContext)
         {
             _dbContext = dbContext;
             _storage = storage;
             _logService = logService;
+            _hubContext = hubContext;
         }
 
         private string SerializeJson(Asset asset)
@@ -109,6 +113,9 @@ namespace Asset_Management.Services
             SaveHierarchyVersion(action);
             _logService.Log(action, asset: newNode.Name);
 
+
+
+
             return true;
         }
         public bool AddToRoot(string assetName)
@@ -122,7 +129,7 @@ namespace Asset_Management.Services
             var asset = new Asset
             {
                 Name = assetName,
-                Children = new List<Asset>(),
+                Children = new List<Asset>(), 
                 Signals = new List<Signal>()
 
             };

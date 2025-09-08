@@ -10,10 +10,10 @@ namespace Asset_Management.Interfaces
 
         Signal GetSpecificSignal(int assetId, int signalId);
 
-        void AddSignal(int assetId, GlobalSignalDTO signal);
+        Task AddSignal(int assetId, GlobalSignalDTO signal);
 
-        void UpdateSignal(int assetId, int signalId , GlobalSignalDTO signal);
+        Task UpdateSignal(int assetId, int signalId , GlobalSignalDTO signal);
 
-        void DeleteSignal(int signalId, int assetId);
+        Task DeleteSignal(int signalId, int assetId);
     }
 }

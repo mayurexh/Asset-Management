@@ -68,8 +68,8 @@
           ],
           "signals": [
             {
-              "id": 75,
-              "name": "9uu",
+              "id": 70,
+              "name": "sig 2",
               "valueType": "string",
               "description": "",
               "assetId": 3
