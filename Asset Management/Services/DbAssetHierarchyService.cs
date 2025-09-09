@@ -443,25 +443,6 @@ namespace Asset_Management.Services
                 // Node exists somewhere - merge all children into it
                 int addedCount = 0;
 
-                //if (newNode.Signals != null && newNode.Signals.Any())
-                //{
-                //    foreach (var signal in newNode.Signals)
-                //    {
-                //        // Check if signal already exists under this asset
-                //        bool exists = _dbContext.Signals.Any(s =>
-                //            s.Name.ToLower() == signal.Name.ToLower() &&
-                //            s.AssetId == globalMatch.Id);
-
-                //        if (!exists)
-                //        {
-                //            signal.Id = 0; // let EF assign
-                //            signal.AssetId = globalMatch.Id;
-                //            _dbContext.Signals.Add(signal);
-                //        }
-                //    }
-                //}
-
-
                 foreach (var child in newNode.Children)
                 {
                     addedCount += MergeNode(globalMatch, child);

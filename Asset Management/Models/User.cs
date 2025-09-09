@@ -19,5 +19,6 @@ namespace Asset_Management.Models
         public string Role { get; set; } = "Viewer";
 
         public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
+
     }
 }
