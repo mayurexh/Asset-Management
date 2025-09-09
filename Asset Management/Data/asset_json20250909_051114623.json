@@ -17,7 +17,15 @@
           "signals": []
         }
       ],
-      "signals": []
+      "signals": [
+        {
+          "id": 77,
+          "name": "fmldksf",
+          "valueType": "string",
+          "description": "",
+          "assetId": 13
+        }
+      ]
     },
     {
       "id": 14,

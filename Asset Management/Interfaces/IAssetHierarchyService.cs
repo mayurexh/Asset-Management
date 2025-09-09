@@ -5,12 +5,12 @@
     public interface IAssetHierarchyService
     {
         Asset GetHierarchy();
-        bool AddNode(int parentId, Asset newNode);
-        bool AddToRoot(string assetName);
+        Task<bool> AddNode(int parentId, Asset newNode);
+        Task<bool> AddToRoot(string assetName);
 
-        bool RemoveNode(int nodeId);
+        Task<bool> RemoveNode(int nodeId);
 
-        bool UpdateNode(int nodeId, string newName);
+        Task<bool> UpdateNode(int nodeId, string newName);
 
         bool CheckDuplicated(Asset Node);
         int TotalAsset(Asset Node);

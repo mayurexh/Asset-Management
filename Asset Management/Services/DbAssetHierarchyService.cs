@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 namespace Asset_Management.Services
@@ -30,15 +31,21 @@ namespace Asset_Management.Services
         public static List<Asset> assetsAdded = new List<Asset>();
         public readonly IAssetLogService _logService;
         private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DbAssetHierarchyService(AssetDbContext dbContext, IAssetStorageService storage, IAssetLogService logService, IHubContext<NotificationHub> hubContext)
+        public DbAssetHierarchyService(AssetDbContext dbContext, IAssetStorageService storage, IAssetLogService logService, IHubContext<NotificationHub> hubContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _storage = storage;
             _logService = logService;
             _hubContext = hubContext;
+            _httpContextAccessor = httpContextAccessor;
         }
 
+        private string? GetCurrentUser()
+        {
+            return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+        }
         private string SerializeJson(Asset asset)
         {
             var settings = new JsonSerializerSettings
@@ -92,7 +99,7 @@ namespace Asset_Management.Services
             }
         }
 
-        public bool AddNode(int parentId, Asset newNode)
+        public async Task<bool> AddNode(int parentId, Asset newNode)
         {
             var parent = _dbContext.Assets.FirstOrDefault(a => a.Id == parentId);
             Console.WriteLine($"FROM ADD NODE parentID = {parent.Id}, parentName = {parent.Name}");
@@ -112,13 +119,19 @@ namespace Asset_Management.Services
             _dbContext.SaveChanges();
             SaveHierarchyVersion(action);
             _logService.Log(action, asset: newNode.Name);
+            await _hubContext.Clients.All.SendAsync("RecieveAssetNotification", new
+            {
+                Type = "AssetAdded",
+                User = GetCurrentUser(),
+                Name = $"{newNode.Name}"
+            });
 
 
 
 
             return true;
         }
-        public bool AddToRoot(string assetName)
+        public async Task<bool> AddToRoot(string assetName)
         {
             bool isPresent = _dbContext.Assets.Any(a => a.Name == assetName);
             if (isPresent)
@@ -138,21 +151,36 @@ namespace Asset_Management.Services
             _dbContext.SaveChanges();
             SaveHierarchyVersion(action);
             _logService.Log(action, assetName);
+            await _hubContext.Clients.All.SendAsync("RecieveAssetNotification", new
+            {
+                Type = "AssetAdded",
+                User = GetCurrentUser(),
+                Name = $"{assetName}"
+            });
+
             return true;
         }
 
-        public bool RemoveNode(int nodeId)
+        public async Task<bool> RemoveNode(int nodeId)
         {
 
             var node = _dbContext.Assets.FirstOrDefault(a => a.Id == nodeId);
             if (node.ParentId == null) return false; //disallow deleting root node.
             if (node == null) return false;
 
+            string name = node.Name; //for notification purpose
             DeleteRecursively(node);   // handles children + node itself
             _dbContext.SaveChanges();
             string action = "Delete Asset";
             SaveHierarchyVersion(action);
             _logService.Log(action, node.Name);
+            await _hubContext.Clients.All.SendAsync("RecieveAssetNotification", new
+            {
+                Type = "AssetDeleted",
+                User = GetCurrentUser(),
+                Name = $"{name}"
+            });
+
             return true;
         }
         private void DeleteRecursively(Asset node)
@@ -169,7 +197,7 @@ namespace Asset_Management.Services
         }
 
 
-        public bool UpdateNode(int oldId, string newName)
+        public async Task<bool> UpdateNode(int oldId, string newName)
         {
             var node = _dbContext.Assets.FirstOrDefault(a => a.Id == oldId);
             if (node.ParentId == null) return false; //disallow updating root node.
@@ -179,6 +207,7 @@ namespace Asset_Management.Services
 
             if (!checkName)
             {
+                string oldName = node.Name; //for notification purpose 
 
                 node.Name = newName;
                 _dbContext.SaveChanges();
@@ -186,7 +215,16 @@ namespace Asset_Management.Services
                 string action = "Update Asset";
                 SaveHierarchyVersion(action);
                 _logService.Log(action, newName);
-                
+                await _hubContext.Clients.All.SendAsync("RecieveAssetNotification", new
+                {
+                    Type = "AssetUpdated",
+                    User = GetCurrentUser(),
+                    OldName = $"{oldName}",
+                    NewName = $"{newName}"
+                });
+
+
+
                 return true;
             }
             return false;

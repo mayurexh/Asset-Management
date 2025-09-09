@@ -25,12 +25,12 @@ namespace Asset_Management.Services
             return _root;
         }
 
-        public bool AddToRoot(string assetName)
+        public async Task<bool> AddToRoot(string assetName)
         {
             return true;
         }
 
-        public bool AddNode(int parentId, Asset newNode)
+        public async Task<bool> AddNode(int parentId, Asset newNode)
         {
             var parent = FindNodeById(_root, parentId);
             if (parent == null)
@@ -47,7 +47,7 @@ namespace Asset_Management.Services
             return true;
         }
 
-        public bool RemoveNode(int nodeId)
+        public async Task<bool> RemoveNode(int nodeId)
         {
             // Disallow deleting root
             if (_root.Id == nodeId)
@@ -79,7 +79,7 @@ namespace Asset_Management.Services
             }
             return false;
         }
-        public bool UpdateNode(int oldId, string newName)
+        public async Task<bool> UpdateNode(int oldId, string newName)
         {
             return false;
         }

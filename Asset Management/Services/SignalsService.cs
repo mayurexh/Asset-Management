@@ -116,12 +116,13 @@ namespace Asset_Management.Services
                 _dbContext.SaveChanges();
                 SaveHierarchyVersion(action: "Add Signal");
                 _logger.Log(action, null, signal.Name);
-                await _hubContext.Clients.All.SendAsync(
-                    "ReceiveMessage",
-                    $"{GetCurrentUser()}",
-                    $"Signal added: {signal.Name}"
-                );
-
+                await _hubContext.Clients.All.SendAsync("RecieveSignalNotification", new
+                {
+                    Type = "SignalAdded",
+                    User = GetCurrentUser(),
+                    Name = signal.Name,
+                });
+                
             }
             catch(DbUpdateException ex)
             {
@@ -142,18 +143,20 @@ namespace Asset_Management.Services
             //update changes 
             try
             {
-                var currentName = signal.Name;
+                var oldName = signal.Name; //notif
                 signal.Name = request.Name;
                 signal.Description = request.Description;
                 signal.ValueType = request.ValueType;
                 _dbContext.SaveChanges();
                 SaveHierarchyVersion( action: "Update Signal");
                 _logger.Log(action, null, signal: request.Name);
-                await _hubContext.Clients.All.SendAsync(
-                    "UpdateSignal",
-                    $"{GetCurrentUser()}",
-                    $"Signal updated: {currentName} to: {signal.Name}"
-                );
+                await _hubContext.Clients.All.SendAsync("RecieveSignalNotification", new
+                {
+                    Type = "SignalUpdated",
+                    User = GetCurrentUser(),
+                    OldName = oldName,
+                    NewName = request.Name
+                });
 
             }
             catch (DbUpdateException ex)
@@ -182,7 +185,12 @@ namespace Asset_Management.Services
             _dbContext.SaveChanges();
             SaveHierarchyVersion(action: "Delete Signal");
             _logger.Log(action, null, signal: signal.Name);
-            await _hubContext.Clients.All.SendAsync("DeleteSignal", GetCurrentUser() ,$"Deleted Signal {signalName}");
+            await _hubContext.Clients.All.SendAsync("RecieveSignalNotification", new
+            {
+                Type = "SignalDeleted",
+                User = GetCurrentUser(),
+                Name = signal.Name,
+            });
         }
 
 

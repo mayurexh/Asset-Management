@@ -17,7 +17,15 @@
           "signals": []
         }
       ],
-      "signals": []
+      "signals": [
+        {
+          "id": 76,
+          "name": "new mill",
+          "valueType": "string",
+          "description": "",
+          "assetId": 13
+        }
+      ]
     },
     {
       "id": 14,

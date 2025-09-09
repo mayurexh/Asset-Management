@@ -67,7 +67,7 @@ namespace Asset_Management.Controllers
 
         [HttpPost]
         [Authorize(Roles ="Admin")]
-        public IActionResult AddNode([FromBody] AssetAddRequest request)
+        public async Task<IActionResult> AddNode([FromBody] AssetAddRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -82,7 +82,7 @@ namespace Asset_Management.Controllers
             };
             Console.WriteLine($"{request.Name}, {request.ParentId}");
 
-            bool success = _service.AddNode(request.ParentId, newAsset);
+            bool success = await _service.AddNode(request.ParentId, newAsset);
             if (!success)
             {
                 Console.WriteLine("Not successfull from AddNode Action");
@@ -95,7 +95,7 @@ namespace Asset_Management.Controllers
 
         [HttpPost("AddNewAsset")]
         [Authorize(Roles ="Admin")]
-        public IActionResult AddNewAsset(string assetName)
+        public async Task<IActionResult> AddNewAsset(string assetName)
         {
 
             bool isMatch = Regex.IsMatch(assetName, @"^[a-zA-Z0-9 ]{1,30}$");
@@ -104,7 +104,7 @@ namespace Asset_Management.Controllers
             {
                 return BadRequest("Invalid Name. Only letters, numbers, and spaces are allowed, max 30 characters.");
             }
-            bool success = _service.AddToRoot(assetName);
+            bool success = await _service.AddToRoot(assetName);
             if (!success)
             {
                 return BadRequest("Unable to add Asset");
@@ -115,9 +115,9 @@ namespace Asset_Management.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles ="Admin")]
-        public IActionResult DeleteNode(int id)
+        public async Task<IActionResult> DeleteNode(int id)
         {
-            bool success = _service.RemoveNode(id);
+            bool success = await _service.RemoveNode(id);
             if (!success)
                 return BadRequest("Node cannot be deleted.");
 
@@ -126,7 +126,7 @@ namespace Asset_Management.Controllers
 
         [HttpPut("Update/{id}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult UpdateNode(int id, string name)
+        public async Task<IActionResult> UpdateNode(int id, string name)
         {
 
             bool isMatch = Regex.IsMatch(name, @"^[a-zA-Z0-9 ]{1,30}$");
@@ -135,7 +135,7 @@ namespace Asset_Management.Controllers
             {
                 return BadRequest("Invalid Name. Only letters, numbers, and spaces are allowed, max 30 characters.");
             }
-            bool success = _service.UpdateNode(id, name);
+            bool success = await _service.UpdateNode(id, name);
 
             if (!success)
                 return BadRequest("Name already present in hierarchy ");

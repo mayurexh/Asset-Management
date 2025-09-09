@@ -25,6 +25,13 @@
       "parentId": 1,
       "children": [
         {
+          "id": 18,
+          "name": "Controller",
+          "parentId": 14,
+          "children": [],
+          "signals": []
+        },
+        {
           "id": 17,
           "name": "Sensors",
           "parentId": 14,
@@ -44,13 +51,6 @@
               "signals": []
             }
           ],
-          "signals": []
-        },
-        {
-          "id": 18,
-          "name": "Controller",
-          "parentId": 14,
-          "children": [],
           "signals": []
         }
       ],
@@ -109,13 +109,6 @@
     {
       "id": 29,
       "name": "kunal",
-      "parentId": 1,
-      "children": [],
-      "signals": []
-    },
-    {
-      "id": 30,
-      "name": "vinay",
       "parentId": 1,
       "children": [],
       "signals": []

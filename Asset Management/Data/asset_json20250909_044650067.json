@@ -48,7 +48,7 @@
         },
         {
           "id": 18,
-          "name": "Controller",
+          "name": "Controllers",
           "parentId": 14,
           "children": [],
           "signals": []
@@ -109,13 +109,6 @@
     {
       "id": 29,
       "name": "kunal",
-      "parentId": 1,
-      "children": [],
-      "signals": []
-    },
-    {
-      "id": 30,
-      "name": "vinay",
       "parentId": 1,
       "children": [],
       "signals": []
