@@ -131,6 +131,25 @@ namespace Asset_Management.Services
 
             return true;
         }
+        public async Task ReorderNode(int assetId, int parentId)
+        {
+            try
+            {
+                var parent = _dbContext.Assets.First(a => a.Id == parentId);
+                var asset = _dbContext.Assets.First(a => a.Id == assetId);
+
+                asset.Parent = parent;
+                _dbContext.SaveChanges();
+
+
+            }catch(InvalidOperationException ex)
+            {
+                throw new Exception("Invalid asset found");
+            }
+
+
+
+        }
         public async Task<bool> AddToRoot(string assetName)
         {
             bool isPresent = _dbContext.Assets.Any(a => a.Name == assetName);

@@ -263,6 +263,21 @@ namespace Asset_Management.Controllers
 
             }
         }
+
+        [HttpPost("ReorderAsset/{asset_id}/{parent_id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ReorderAsset(int asset_id, int parent_id)
+        {
+            try
+            {
+                _service.ReorderNode(asset_id, parent_id);
+                return Ok("Asset position updated");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
+            }
+        }
         private void ValidateAssetRecursively(Asset asset)
         {
             // Validate current asset

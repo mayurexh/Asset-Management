@@ -83,6 +83,11 @@ namespace Asset_Management.Services
         {
             return false;
         }
+
+        public async Task ReorderNode(int assetId, int parentId)
+        {
+            return;
+        }
         private Asset FindNodeByName(Asset node, string name)
         {
 
