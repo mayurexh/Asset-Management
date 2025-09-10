@@ -2,6 +2,7 @@
 
 namespace Asset_Management.Models
 {
+    
     public class User
     {
         [Key]
@@ -10,6 +11,11 @@ namespace Asset_Management.Models
         [Required]
         [MaxLength(32)]
         public string Username { get; set; }
+
+        [Required]
+        [MaxLength(32)]
+
+        public string Email { get; set; }
 
         [Required]
         public string? PasswordHash { get; set; }

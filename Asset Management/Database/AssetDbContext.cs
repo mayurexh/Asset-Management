@@ -47,6 +47,7 @@ namespace Asset_Management.Database
             {
                 Id = 1,
                 Username = "admin",
+                Email = "admin@assetmanagement.in",
                 Role = "Admin",
                 PasswordHash = "AQAAAAIAAYagAAAAEIdgTPG+a4yi3RXmgJdIP+/vlZvopEnVlHnjJDJmVq/rGjZljrxpK1RoZ+iFAg0mhw==",
                 CreatedAtUtc = new DateTime(2025, 01, 01, 0, 0, 0, DateTimeKind.Utc)

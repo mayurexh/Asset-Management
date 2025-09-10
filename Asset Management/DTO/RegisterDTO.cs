@@ -11,6 +11,11 @@ namespace Asset_Management.DTO
             ErrorMessage = "Username can only contain letters, numbers, hyphens (-), and underscores (_) (upto 30 characters)")]
         public string Username { get; set; }
 
+
+        [Required]
+        [EmailAddress (ErrorMessage ="Invalid email format")]
+        public string Email { get; set; }
+
         [Required]
         [MinLength(5)]
         [MaxLength(30)]

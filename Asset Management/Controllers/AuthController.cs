@@ -29,6 +29,13 @@ namespace Asset_Management.Controllers
         [HttpPost("Register")]
         public IActionResult Register(RegisterDTO dto)
         {
+            if (ModelState.ContainsKey("Email"))
+            {
+                foreach (var error in ModelState["Email"].Errors)
+                {
+                    return BadRequest(error.ErrorMessage);
+                }
+            }
 
             if (!ModelState.IsValid)
             {
@@ -38,9 +45,13 @@ namespace Asset_Management.Controllers
             if (_dbContext.Users.Any(u => u.Username == dto.Username))
                 return BadRequest("Username already exists");
 
+            if (_dbContext.Users.Any(u => u.Email == dto.Email))
+                return BadRequest("User with same email already exist");
+
             var user = new User
             {
                 Username = dto.Username,
+                Email = dto.Email,
                 Role = "Viewer",
                 CreatedAtUtc = DateTime.UtcNow
             };
