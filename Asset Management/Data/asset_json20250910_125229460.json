@@ -10,6 +10,13 @@
       "parentId": 1,
       "children": [
         {
+          "id": 25,
+          "name": "Sdfjs",
+          "parentId": 2,
+          "children": [],
+          "signals": []
+        },
+        {
           "id": 3,
           "name": "Lathe",
           "parentId": 2,
@@ -74,13 +81,6 @@
               "signals": []
             }
           ],
-          "signals": []
-        },
-        {
-          "id": 25,
-          "name": "Sdfjs",
-          "parentId": 2,
-          "children": [],
           "signals": []
         }
       ],

@@ -1,6 +1,7 @@
 ﻿using Asset_Management.Database;
 using Asset_Management.DTO;
 using Asset_Management.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -19,11 +20,11 @@ namespace Asset_Management.Controllers
         private readonly AssetDbContext _dbContext;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IConfiguration _configuration;
-        public AuthController(AssetDbContext dbContext, IPasswordHasher<User> passwordHasher, IConfiguration configuration) {
+        public AuthController(AssetDbContext dbContext, IPasswordHasher<User> passwordHasher, IConfiguration configuration)
+        {
             _dbContext = dbContext;
             _passwordHasher = passwordHasher;
             _configuration = configuration;
-        
         }
 
         [HttpPost("Register")]
@@ -108,6 +109,18 @@ namespace Asset_Management.Controllers
             //result = {Base64Url(Header)}.{Base64Url(Payload)}.{Base64Url(Signature)}
             //Signature is generated when WriteToken takes algo type and key from the creds and uses SHA256(header.payload,key);
 
+
+            //Save the token to a Cookie for security
+            Response.Cookies.Append("token", tokenString, new CookieOptions
+            {
+                HttpOnly = true, //token can't be accessed with js
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Path = "/"
+
+            });
+
+
             return Ok(new
             {
                 Token = tokenString,
@@ -115,9 +128,36 @@ namespace Asset_Management.Controllers
             });
 
 
+        }
+
+        [HttpGet("GetUserInfo")]
+        [Authorize]
+        public async Task<IActionResult> GetUserInfo()
+        {
+
+            var userClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if(userClaim == null)
+                return Unauthorized("User ID claim not found in token.");
+
+            int userId = int.Parse(userClaim);
+            var user = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+                return NotFound("User not found");
+            Console.WriteLine("FROM GET USER INFO");
+            Console.WriteLine(user.Username);
+            string Username = user.Username;
+            string Role = user.Role;
+
+            return Ok( new {
+                username = Username,
+                role = Role
+            });
 
 
         }
+
+        
     }
 
     

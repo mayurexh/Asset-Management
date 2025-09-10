@@ -39,6 +39,8 @@ namespace Asset_Management.Controllers
             _uploadlog = uploadlog;
         }
 
+        
+
         [HttpGet]
         public IActionResult GetHierarchy()
         {

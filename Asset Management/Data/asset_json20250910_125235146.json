@@ -18,7 +18,15 @@
               "id": 6,
               "name": "Lathe dfs",
               "parentId": 3,
-              "children": [],
+              "children": [
+                {
+                  "id": 26,
+                  "name": "sfdjls",
+                  "parentId": 6,
+                  "children": [],
+                  "signals": []
+                }
+              ],
               "signals": []
             },
             {

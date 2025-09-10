@@ -5,6 +5,13 @@
   "parent": null,
   "children": [
     {
+      "id": 24,
+      "name": "sdfj",
+      "parentId": 1,
+      "children": [],
+      "signals": []
+    },
+    {
       "id": 2,
       "name": "Machines",
       "parentId": 1,
@@ -74,13 +81,6 @@
               "signals": []
             }
           ],
-          "signals": []
-        },
-        {
-          "id": 25,
-          "name": "Sdfjs",
-          "parentId": 2,
-          "children": [],
           "signals": []
         }
       ],
@@ -166,13 +166,6 @@
           "signals": []
         }
       ],
-      "signals": []
-    },
-    {
-      "id": 24,
-      "name": "sdfj",
-      "parentId": 1,
-      "children": [],
       "signals": []
     }
   ],

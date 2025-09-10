@@ -75,13 +75,6 @@
             }
           ],
           "signals": []
-        },
-        {
-          "id": 25,
-          "name": "Sdfjs",
-          "parentId": 2,
-          "children": [],
-          "signals": []
         }
       ],
       "signals": [
@@ -166,13 +159,6 @@
           "signals": []
         }
       ],
-      "signals": []
-    },
-    {
-      "id": 24,
-      "name": "sdfj",
-      "parentId": 1,
-      "children": [],
       "signals": []
     }
   ],

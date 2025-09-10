@@ -19,7 +19,15 @@
               "name": "Lathe dfs",
               "parentId": 3,
               "children": [],
-              "signals": []
+              "signals": [
+                {
+                  "id": 2,
+                  "name": "fjdskl",
+                  "valueType": "string",
+                  "description": "",
+                  "assetId": 6
+                }
+              ]
             },
             {
               "id": 12,
@@ -74,13 +82,6 @@
               "signals": []
             }
           ],
-          "signals": []
-        },
-        {
-          "id": 25,
-          "name": "Sdfjs",
-          "parentId": 2,
-          "children": [],
           "signals": []
         }
       ],
@@ -166,13 +167,6 @@
           "signals": []
         }
       ],
-      "signals": []
-    },
-    {
-      "id": 24,
-      "name": "sdfj",
-      "parentId": 1,
-      "children": [],
       "signals": []
     }
   ],
