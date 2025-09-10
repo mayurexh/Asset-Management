@@ -135,20 +135,69 @@ namespace Asset_Management.Services
         {
             try
             {
-                var parent = _dbContext.Assets.First(a => a.Id == parentId);
-                var asset = _dbContext.Assets.First(a => a.Id == assetId);
+                var parent = await _dbContext.Assets.FirstOrDefaultAsync(a => a.Id == parentId);
+                var asset = await _dbContext.Assets.FirstOrDefaultAsync(a => a.Id == assetId);
 
+                if (parent == null)
+                    throw new Exception("Target parent asset not found");
+                if (asset == null)
+                    throw new Exception("Asset to move not found");
+
+                // Check if trying to move asset under itself
+                if (assetId == parentId)
+                    throw new Exception("Cannot move asset under itself");
+
+                // Check if trying to move asset under its descendant (would create circular reference)
+                // We need to check if the NEW PARENT is a descendant of the ASSET BEING MOVED
+                if (await IsDescendant(assetId, parentId))
+                    throw new Exception("Cannot move asset under its descendant - this would create a circular reference");
+
+                // Check if asset is already under this parent
+                if (asset.ParentId == parentId)
+                    throw new Exception("Asset is already under the specified parent");
+
+                asset.ParentId = parentId;
                 asset.Parent = parent;
-                _dbContext.SaveChanges();
-
-
-            }catch(InvalidOperationException ex)
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (InvalidOperationException ex)
             {
-                throw new Exception("Invalid asset found");
+                throw new Exception("Invalid asset operation");
+            }
+        }
+
+        // Helper method to check if targetId is a descendant of ancestorId
+        private async Task<bool> IsDescendant(int ancestorId, int targetId)
+        {
+            var ancestorAsset = await _dbContext.Assets
+                .Include(a => a.Children)
+                .FirstOrDefaultAsync(a => a.Id == ancestorId);
+
+            if (ancestorAsset == null) return false;
+
+            return await CheckDescendantRecursive(ancestorAsset, targetId);
+        }
+
+        private async Task<bool> CheckDescendantRecursive(Asset currentAsset, int targetId)
+        {
+            if (currentAsset.Children == null || !currentAsset.Children.Any())
+                return false;
+
+            foreach (var child in currentAsset.Children)
+            {
+                if (child.Id == targetId)
+                    return true;
+
+                // Load children for recursive check
+                var childWithChildren = await _dbContext.Assets
+                    .Include(a => a.Children)
+                    .FirstOrDefaultAsync(a => a.Id == child.Id);
+
+                if (childWithChildren != null && await CheckDescendantRecursive(childWithChildren, targetId))
+                    return true;
             }
 
-
-
+            return false;
         }
         public async Task<bool> AddToRoot(string assetName)
         {

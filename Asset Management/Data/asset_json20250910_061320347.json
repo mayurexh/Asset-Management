@@ -5,20 +5,6 @@
   "parent": null,
   "children": [
     {
-      "id": 33,
-      "name": "fjdsdfj",
-      "parentId": 1,
-      "children": [],
-      "signals": []
-    },
-    {
-      "id": 2,
-      "name": "Machines",
-      "parentId": 1,
-      "children": [],
-      "signals": []
-    },
-    {
       "id": 24,
       "name": "Chil212143",
       "parentId": 1,
@@ -45,22 +31,14 @@
           "signals": []
         }
       ],
-      "signals": [
-        {
-          "id": 80,
-          "name": "signasmd",
-          "valueType": "string",
-          "description": "",
-          "assetId": 24
-        },
-        {
-          "id": 81,
-          "name": "somf lksdv",
-          "valueType": "string",
-          "description": "",
-          "assetId": 24
-        }
-      ]
+      "signals": []
+    },
+    {
+      "id": 2,
+      "name": "Machines",
+      "parentId": 1,
+      "children": [],
+      "signals": []
     }
   ],
   "signals": []

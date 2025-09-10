@@ -270,7 +270,7 @@ namespace Asset_Management.Controllers
         {
             try
             {
-                _service.ReorderNode(asset_id, parent_id);
+                await _service.ReorderNode(asset_id, parent_id);
                 return Ok("Asset position updated");
             }
             catch (Exception ex)
