@@ -17,7 +17,6 @@ namespace Asset_Management.Models
 
         public string Email { get; set; }
 
-        [Required]
         public string? PasswordHash { get; set; }
 
         [Required]

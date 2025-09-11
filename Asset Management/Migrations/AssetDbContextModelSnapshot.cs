@@ -146,7 +146,6 @@ namespace Asset_Management.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")

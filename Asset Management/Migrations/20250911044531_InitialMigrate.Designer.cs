@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Asset_Management.Migrations
 {
     [DbContext(typeof(AssetDbContext))]
-    [Migration("20250910062612_InitialMigrate")]
+    [Migration("20250911044531_InitialMigrate")]
     partial class InitialMigrate
     {
         /// <inheritdoc />
@@ -149,7 +149,6 @@ namespace Asset_Management.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")

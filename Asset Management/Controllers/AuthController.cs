@@ -1,9 +1,11 @@
 ﻿using Asset_Management.Database;
 using Asset_Management.DTO;
 using Asset_Management.Models;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -157,8 +159,90 @@ namespace Asset_Management.Controllers
 
         }
 
-        
+
+        [HttpPost("ExternalLogin")]
+        public async Task<IActionResult> ExternalLogin([FromBody] ExternalLoginDTO dto)
+        {
+
+            Console.WriteLine("Controller started");
+            if (string.IsNullOrEmpty(dto.IdToken))
+                return BadRequest("ID Token is required");
+
+            GoogleJsonWebSignature.Payload payload;
+            try
+            {
+                // Verify the Google ID token
+                payload = await GoogleJsonWebSignature.ValidateAsync(dto.IdToken);
+                // payload contains email, name, sub (Google user ID)
+
+                
+            }
+            catch
+            {
+                return Unauthorized("Invalid Google ID Token");
+            }
+
+            // Check if user already exists
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == payload.Email);
+
+
+            if (user == null)
+            {
+                // Create new user
+                user = new User
+                {
+                    Username = payload.Name ?? payload.Email.Split('@')[0],
+                    Email = payload.Email,
+                    Role = "Viewer",
+                    PasswordHash = null,
+                    CreatedAtUtc = DateTime.UtcNow
+                };
+
+                _dbContext.Users.Add(user);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            // Generate claims for your custom JWT
+            var claims = new[]
+            {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim(ClaimTypes.Role, user.Role)
+};
+
+            // Generate JWT
+            var jwtSettings = _configuration.GetSection("Jwt");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpiresInMinutes"])),
+                signingCredentials: creds
+            );
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            // Return the token + user info to frontend
+            return Ok(new
+            {
+                Token = tokenString,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpiresInMinutes"])),
+                User = new
+                {
+                    id = user.Id,
+                    username = user.Username,
+                    role = user.Role
+                }
+            });
+        }
+
+
+
+
     }
 
-    
+
 }
