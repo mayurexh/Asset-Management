@@ -1,4 +1,5 @@
 ﻿using Asset_Management.Database;
+using Asset_Management.DTO;
 using Asset_Management.Hubs;
 using Asset_Management.Interfaces;
 using Asset_Management.Models;
@@ -32,19 +33,28 @@ namespace Asset_Management.Services
         public readonly IAssetLogService _logService;
         private readonly IHubContext<NotificationHub> _hubContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly INotificationService _notificationService;
 
-        public DbAssetHierarchyService(AssetDbContext dbContext, IAssetStorageService storage, IAssetLogService logService, IHubContext<NotificationHub> hubContext, IHttpContextAccessor httpContextAccessor)
+        public DbAssetHierarchyService(AssetDbContext dbContext, IAssetStorageService storage, IAssetLogService logService, IHubContext<NotificationHub> hubContext, IHttpContextAccessor httpContextAccessor, INotificationService notificationService)
         {
             _dbContext = dbContext;
             _storage = storage;
             _logService = logService;
             _hubContext = hubContext;
             _httpContextAccessor = httpContextAccessor;
+            _notificationService = notificationService;
         }
 
         private string? GetCurrentUser()
         {
             return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+        }
+
+        private string? GetCurrentUserID()
+        {
+            return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+
         }
         private string SerializeJson(Asset asset)
         {
@@ -119,7 +129,10 @@ namespace Asset_Management.Services
             _dbContext.SaveChanges();
             SaveHierarchyVersion(action);
             _logService.Log(action, asset: newNode.Name);
-            await _hubContext.Clients.All.SendAsync("RecieveAssetNotification", new
+
+            var currentUserId = GetCurrentUserID();
+            List<string> connectionIds = NotificationHub.GetConnections(currentUserId);
+            await _hubContext.Clients.AllExcept(connectionIds).SendAsync("RecieveAssetNotification", new
             {
                 Type = "AssetAdded",
                 User = GetCurrentUser(),
@@ -219,15 +232,29 @@ namespace Asset_Management.Services
             _dbContext.SaveChanges();
             SaveHierarchyVersion(action);
             _logService.Log(action, assetName);
-            await _hubContext.Clients.All.SendAsync("RecieveAssetNotification", new
+
+
+            //signal r
+            var currentUserId = GetCurrentUserID();
+            var username = GetCurrentUser();
+            List<string> connectionIds = NotificationHub.GetConnections(currentUserId);
+
+            await _hubContext.Clients.GroupExcept("Role_Admin", connectionIds).SendAsync("RecieveAssetNotification", new
             {
                 Type = "AssetAdded",
-                User = GetCurrentUser(),
-                Name = $"{assetName}"
+                User = username,
+                Name = assetName
+            });
+
+            await _hubContext.Clients.Group("Role_Viewer").SendAsync("RecieveAssetNotification", new
+            {
+                Type = "AssetAdded",
+                User = "Admin",
+                Name = assetName
             });
 
             return true;
-        }
+        }   
 
         public async Task<bool> RemoveNode(int nodeId)
         {
@@ -242,12 +269,29 @@ namespace Asset_Management.Services
             string action = "Delete Asset";
             SaveHierarchyVersion(action);
             _logService.Log(action, node.Name);
-            await _hubContext.Clients.All.SendAsync("RecieveAssetNotification", new
-            {
-                Type = "AssetDeleted",
-                User = GetCurrentUser(),
-                Name = $"{name}"
-            });
+
+            var currentUserId = GetCurrentUserID();
+            List<string> connectionIds = NotificationHub.GetConnections(currentUserId);
+
+            
+            await _hubContext.Clients.GroupExcept("Role_Admin", connectionIds).SendAsync(
+                "RecieveAssetNotification", new
+                {
+                    Type = "AssetDeleted",
+                    User = GetCurrentUser(),
+                    Name = $"{name}"
+                }
+                );
+
+            await _hubContext.Clients.Group("Role_Viewer").SendAsync(
+                "RecieveAssetNotification", new
+                {
+                    Type = "AssetDeleted",
+                    User = "Admin",
+                    Name = $"{name}"
+                }
+                );
+
 
             return true;
         }
@@ -283,13 +327,28 @@ namespace Asset_Management.Services
                 string action = "Update Asset";
                 SaveHierarchyVersion(action);
                 _logService.Log(action, newName);
-                await _hubContext.Clients.All.SendAsync("RecieveAssetNotification", new
-                {
-                    Type = "AssetUpdated",
-                    User = GetCurrentUser(),
-                    OldName = $"{oldName}",
-                    NewName = $"{newName}"
-                });
+                var currentUserId = GetCurrentUserID();
+                List<string> connectionIds = NotificationHub.GetConnections(currentUserId);
+
+                await _hubContext.Clients.GroupExcept("Role_Admin", connectionIds).SendAsync(
+                    "RecieveAssetNotification", new
+                    {
+                        Type = "AssetUpdated",
+                        User = GetCurrentUser(),
+                        OldName = $"{oldName}",
+                        NewName = $"{newName}"
+                    }
+                );
+
+                await _hubContext.Clients.Group("Role_Viewer").SendAsync(
+                    "RecieveAssetNotification", new
+                    {
+                        Type = "AssetUpdated",
+                        User = "Admin",
+                        OldName = $"{oldName}",
+                        NewName = $"{newName}"
+                    }
+                );
 
 
 

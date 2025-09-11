@@ -103,6 +103,9 @@ builder.Services.AddStorageServices(builder.Configuration);
 // Add a password hasher
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
+//Notification service (singleton/ is stateless)
+builder.Services.AddSingleton<INotificationService, NotificationService>();
+
 //configure jwt settings
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
@@ -126,15 +129,43 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 
+    // IMPORTANT: Configure for SignalR
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/Notification"))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
+
     //Read token from cookie instead of Authorization header
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
         {
-            if (context.Request.Cookies.ContainsKey("token"))
+            // First, check for SignalR access_token in query string
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/Notification"))
+            {
+                context.Token = accessToken;
+                Console.WriteLine("Token set from query parameter for SignalR");
+            }
+            // Then, check for token in cookies (for regular API calls)
+            else if (context.Request.Cookies.ContainsKey("token"))
             {
                 context.Token = context.Request.Cookies["token"];
+                Console.WriteLine("Token set from cookie");
             }
+
             return Task.CompletedTask;
         }
     };

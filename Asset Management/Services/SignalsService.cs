@@ -34,6 +34,12 @@ namespace Asset_Management.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
+        private string? GetCurrentUserID()
+        {
+            return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+
+        }
         private string? GetCurrentUser()
         {
             return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
@@ -112,17 +118,37 @@ namespace Asset_Management.Services
                 throw new Exception("Asset not found");
             try
             {
+                string parentName = asset.Name;
                 asset.Signals.Add(new Signal { Name = signal.Name, ValueType = signal.ValueType, Description = signal.Description });
                 _dbContext.SaveChanges();
                 SaveHierarchyVersion(action: "Add Signal");
                 _logger.Log(action, null, signal.Name);
-                await _hubContext.Clients.All.SendAsync("RecieveSignalNotification", new
-                {
-                    Type = "SignalAdded",
-                    User = GetCurrentUser(),
-                    Name = signal.Name,
-                });
-                
+
+
+                //signal r
+                var currentUserId = GetCurrentUserID();
+                List<string> connectionIds = NotificationHub.GetConnections(currentUserId);
+
+                await _hubContext.Clients.GroupExcept("Role_Admin", connectionIds).SendAsync(
+                    "RecieveSignalNotification", new
+                    {
+                        Type = "SignalAdded",
+                        User = GetCurrentUser(),
+                        Name = signal.Name,
+                        Parent = parentName
+                    }
+                );
+
+                await _hubContext.Clients.Group("Role_Viewer").SendAsync(
+                    "RecieveSignalNotification", new
+                    {
+                        Type = "SignalAdded",
+                        User = "Admin",
+                        Name = signal.Name,
+                        Parent = parentName
+                    }
+                );
+
             }
             catch(DbUpdateException ex)
             {
@@ -144,19 +170,39 @@ namespace Asset_Management.Services
             try
             {
                 var oldName = signal.Name; //notif
+                string parentName = asset.Name;
+
                 signal.Name = request.Name;
                 signal.Description = request.Description;
                 signal.ValueType = request.ValueType;
                 _dbContext.SaveChanges();
                 SaveHierarchyVersion( action: "Update Signal");
                 _logger.Log(action, null, signal: request.Name);
-                await _hubContext.Clients.All.SendAsync("RecieveSignalNotification", new
-                {
-                    Type = "SignalUpdated",
-                    User = GetCurrentUser(),
-                    OldName = oldName,
-                    NewName = request.Name
-                });
+
+                var currentUserId = GetCurrentUserID();
+                List<string> connectionIds = NotificationHub.GetConnections(currentUserId);
+
+                await _hubContext.Clients.GroupExcept("Role_Admin", connectionIds).SendAsync(
+                    "RecieveSignalNotification", new
+                    {
+                        Type = "SignalUpdated",
+                        User = GetCurrentUser(),
+                        OldName = oldName,
+                        NewName = request.Name,
+                        Parent = parentName
+                    }
+                );
+
+                await _hubContext.Clients.Group("Role_Viewer").SendAsync(
+                    "RecieveSignalNotification", new
+                    {
+                        Type = "SignalUpdated",
+                        User = "Admin",
+                        OldName = oldName,
+                        NewName = request.Name,
+                        Parent = parentName
+                    }
+                );
 
             }
             catch (DbUpdateException ex)
@@ -179,18 +225,36 @@ namespace Asset_Management.Services
 
 
             string signalName = signal.Name; //for sending notification
+            string parentName = asset.Name;
             Console.WriteLine($"FROM DELETE SIGNAL " + signalName);
             //do deletion
             _dbContext.Signals.Remove(signal);
             _dbContext.SaveChanges();
             SaveHierarchyVersion(action: "Delete Signal");
             _logger.Log(action, null, signal: signal.Name);
-            await _hubContext.Clients.All.SendAsync("RecieveSignalNotification", new
-            {
-                Type = "SignalDeleted",
-                User = GetCurrentUser(),
-                Name = signal.Name,
-            });
+
+            var currentUserId = GetCurrentUserID();
+            List<string> connectionIds = NotificationHub.GetConnections(currentUserId);
+
+            await _hubContext.Clients.GroupExcept("Role_Admin", connectionIds).SendAsync(
+                "RecieveSignalNotification", new
+                {
+                    Type = "SignalDeleted",
+                    User = GetCurrentUser(),
+                    Name = signal.Name,
+                    Parent = parentName
+                }
+            );
+
+            await _hubContext.Clients.Group("Role_Viewer").SendAsync(
+                "RecieveSignalNotification", new
+                {
+                    Type = "SignalDeleted",
+                    User = "Admin",
+                    Name = signal.Name,
+                    Parent = parentName
+                }
+            );
         }
 
 
