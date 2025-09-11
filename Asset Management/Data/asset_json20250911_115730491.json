@@ -30,6 +30,21 @@
           "parentId": 14,
           "children": [
             {
+              "id": 22,
+              "name": "Pressure Sensors",
+              "parentId": 17,
+              "children": [
+                {
+                  "id": 25,
+                  "name": "dkfjs",
+                  "parentId": 22,
+                  "children": [],
+                  "signals": []
+                }
+              ],
+              "signals": []
+            },
+            {
               "id": 21,
               "name": "Temperature Sensors",
               "parentId": 17,
@@ -37,8 +52,8 @@
               "signals": []
             },
             {
-              "id": 22,
-              "name": "Pressure Sensors",
+              "id": 24,
+              "name": "kfldjslf",
               "parentId": 17,
               "children": [],
               "signals": []
@@ -54,6 +69,35 @@
           "signals": []
         }
       ],
+      "signals": []
+    },
+    {
+      "id": 15,
+      "name": "Furniture",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 19,
+          "name": "Chairs",
+          "parentId": 15,
+          "children": [],
+          "signals": []
+        },
+        {
+          "id": 20,
+          "name": "Desks",
+          "parentId": 15,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "id": 23,
+      "name": "newest",
+      "parentId": 1,
+      "children": [],
       "signals": []
     }
   ],

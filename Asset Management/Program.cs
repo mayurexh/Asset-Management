@@ -150,17 +150,9 @@ builder.Services.AddAuthentication(options =>
     {
         OnMessageReceived = context =>
         {
-            // First, check for SignalR access_token in query string
-            var accessToken = context.Request.Query["access_token"];
-            var path = context.HttpContext.Request.Path;
-
-            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/Notification"))
-            {
-                context.Token = accessToken;
-                Console.WriteLine("Token set from query parameter for SignalR");
-            }
+            
             // Then, check for token in cookies (for regular API calls)
-            else if (context.Request.Cookies.ContainsKey("token"))
+            if(context.Request.Cookies.ContainsKey("token"))
             {
                 context.Token = context.Request.Cookies["token"];
                 Console.WriteLine("Token set from cookie");

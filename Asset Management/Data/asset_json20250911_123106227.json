@@ -1,0 +1,23 @@
+{
+  "id": 1,
+  "name": "Root",
+  "parentId": null,
+  "parent": null,
+  "children": [
+    {
+      "id": 13,
+      "name": "Milling",
+      "parentId": 1,
+      "children": [],
+      "signals": []
+    },
+    {
+      "id": 15,
+      "name": "Furniture",
+      "parentId": 1,
+      "children": [],
+      "signals": []
+    }
+  ],
+  "signals": []
+}

@@ -34,7 +34,15 @@
               "name": "Temperature Sensors",
               "parentId": 17,
               "children": [],
-              "signals": []
+              "signals": [
+                {
+                  "id": 29,
+                  "name": "sdflj",
+                  "valueType": "string",
+                  "description": "",
+                  "assetId": 21
+                }
+              ]
             },
             {
               "id": 22,

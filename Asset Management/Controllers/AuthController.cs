@@ -225,6 +225,16 @@ namespace Asset_Management.Controllers
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
+            //Save the token to a Cookie for security
+            Response.Cookies.Append("token", tokenString, new CookieOptions
+            {
+                HttpOnly = true, //token can't be accessed with js
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Path = "/"
+
+            });
+
             // Return the token + user info to frontend
             return Ok(new
             {

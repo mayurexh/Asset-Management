@@ -1,0 +1,62 @@
+{
+  "id": 1,
+  "name": "Root",
+  "parentId": null,
+  "parent": null,
+  "children": [
+    {
+      "id": 13,
+      "name": "Milling",
+      "parentId": 1,
+      "children": [],
+      "signals": []
+    },
+    {
+      "id": 15,
+      "name": "Furniture",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 20,
+          "name": "Desks",
+          "parentId": 15,
+          "children": [
+            {
+              "id": 26,
+              "name": "new",
+              "parentId": 20,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "id": 23,
+      "name": "newest",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 27,
+          "name": "newly",
+          "parentId": 23,
+          "children": [],
+          "signals": [
+            {
+              "id": 21,
+              "name": "sdlkfds",
+              "valueType": "string",
+              "description": "",
+              "assetId": 27
+            }
+          ]
+        }
+      ],
+      "signals": []
+    }
+  ],
+  "signals": []
+}

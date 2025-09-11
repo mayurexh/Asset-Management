@@ -5,21 +5,6 @@
   "parent": null,
   "children": [
     {
-      "id": 13,
-      "name": "Milling",
-      "parentId": 1,
-      "children": [
-        {
-          "id": 16,
-          "name": "CNC Milling",
-          "parentId": 13,
-          "children": [],
-          "signals": []
-        }
-      ],
-      "signals": []
-    },
-    {
       "id": 14,
       "name": "Electronics",
       "parentId": 1,
@@ -50,6 +35,29 @@
           "id": 18,
           "name": "Controllers",
           "parentId": 14,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": [
+        {
+          "id": 28,
+          "name": "sdfds",
+          "valueType": "string",
+          "description": "",
+          "assetId": 14
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Milling",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 16,
+          "name": "CNC Milling",
+          "parentId": 13,
           "children": [],
           "signals": []
         }
