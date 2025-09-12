@@ -6,7 +6,7 @@
   "children": [
     {
       "id": 2,
-      "name": "Mac",
+      "name": "Machines",
       "parentId": 1,
       "children": [
         {
@@ -15,36 +15,13 @@
           "parentId": 2,
           "children": [
             {
-              "id": 6,
-              "name": "Lathe Tooling",
-              "parentId": 3,
-              "children": [
-                {
-                  "id": 12,
-                  "name": "tool",
-                  "parentId": 6,
-                  "children": [],
-                  "signals": [
-                    {
-                      "id": 49,
-                      "name": "sdfsd",
-                      "valueType": "string",
-                      "description": "",
-                      "assetId": 12
-                    }
-                  ]
-                }
-              ],
-              "signals": []
-            },
-            {
               "id": 7,
               "name": "Lathe Maintenance",
               "parentId": 3,
               "children": [
                 {
                   "id": 11,
-                  "name": "Machine Tooling",
+                  "name": "Gote Tooling",
                   "parentId": 7,
                   "children": [],
                   "signals": []
@@ -91,11 +68,71 @@
             }
           ],
           "signals": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "id": 13,
+      "name": "Milling",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 16,
+          "name": "CNC Milling",
+          "parentId": 13,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "id": 14,
+      "name": "Electronics",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 17,
+          "name": "Sensors",
+          "parentId": 14,
+          "children": [
+            {
+              "id": 21,
+              "name": "Temperature Sensors",
+              "parentId": 17,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": []
         },
         {
-          "id": 14,
-          "name": "new child",
-          "parentId": 2,
+          "id": 18,
+          "name": "Controllers",
+          "parentId": 14,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "id": 15,
+      "name": "Furniture",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 19,
+          "name": "Chairs",
+          "parentId": 15,
+          "children": [],
+          "signals": []
+        },
+        {
+          "id": 20,
+          "name": "Desks",
+          "parentId": 15,
           "children": [],
           "signals": []
         }

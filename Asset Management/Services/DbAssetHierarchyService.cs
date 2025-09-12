@@ -170,13 +170,14 @@ namespace Asset_Management.Services
             {
                 Type = "AssetAdded",
                 User = GetCurrentUser(),
-                Name = $"{newNode.Name}"
+                Name = $"{newNode.Name}",
+
             });
             await _hubContext.Clients.Group("Role_Viewer").SendAsync("RecieveAssetNotification", new
             {
                 Type = "AssetAdded",
-                User = GetCurrentUser(),
-                Name = $"Admin"
+                User = "Admin",
+                Name = $"{newNode.Name}",
             });
 
 

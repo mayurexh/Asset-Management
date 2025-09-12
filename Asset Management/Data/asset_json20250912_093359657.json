@@ -6,7 +6,7 @@
   "children": [
     {
       "id": 2,
-      "name": "Mac",
+      "name": "Machines",
       "parentId": 1,
       "children": [
         {
@@ -16,25 +16,9 @@
           "children": [
             {
               "id": 6,
-              "name": "Lathe Tooling",
+              "name": "Tooling",
               "parentId": 3,
-              "children": [
-                {
-                  "id": 12,
-                  "name": "tool",
-                  "parentId": 6,
-                  "children": [],
-                  "signals": [
-                    {
-                      "id": 49,
-                      "name": "sdfsd",
-                      "valueType": "string",
-                      "description": "",
-                      "assetId": 12
-                    }
-                  ]
-                }
-              ],
+              "children": [],
               "signals": []
             },
             {
@@ -56,47 +40,33 @@
           "signals": []
         },
         {
-          "id": 4,
-          "name": "Drill",
-          "parentId": 2,
-          "children": [
-            {
-              "id": 8,
-              "name": "Drill Bits",
-              "parentId": 4,
-              "children": [],
-              "signals": []
-            }
-          ],
-          "signals": []
-        },
-        {
           "id": 5,
           "name": "Welding",
           "parentId": 2,
           "children": [
+            {
+              "id": 10,
+              "name": "Gas Welding",
+              "parentId": 5,
+              "children": [],
+              "signals": [
+                {
+                  "id": 42,
+                  "name": "signal 1",
+                  "valueType": "string",
+                  "description": "",
+                  "assetId": 10
+                }
+              ]
+            },
             {
               "id": 9,
               "name": "Arc Welding",
               "parentId": 5,
               "children": [],
               "signals": []
-            },
-            {
-              "id": 10,
-              "name": "Gas Welding",
-              "parentId": 5,
-              "children": [],
-              "signals": []
             }
           ],
-          "signals": []
-        },
-        {
-          "id": 14,
-          "name": "new child",
-          "parentId": 2,
-          "children": [],
           "signals": []
         }
       ],

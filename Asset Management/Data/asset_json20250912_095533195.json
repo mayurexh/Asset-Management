@@ -24,18 +24,18 @@
                   "name": "tool",
                   "parentId": 6,
                   "children": [],
-                  "signals": [
-                    {
-                      "id": 49,
-                      "name": "sdfsd",
-                      "valueType": "string",
-                      "description": "",
-                      "assetId": 12
-                    }
-                  ]
+                  "signals": []
                 }
               ],
-              "signals": []
+              "signals": [
+                {
+                  "id": 47,
+                  "name": "signal 2",
+                  "valueType": "string",
+                  "description": "",
+                  "assetId": 6
+                }
+              ]
             },
             {
               "id": 7,

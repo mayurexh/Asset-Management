@@ -6,7 +6,7 @@
   "children": [
     {
       "id": 2,
-      "name": "Mac",
+      "name": "Machines",
       "parentId": 1,
       "children": [
         {
@@ -21,18 +21,10 @@
               "children": [
                 {
                   "id": 12,
-                  "name": "tool",
+                  "name": "new tool",
                   "parentId": 6,
                   "children": [],
-                  "signals": [
-                    {
-                      "id": 49,
-                      "name": "sdfsd",
-                      "valueType": "string",
-                      "description": "",
-                      "assetId": 12
-                    }
-                  ]
+                  "signals": []
                 }
               ],
               "signals": []
@@ -90,13 +82,6 @@
               "signals": []
             }
           ],
-          "signals": []
-        },
-        {
-          "id": 14,
-          "name": "new child",
-          "parentId": 2,
-          "children": [],
           "signals": []
         }
       ],

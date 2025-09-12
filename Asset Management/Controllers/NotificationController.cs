@@ -67,6 +67,49 @@ namespace Asset_Management.Controllers
             }
         }
 
+
+        //PUT: api/notification/mark-read
+       [HttpPut("mark-read")]
+        public async Task<IActionResult> MarkNotificationsAsRead([FromBody] List<int> notificationIds)
+        {
+            try
+            {
+                Console.WriteLine($"Backend: Received request to mark notifications as read: {string.Join(", ", notificationIds)}");
+
+                var currentUserId = int.Parse(GetCurrentUserID()); // Replace with your method
+                Console.WriteLine($"Backend: Current user ID: {currentUserId}");
+
+                var notifications = await _dbContext.Notifications
+                    .Where(n => notificationIds.Contains(n.Id) && n.UserId == currentUserId)
+                    .ToListAsync();
+
+                Console.WriteLine($"Backend: Found {notifications.Count} notifications to mark as read");
+
+                if (!notifications.Any())
+                {
+                    Console.WriteLine("Backend: No notifications found to update");
+                    return NotFound(new { message = "No notifications found to update" });
+                }
+
+                foreach (var notification in notifications)
+                {
+                    Console.WriteLine($"Backend: Marking notification {notification.Id} as read (was {notification.IsRead})");
+                    notification.IsRead = true;
+                }
+
+                var changesCount = await _dbContext.SaveChangesAsync();
+                Console.WriteLine($"Backend: Saved {changesCount} changes to database");
+
+                return Ok(new { message = $"Marked {notifications.Count} notifications as read", count = notifications.Count });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Backend Error: {ex.Message}");
+                Console.WriteLine($"Backend Stack Trace: {ex.StackTrace}");
+                return StatusCode(500, new { message = "Error updating notifications", error = ex.Message });
+            }
+        }
+
         // PUT: api/notification/mark-all-read/{userId}
         [HttpPut("mark-all-read/{userId}")]
         public async Task<IActionResult> MarkAllNotificationsAsRead(int userId)

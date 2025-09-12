@@ -1,0 +1,47 @@
+{
+  "id": 1,
+  "name": "Root",
+  "parentId": null,
+  "parent": null,
+  "children": [
+    {
+      "id": 2,
+      "name": "Machines",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 3,
+          "name": "Lathe",
+          "parentId": 2,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": []
+    },
+    {
+      "id": 13,
+      "name": "Milling",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 23,
+          "name": "sdfms",
+          "parentId": 13,
+          "children": [
+            {
+              "id": 24,
+              "name": "sdfs",
+              "parentId": 23,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": []
+        }
+      ],
+      "signals": []
+    }
+  ],
+  "signals": []
+}

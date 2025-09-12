@@ -4,6 +4,7 @@ using Asset_Management.DTO;
 using Asset_Management.Hubs;
 using Asset_Management.Interfaces;
 using Asset_Management.Models;
+using Azure.Core;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -32,6 +33,38 @@ namespace Asset_Management.Services
             _logger = logger;
             _hubContext = hubContext;
             _httpContextAccessor = httpContextAccessor;
+        }
+        private async Task SaveNotificationsForOfflineUsers(string type, string notificationMessage, int senderId, string senderName)
+        {
+            // Get all admins except the sender
+            var allAdmins = await _dbContext.Users.Where(u => u.Role == "Admin" && u.Id != senderId).ToListAsync();
+
+            foreach (var admin in allAdmins)
+            {
+                // Check if admin is currently online
+                List<string> adminConnections = NotificationHub.GetConnections(admin.Id.ToString());
+                bool isOnline = adminConnections != null && adminConnections.Any();
+
+                var notification = new Notification
+                {
+                    UserId = admin.Id,
+                    Type = type,
+                    Message = notificationMessage,
+                    SenderName = senderName,
+                    CreatedAt = DateTime.UtcNow,
+                    IsRead = isOnline // Mark as read if user is currently online
+                };
+
+                Console.WriteLine($"Saving notification for Admin ID: {admin.Id} (Online: {isOnline})");
+                Console.WriteLine($"Sender: {notification.SenderName}");
+                Console.WriteLine($"Message: {notification.Message}");
+                _dbContext.Notifications.Add(notification);
+            }
+
+            if (allAdmins.Any())
+            {
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
         private string? GetCurrentUserID()
@@ -149,6 +182,9 @@ namespace Asset_Management.Services
                     }
                 );
 
+                string notificationMessage = $"{GetCurrentUser()} added signal {signal.Name} under {parentName}";
+                await SaveNotificationsForOfflineUsers(type: "SignalAdded", notificationMessage, int.Parse(GetCurrentUserID()), GetCurrentUser());
+
             }
             catch(DbUpdateException ex)
             {
@@ -203,6 +239,9 @@ namespace Asset_Management.Services
                         Parent = parentName
                     }
                 );
+                string notificationMessage = $"{GetCurrentUser()} updated signal {oldName} to {request.Name} under {parentName}";
+                await SaveNotificationsForOfflineUsers(type: "SignalUpdated", notificationMessage, int.Parse(GetCurrentUserID()), GetCurrentUser());
+                Console.WriteLine("SIGNAL SAVED EXECUTED");
 
             }
             catch (DbUpdateException ex)
@@ -255,6 +294,9 @@ namespace Asset_Management.Services
                     Parent = parentName
                 }
             );
+
+            string notificationMessage = $"{GetCurrentUser()} deleted signal {signal.Name} under {parentName}";
+            await SaveNotificationsForOfflineUsers(type: "SignalDeleted", notificationMessage, int.Parse(GetCurrentUserID()), GetCurrentUser());
         }
 
 

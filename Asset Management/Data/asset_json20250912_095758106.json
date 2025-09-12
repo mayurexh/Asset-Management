@@ -24,15 +24,7 @@
                   "name": "tool",
                   "parentId": 6,
                   "children": [],
-                  "signals": [
-                    {
-                      "id": 49,
-                      "name": "sdfsd",
-                      "valueType": "string",
-                      "description": "",
-                      "assetId": 12
-                    }
-                  ]
+                  "signals": []
                 }
               ],
               "signals": []

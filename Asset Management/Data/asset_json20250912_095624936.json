@@ -26,8 +26,8 @@
                   "children": [],
                   "signals": [
                     {
-                      "id": 49,
-                      "name": "sdfsd",
+                      "id": 48,
+                      "name": "signal1",
                       "valueType": "string",
                       "description": "",
                       "assetId": 12

@@ -1,0 +1,54 @@
+{
+  "id": 1,
+  "name": "Root",
+  "parentId": null,
+  "parent": null,
+  "children": [
+    {
+      "id": 2,
+      "name": "Machines",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 4,
+          "name": "Drill",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 8,
+              "name": "Drill Bits",
+              "parentId": 4,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": []
+        },
+        {
+          "id": 5,
+          "name": "Welding",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 9,
+              "name": "Arc Welding",
+              "parentId": 5,
+              "children": [],
+              "signals": []
+            },
+            {
+              "id": 10,
+              "name": "Gas Welding",
+              "parentId": 5,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": []
+        }
+      ],
+      "signals": []
+    }
+  ],
+  "signals": []
+}
