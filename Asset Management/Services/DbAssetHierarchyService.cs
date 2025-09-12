@@ -45,6 +45,40 @@ namespace Asset_Management.Services
             _notificationService = notificationService;
         }
 
+        private async Task SaveNotificationsForOfflineUsers(string type, string notificationMessage, int senderId, string senderName)
+        {
+            // Get all admins except the sender
+            var allAdmins = await _dbContext.Users.Where(u => u.Role == "Admin" && u.Id != senderId).ToListAsync();
+
+            foreach (var admin in allAdmins)
+            {
+                // Check if admin is currently online
+                List<string> adminConnections = NotificationHub.GetConnections(admin.Id.ToString());
+                bool isOnline = adminConnections != null && adminConnections.Any();
+
+                var notification = new Notification
+                {
+                    UserId = admin.Id,
+                    Type = type,
+                    Message = notificationMessage,
+                    SenderName = senderName,
+                    CreatedAt = DateTime.UtcNow,
+                    IsRead = isOnline // Mark as read if user is currently online
+                };
+
+                Console.WriteLine($"Saving notification for Admin ID: {admin.Id} (Online: {isOnline})");
+                Console.WriteLine($"Sender: {notification.SenderName}");
+                Console.WriteLine($"Message: {notification.Message}");
+                _dbContext.Notifications.Add(notification);
+            }
+
+            if (allAdmins.Any())
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+
         private string? GetCurrentUser()
         {
             return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
@@ -132,13 +166,23 @@ namespace Asset_Management.Services
 
             var currentUserId = GetCurrentUserID();
             List<string> connectionIds = NotificationHub.GetConnections(currentUserId);
-            await _hubContext.Clients.AllExcept(connectionIds).SendAsync("RecieveAssetNotification", new
+            await _hubContext.Clients.GroupExcept("Role_Admin", connectionIds).SendAsync("RecieveAssetNotification", new
             {
                 Type = "AssetAdded",
                 User = GetCurrentUser(),
                 Name = $"{newNode.Name}"
             });
+            await _hubContext.Clients.Group("Role_Viewer").SendAsync("RecieveAssetNotification", new
+            {
+                Type = "AssetAdded",
+                User = GetCurrentUser(),
+                Name = $"Admin"
+            });
 
+
+
+            string notificationMessage = $"{GetCurrentUser()} added new asset {newNode.Name}";
+            await SaveNotificationsForOfflineUsers(type: "AssetAdded", notificationMessage, int.Parse(GetCurrentUserID()), GetCurrentUser());
 
 
 
@@ -253,6 +297,9 @@ namespace Asset_Management.Services
                 Name = assetName
             });
 
+            string notificationMessage = $"{username} added asset {assetName} to the root";
+            await SaveNotificationsForOfflineUsers("AssetAdded", notificationMessage, int.Parse(GetCurrentUserID()), GetCurrentUser());
+
             return true;
         }   
 
@@ -291,6 +338,10 @@ namespace Asset_Management.Services
                     Name = $"{name}"
                 }
                 );
+
+
+            string notificationMessage = $"{GetCurrentUser()} deleted asset {name}";
+            await SaveNotificationsForOfflineUsers(type: "AssetDeleted", notificationMessage, int.Parse(GetCurrentUserID()), GetCurrentUser());
 
 
             return true;
@@ -349,6 +400,9 @@ namespace Asset_Management.Services
                         NewName = $"{newName}"
                     }
                 );
+
+                string notificationMessage = $"{GetCurrentUser()} updated asset {oldName} to {newName}";
+                await SaveNotificationsForOfflineUsers(type: "AssetUpdated", notificationMessage, int.Parse(GetCurrentUserID()), GetCurrentUser());
 
 
 

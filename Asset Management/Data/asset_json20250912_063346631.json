@@ -29,7 +29,15 @@
               "signals": []
             }
           ],
-          "signals": []
+          "signals": [
+            {
+              "id": 34,
+              "name": "sig2",
+              "valueType": "string",
+              "description": "",
+              "assetId": 5
+            }
+          ]
         },
         {
           "id": 3,

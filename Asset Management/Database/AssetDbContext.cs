@@ -18,6 +18,8 @@ namespace Asset_Management.Database
 
         public DbSet<AssetLog> AssetLogs { get; set; }
 
+        public DbSet<Notification> Notifications { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure self-referencing relationship

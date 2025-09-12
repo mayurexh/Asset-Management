@@ -148,10 +148,12 @@ namespace Asset_Management.Controllers
                 return NotFound("User not found");
             Console.WriteLine("FROM GET USER INFO");
             Console.WriteLine(user.Username);
+            int id = user.Id;
             string Username = user.Username;
             string Role = user.Role;
 
             return Ok( new {
+                id = id,
                 username = Username,
                 role = Role
             });
