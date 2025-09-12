@@ -10,30 +10,46 @@
       "parentId": 1,
       "children": [
         {
-          "id": 4,
-          "name": "Drill2ds",
+          "id": 3,
+          "name": "Lathe",
           "parentId": 2,
           "children": [
             {
-              "id": 24,
-              "name": "child 1",
-              "parentId": 4,
+              "id": 7,
+              "name": "Lathe Maintenance",
+              "parentId": 3,
               "children": [
                 {
-                  "id": 25,
-                  "name": "sfds",
-                  "parentId": 24,
+                  "id": 11,
+                  "name": "Machine Tooling",
+                  "parentId": 7,
                   "children": [],
                   "signals": []
                 }
               ],
               "signals": []
-            },
+            }
+          ],
+          "signals": []
+        },
+        {
+          "id": 4,
+          "name": "Drill",
+          "parentId": 2,
+          "children": [
             {
               "id": 8,
               "name": "Drill Bits",
               "parentId": 4,
-              "children": [],
+              "children": [
+                {
+                  "id": 23,
+                  "name": "sdfds",
+                  "parentId": 8,
+                  "children": [],
+                  "signals": []
+                }
+              ],
               "signals": []
             }
           ],
@@ -53,7 +69,7 @@
             },
             {
               "id": 10,
-              "name": "Gas ",
+              "name": "Gas Welding",
               "parentId": 5,
               "children": [],
               "signals": []
@@ -66,7 +82,7 @@
     },
     {
       "id": 13,
-      "name": "dsfsdfsfdsfsdfnsafds",
+      "name": "Milling",
       "parentId": 1,
       "children": [
         {

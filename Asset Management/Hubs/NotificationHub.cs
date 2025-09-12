@@ -15,7 +15,7 @@ namespace Asset_Management.Hubs
             //save user to _connections dictionary in order to do a send notification to every except that user
             var user = Context.UserIdentifier;
             var userRole = Context.User?.FindFirst(ClaimTypes.Role)?.Value;
-            // Debug: Print all available user information
+
             Console.WriteLine($"UserIdentifier: {Context.UserIdentifier}");
             Console.WriteLine($"User Name: {Context.User?.Identity?.Name}");
             Console.WriteLine($"User Role: {userRole}");
@@ -23,7 +23,7 @@ namespace Asset_Management.Hubs
 
             if (string.IsNullOrEmpty(user))
             {
-                // Log this for debugging
+                // debugging
                 Console.WriteLine("User identifier is null or empty");
                 await base.OnConnectedAsync();
             }

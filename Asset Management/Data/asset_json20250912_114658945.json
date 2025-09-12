@@ -11,24 +11,9 @@
       "children": [
         {
           "id": 4,
-          "name": "Drill2ds",
+          "name": "Drill",
           "parentId": 2,
           "children": [
-            {
-              "id": 24,
-              "name": "child 1",
-              "parentId": 4,
-              "children": [
-                {
-                  "id": 25,
-                  "name": "sfds",
-                  "parentId": 24,
-                  "children": [],
-                  "signals": []
-                }
-              ],
-              "signals": []
-            },
             {
               "id": 8,
               "name": "Drill Bits",
@@ -53,7 +38,7 @@
             },
             {
               "id": 10,
-              "name": "Gas ",
+              "name": "Gas Welding",
               "parentId": 5,
               "children": [],
               "signals": []
@@ -66,7 +51,7 @@
     },
     {
       "id": 13,
-      "name": "dsfsdfsfdsfsdfnsafds",
+      "name": "Milling",
       "parentId": 1,
       "children": [
         {

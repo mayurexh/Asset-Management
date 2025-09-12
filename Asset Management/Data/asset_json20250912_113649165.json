@@ -10,19 +10,26 @@
       "parentId": 1,
       "children": [
         {
-          "id": 4,
-          "name": "Drill2ds",
+          "id": 3,
+          "name": "Lathe",
+          "parentId": 2,
+          "children": [],
+          "signals": []
+        },
+        {
+          "id": 5,
+          "name": "Weld",
           "parentId": 2,
           "children": [
             {
-              "id": 24,
-              "name": "child 1",
-              "parentId": 4,
+              "id": 9,
+              "name": "Arc Welding",
+              "parentId": 5,
               "children": [
                 {
                   "id": 25,
-                  "name": "sfds",
-                  "parentId": 24,
+                  "name": "child 1 update",
+                  "parentId": 9,
                   "children": [],
                   "signals": []
                 }
@@ -30,30 +37,8 @@
               "signals": []
             },
             {
-              "id": 8,
-              "name": "Drill Bits",
-              "parentId": 4,
-              "children": [],
-              "signals": []
-            }
-          ],
-          "signals": []
-        },
-        {
-          "id": 5,
-          "name": "Welding",
-          "parentId": 2,
-          "children": [
-            {
-              "id": 9,
-              "name": "Arc Welding",
-              "parentId": 5,
-              "children": [],
-              "signals": []
-            },
-            {
               "id": 10,
-              "name": "Gas ",
+              "name": "Gas Welding",
               "parentId": 5,
               "children": [],
               "signals": []
@@ -66,7 +51,7 @@
     },
     {
       "id": 13,
-      "name": "dsfsdfsfdsfsdfnsafds",
+      "name": "Milling",
       "parentId": 1,
       "children": [
         {
@@ -84,6 +69,28 @@
       "name": "Electronics",
       "parentId": 1,
       "children": [
+        {
+          "id": 18,
+          "name": "Controllers",
+          "parentId": 14,
+          "children": [],
+          "signals": [
+            {
+              "id": 57,
+              "name": "signal 1",
+              "valueType": "string",
+              "description": "",
+              "assetId": 18
+            },
+            {
+              "id": 56,
+              "name": "signal2",
+              "valueType": "string",
+              "description": "",
+              "assetId": 18
+            }
+          ]
+        },
         {
           "id": 17,
           "name": "Sensors",
@@ -104,13 +111,6 @@
               "signals": []
             }
           ],
-          "signals": []
-        },
-        {
-          "id": 18,
-          "name": "Controllers",
-          "parentId": 14,
-          "children": [],
           "signals": []
         }
       ],

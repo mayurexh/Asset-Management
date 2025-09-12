@@ -1,0 +1,24 @@
+{
+  "id": 1,
+  "name": "Root",
+  "parentId": null,
+  "parent": null,
+  "children": [
+    {
+      "id": 2,
+      "name": "Mac",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 14,
+          "name": "new child",
+          "parentId": 2,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": []
+    }
+  ],
+  "signals": []
+}

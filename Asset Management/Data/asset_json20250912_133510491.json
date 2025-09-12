@@ -5,6 +5,21 @@
   "parent": null,
   "children": [
     {
+      "id": 13,
+      "name": "dsfsdfsfdsfsdfnsafds",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 16,
+          "name": "CNC Milling",
+          "parentId": 13,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": []
+    },
+    {
       "id": 2,
       "name": "Machines",
       "parentId": 1,
@@ -15,23 +30,15 @@
           "parentId": 2,
           "children": [
             {
-              "id": 24,
-              "name": "child 1",
+              "id": 8,
+              "name": "Drill Bits",
               "parentId": 4,
-              "children": [
-                {
-                  "id": 25,
-                  "name": "sfds",
-                  "parentId": 24,
-                  "children": [],
-                  "signals": []
-                }
-              ],
+              "children": [],
               "signals": []
             },
             {
-              "id": 8,
-              "name": "Drill Bits",
+              "id": 24,
+              "name": "child 1",
               "parentId": 4,
               "children": [],
               "signals": []
@@ -59,21 +66,6 @@
               "signals": []
             }
           ],
-          "signals": []
-        }
-      ],
-      "signals": []
-    },
-    {
-      "id": 13,
-      "name": "dsfsdfsfdsfsdfnsafds",
-      "parentId": 1,
-      "children": [
-        {
-          "id": 16,
-          "name": "CNC Milling",
-          "parentId": 13,
-          "children": [],
           "signals": []
         }
       ],

@@ -182,7 +182,7 @@ namespace Asset_Management.Services
 
 
 
-            string notificationMessage = $"{GetCurrentUser()} added new asset {newNode.Name}";
+            string notificationMessage = $"sjdf;lskjsdkjkfljl;sdjf;lsdjflasdmfldsjflskdfndsl;fkjsdlfkjsflksdjfsd;lsdnfsdnfdsnf{GetCurrentUser()} added new asset {newNode.Name}";
             await SaveNotificationsForOfflineUsers(type: "AssetAdded", notificationMessage, int.Parse(GetCurrentUserID()), GetCurrentUser());
 
 

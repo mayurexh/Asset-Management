@@ -1,0 +1,106 @@
+{
+  "id": 1,
+  "name": "Root",
+  "parentId": null,
+  "parent": null,
+  "children": [
+    {
+      "id": 2,
+      "name": "Mac",
+      "parentId": 1,
+      "children": [
+        {
+          "id": 5,
+          "name": "Weld",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 18,
+              "name": "new weld",
+              "parentId": 5,
+              "children": [],
+              "signals": []
+            },
+            {
+              "id": 9,
+              "name": "Arc Welding",
+              "parentId": 5,
+              "children": [],
+              "signals": []
+            },
+            {
+              "id": 10,
+              "name": "Gas Welding",
+              "parentId": 5,
+              "children": [
+                {
+                  "id": 16,
+                  "name": "ffds",
+                  "parentId": 10,
+                  "children": [],
+                  "signals": []
+                }
+              ],
+              "signals": []
+            },
+            {
+              "id": 15,
+              "name": "fsd",
+              "parentId": 5,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": []
+        },
+        {
+          "id": 3,
+          "name": "Lathe",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 7,
+              "name": "Lathe Maintenance",
+              "parentId": 3,
+              "children": [
+                {
+                  "id": 11,
+                  "name": "Machine Tooling",
+                  "parentId": 7,
+                  "children": [],
+                  "signals": []
+                }
+              ],
+              "signals": []
+            },
+            {
+              "id": 17,
+              "name": "asset new",
+              "parentId": 3,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": [
+            {
+              "id": 51,
+              "name": "signal1",
+              "valueType": "string",
+              "description": "",
+              "assetId": 3
+            }
+          ]
+        },
+        {
+          "id": 14,
+          "name": "new child",
+          "parentId": 2,
+          "children": [],
+          "signals": []
+        }
+      ],
+      "signals": []
+    }
+  ],
+  "signals": []
+}

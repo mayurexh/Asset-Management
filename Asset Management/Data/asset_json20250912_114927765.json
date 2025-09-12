@@ -11,24 +11,9 @@
       "children": [
         {
           "id": 4,
-          "name": "Drill2ds",
+          "name": "Drill",
           "parentId": 2,
           "children": [
-            {
-              "id": 24,
-              "name": "child 1",
-              "parentId": 4,
-              "children": [
-                {
-                  "id": 25,
-                  "name": "sfds",
-                  "parentId": 24,
-                  "children": [],
-                  "signals": []
-                }
-              ],
-              "signals": []
-            },
             {
               "id": 8,
               "name": "Drill Bits",
@@ -37,43 +22,6 @@
               "signals": []
             }
           ],
-          "signals": []
-        },
-        {
-          "id": 5,
-          "name": "Welding",
-          "parentId": 2,
-          "children": [
-            {
-              "id": 9,
-              "name": "Arc Welding",
-              "parentId": 5,
-              "children": [],
-              "signals": []
-            },
-            {
-              "id": 10,
-              "name": "Gas ",
-              "parentId": 5,
-              "children": [],
-              "signals": []
-            }
-          ],
-          "signals": []
-        }
-      ],
-      "signals": []
-    },
-    {
-      "id": 13,
-      "name": "dsfsdfsfdsfsdfnsafds",
-      "parentId": 1,
-      "children": [
-        {
-          "id": 16,
-          "name": "CNC Milling",
-          "parentId": 13,
-          "children": [],
           "signals": []
         }
       ],

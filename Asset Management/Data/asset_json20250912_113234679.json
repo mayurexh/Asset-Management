@@ -10,38 +10,8 @@
       "parentId": 1,
       "children": [
         {
-          "id": 4,
-          "name": "Drill2ds",
-          "parentId": 2,
-          "children": [
-            {
-              "id": 24,
-              "name": "child 1",
-              "parentId": 4,
-              "children": [
-                {
-                  "id": 25,
-                  "name": "sfds",
-                  "parentId": 24,
-                  "children": [],
-                  "signals": []
-                }
-              ],
-              "signals": []
-            },
-            {
-              "id": 8,
-              "name": "Drill Bits",
-              "parentId": 4,
-              "children": [],
-              "signals": []
-            }
-          ],
-          "signals": []
-        },
-        {
           "id": 5,
-          "name": "Welding",
+          "name": "Weld",
           "parentId": 2,
           "children": [
             {
@@ -53,8 +23,37 @@
             },
             {
               "id": 10,
-              "name": "Gas ",
+              "name": "Gas Welding",
               "parentId": 5,
+              "children": [],
+              "signals": []
+            }
+          ],
+          "signals": []
+        },
+        {
+          "id": 3,
+          "name": "Lathe",
+          "parentId": 2,
+          "children": [],
+          "signals": []
+        },
+        {
+          "id": 4,
+          "name": "Drill",
+          "parentId": 2,
+          "children": [
+            {
+              "id": 8,
+              "name": "Drill Bits",
+              "parentId": 4,
+              "children": [],
+              "signals": []
+            },
+            {
+              "id": 24,
+              "name": "drill child 1",
+              "parentId": 4,
               "children": [],
               "signals": []
             }
@@ -66,7 +65,7 @@
     },
     {
       "id": 13,
-      "name": "dsfsdfsfdsfsdfnsafds",
+      "name": "Milling",
       "parentId": 1,
       "children": [
         {
