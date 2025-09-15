@@ -5,8 +5,8 @@
   "parent": null,
   "children": [
     {
-      "id": 29,
-      "name": "new",
+      "id": 2,
+      "name": "RootAsset",
       "parentId": 1,
       "children": [],
       "signals": []

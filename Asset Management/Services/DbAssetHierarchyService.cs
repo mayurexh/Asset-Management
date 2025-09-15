@@ -63,7 +63,7 @@ namespace Asset_Management.Services
                     Message = notificationMessage,
                     SenderName = senderName,
                     CreatedAt = DateTime.UtcNow,
-                    IsRead = isOnline // Mark as read if user is currently online
+                    IsRead = false
                 };
 
                 Console.WriteLine($"Saving notification for Admin ID: {admin.Id} (Online: {isOnline})");

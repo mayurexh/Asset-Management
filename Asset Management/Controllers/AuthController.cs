@@ -160,6 +160,18 @@ namespace Asset_Management.Controllers
 
 
         }
+        [HttpPost("Logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("token", new CookieOptions
+            {
+                HttpOnly = true, //token can't be accessed with js
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Path = "/"
+            });
+            return Ok("Logged Out");
+        }
 
 
         [HttpPost("ExternalLogin")]
